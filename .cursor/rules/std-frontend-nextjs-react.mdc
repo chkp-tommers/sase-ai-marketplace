@@ -1,0 +1,663 @@
+---
+description: Frontend development standards for Next.js 14 & React 18 applications
+globs: "src/**/*.{js,jsx,ts,tsx}"
+alwaysApply: false
+---
+# Frontend Development Standards - Next.js 14 & React 18
+
+> **📋 PREREQUISITE**: All development work must follow [Analysis & Decision-Making Principles](std-analysis-principles.mdc) - Use evidence-based analysis and critical thinking before implementing any frontend solutions.
+
+## Core Architecture Patterns
+
+### Next.js 14 App Router Structure
+
+- Use App Router for all new development
+- Organize by feature/domain in `src/app/` directory
+- Leverage Server Components by default, Client Components when needed
+- Implement proper loading.js, error.js, and not-found.js files
+
+```javascript
+// src/app/tools/[id]/page.js - Server Component
+import { Suspense } from 'react'
+import ToolDetail from '@/components/Tools/ToolDetail'
+import ToolSkeleton from '@/components/Tools/ToolSkeleton'
+
+export default async function ToolPage({ params }) {
+  return (
+    <Suspense fallback={<ToolSkeleton />}>
+      <ToolDetail id={params.id} />
+    </Suspense>
+  )
+}
+
+// src/app/tools/[id]/loading.js
+export default function Loading() {
+  return <ToolSkeleton />
+}
+```
+
+### React 18 Component Patterns
+
+#### State Management with Modern Hooks
+
+```javascript
+// Use useState for simple local state
+const [tools, setTools] = useState([]);
+const [loading, setLoading] = useState(false);
+
+// Use useReducer for complex state logic
+const [state, dispatch] = useReducer(toolsReducer, initialState);
+
+function toolsReducer(state, action) {
+  switch (action.type) {
+    case "FETCH_START":
+      return { ...state, loading: true, error: null };
+    case "FETCH_SUCCESS":
+      return { ...state, loading: false, tools: action.payload };
+    case "FETCH_ERROR":
+      return { ...state, loading: false, error: action.payload };
+    default:
+      return state;
+  }
+}
+```
+
+#### Custom Hooks for Reusable Logic
+
+```javascript
+// src/hooks/useTools.js
+import { useState, useEffect } from "react";
+import { fetchTools } from "@/lib/api";
+
+export function useTools(filters = {}) {
+  const [state, setState] = useState({
+    tools: [],
+    loading: true,
+    error: null,
+  });
+
+  useEffect(() => {
+    const loadTools = async () => {
+      try {
+        setState((prev) => ({ ...prev, loading: true, error: null }));
+        const tools = await fetchTools(filters);
+        setState({ tools, loading: false, error: null });
+      } catch (error) {
+        setState((prev) => ({ ...prev, loading: false, error: error.message }));
+      }
+    };
+
+    loadTools();
+  }, [JSON.stringify(filters)]);
+
+  return state;
+}
+```
+
+#### Context for Global State
+
+```javascript
+// src/contexts/ToolsContext.js
+import { createContext, useContext, useReducer } from "react";
+
+const ToolsContext = createContext(null);
+const ToolsDispatchContext = createContext(null);
+
+export function ToolsProvider({ children }) {
+  const [tools, dispatch] = useReducer(toolsReducer, []);
+
+  return (
+    <ToolsContext.Provider value={tools}>
+      <ToolsDispatchContext.Provider value={dispatch}>
+        {children}
+      </ToolsDispatchContext.Provider>
+    </ToolsContext.Provider>
+  );
+}
+
+export function useTools() {
+  const context = useContext(ToolsContext);
+  if (!context) {
+    throw new Error("useTools must be used within ToolsProvider");
+  }
+  return context;
+}
+
+export function useToolsDispatch() {
+  const context = useContext(ToolsDispatchContext);
+  if (!context) {
+    throw new Error("useToolsDispatch must be used within ToolsProvider");
+  }
+  return context;
+}
+```
+
+## Tailwind CSS Best Practices
+
+### Utility-First Approach
+
+- Use utility classes for styling
+- Create component classes only when necessary
+- Leverage responsive design with breakpoint prefixes
+- Use arbitrary values sparingly with [brackets]
+
+```javascript
+// Component with Tailwind utilities
+export default function ToolCard({ tool }) {
+  return (
+    <div className="group relative overflow-hidden rounded-xl bg-white p-6 shadow-lg ring-1 ring-black/5 transition-all hover:shadow-xl hover:ring-black/10 dark:bg-gray-800 dark:ring-white/10">
+      <div className="flex items-center gap-4">
+        <img
+          className="h-12 w-12 rounded-full object-cover"
+          src={tool.avatar}
+          alt={tool.name}
+        />
+        <div className="min-w-0 flex-1">
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+            {tool.name}
+          </h3>
+          <p className="text-sm text-gray-500 dark:text-gray-400">
+            {tool.category}
+          </p>
+        </div>
+      </div>
+
+      {/* Responsive grid */}
+      <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        {tool.features.map((feature, index) => (
+          <span
+            key={index}
+            className="inline-flex items-center rounded-full bg-purple-50 px-2 py-1 text-xs font-medium text-purple-700 dark:bg-purple-900/20 dark:text-purple-300"
+          >
+            {feature}
+          </span>
+        ))}
+      </div>
+    </div>
+  );
+}
+```
+
+### Responsive Design Patterns
+
+```javascript
+// Mobile-first responsive approach
+<div className="w-full max-w-md mx-auto md:max-w-2xl lg:max-w-4xl">
+  <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+    {/* Grid items */}
+  </div>
+</div>
+
+// Responsive text and spacing
+<h1 className="text-2xl font-bold md:text-3xl lg:text-4xl">
+  <span className="block text-sm text-gray-500 md:text-base lg:text-lg">
+    Subtitle
+  </span>
+</h1>
+```
+
+### Dark Mode Support
+
+```javascript
+// Dark mode with class strategy
+<div className="bg-white text-gray-900 dark:bg-gray-900 dark:text-white">
+  <button className="bg-blue-500 text-white hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700">
+    Click me
+  </button>
+</div>
+```
+
+## NextAuth.js Integration
+
+### Session Management
+
+```javascript
+// src/app/layout.js - Session Provider
+import { SessionProvider } from "@/components/SessionProvider";
+
+export default function RootLayout({ children }) {
+  return (
+    <html lang="en">
+      <body>
+        <SessionProvider>{children}</SessionProvider>
+      </body>
+    </html>
+  );
+}
+
+// src/components/SessionProvider.js - Client Component
+("use client");
+import { SessionProvider as NextAuthProvider } from "next-auth/react";
+
+export function SessionProvider({ children }) {
+  return <NextAuthProvider>{children}</NextAuthProvider>;
+}
+```
+
+### Authentication in Components
+
+```javascript
+// Client Component authentication
+"use client";
+import { useSession, signIn, signOut } from "next-auth/react";
+
+export default function AuthButton() {
+  const { data: session, status } = useSession();
+
+  if (status === "loading") {
+    return <div className="animate-pulse bg-gray-200 h-8 w-20 rounded"></div>;
+  }
+
+  if (!session) {
+    return (
+      <button
+        onClick={() => signIn()}
+        className="rounded-md bg-purple-600 px-4 py-2 text-white hover:bg-purple-700"
+      >
+        Sign In
+      </button>
+    );
+  }
+
+  return (
+    <div className="flex items-center gap-3">
+      <img
+        className="h-8 w-8 rounded-full"
+        src={session.user.image}
+        alt={session.user.name}
+      />
+      <span className="text-sm font-medium">{session.user.name}</span>
+      <button
+        onClick={() => signOut()}
+        className="text-sm text-gray-500 hover:text-gray-700"
+      >
+        Sign Out
+      </button>
+    </div>
+  );
+}
+```
+
+### Server-Side Authentication
+
+```javascript
+// src/app/dashboard/page.js - Server Component with auth
+import { auth } from "@/lib/auth";
+import { redirect } from "next/navigation";
+
+export default async function DashboardPage() {
+  const session = await auth();
+
+  if (!session) {
+    redirect("/auth/signin");
+  }
+
+  return (
+    <div>
+      <h1>Welcome, {session.user.name}!</h1>
+      {/* Dashboard content */}
+    </div>
+  );
+}
+```
+
+## Performance Optimization
+
+### Component Optimization
+
+```javascript
+import { memo, useMemo, useCallback } from "react";
+
+// Memoize expensive components
+const ToolCard = memo(function ToolCard({ tool, onSelect }) {
+  const handleClick = useCallback(() => {
+    onSelect(tool.id);
+  }, [tool.id, onSelect]);
+
+  const formattedDate = useMemo(() => {
+    return new Intl.DateTimeFormat("en-US").format(new Date(tool.createdAt));
+  }, [tool.createdAt]);
+
+  return (
+    <div onClick={handleClick}>
+      <h3>{tool.name}</h3>
+      <p>{formattedDate}</p>
+    </div>
+  );
+});
+```
+
+### Image Optimization
+
+```javascript
+import Image from "next/image";
+
+// Optimized images with Next.js
+<Image
+  src={tool.image}
+  alt={tool.name}
+  width={300}
+  height={200}
+  placeholder="blur"
+  blurDataURL="data:image/jpeg;base64,..."
+  className="rounded-lg object-cover"
+  priority={isAboveFold}
+/>;
+```
+
+### Dynamic Imports for Code Splitting
+
+```javascript
+import dynamic from 'next/dynamic'
+import { Suspense } from 'react'
+
+// Lazy load heavy components
+const ChatWidget = dynamic(() => import('@/components/Chat/ChatWidget'), {
+  loading: () => <div className="animate-pulse bg-gray-200 h-96 rounded-lg"></div>,
+  ssr: false
+})
+
+// Use in component
+<Suspense fallback={<ChatSkeleton />}>
+  <ChatWidget />
+</Suspense>
+```
+
+## Form Handling Patterns
+
+### Controlled Components
+
+```javascript
+"use client";
+import { useState } from "react";
+
+export default function ToolForm({ onSubmit }) {
+  const [formData, setFormData] = useState({
+    name: "",
+    description: "",
+    category: "",
+    tags: [],
+  });
+  const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
+
+  const validateForm = () => {
+    const newErrors = {};
+    if (!formData.name.trim()) newErrors.name = "Name is required";
+    if (!formData.description.trim())
+      newErrors.description = "Description is required";
+    if (!formData.category) newErrors.category = "Category is required";
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!validateForm()) return;
+
+    setLoading(true);
+    try {
+      await onSubmit(formData);
+    } catch (error) {
+      setErrors({ submit: error.message });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-6">
+      <div>
+        <label className="block text-sm font-medium text-gray-700">
+          Tool Name
+        </label>
+        <input
+          type="text"
+          value={formData.name}
+          onChange={(e) =>
+            setFormData((prev) => ({ ...prev, name: e.target.value }))
+          }
+          className={`mt-1 block w-full rounded-md border px-3 py-2 ${
+            errors.name
+              ? "border-red-300 focus:border-red-500 focus:ring-red-500"
+              : "border-gray-300 focus:border-purple-500 focus:ring-purple-500"
+          }`}
+        />
+        {errors.name && (
+          <p className="mt-1 text-sm text-red-600">{errors.name}</p>
+        )}
+      </div>
+
+      <button
+        type="submit"
+        disabled={loading}
+        className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 disabled:opacity-50 disabled:cursor-not-allowed"
+      >
+        {loading ? (
+          <>
+            <svg
+              className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+              ></circle>
+              <path
+                className="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+              ></path>
+            </svg>
+            Creating...
+          </>
+        ) : (
+          "Create Tool"
+        )}
+      </button>
+    </form>
+  );
+}
+```
+
+## Error Handling
+
+### Error Boundaries
+
+```javascript
+// src/components/ErrorBoundary.js
+"use client";
+import { Component } from "react";
+
+export default class ErrorBoundary extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error, errorInfo) {
+    console.error("Error caught by boundary:", error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="min-h-screen flex items-center justify-center bg-gray-50">
+          <div className="max-w-md w-full bg-white shadow-lg rounded-lg p-6">
+            <div className="flex items-center">
+              <div className="flex-shrink-0">
+                <svg
+                  className="h-8 w-8 text-red-400"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.5 0L4.268 18.5c-.77.833.192 2.5 1.732 2.5z"
+                  />
+                </svg>
+              </div>
+              <div className="ml-3">
+                <h3 className="text-sm font-medium text-gray-800">
+                  Something went wrong
+                </h3>
+                <div className="mt-2 text-sm text-gray-500">
+                  <p>We're sorry, but something unexpected happened.</p>
+                </div>
+                <div className="mt-4">
+                  <button
+                    onClick={() => window.location.reload()}
+                    className="text-sm bg-white border border-gray-300 rounded-md px-3 py-2 hover:bg-gray-50"
+                  >
+                    Try again
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    return this.props.children;
+  }
+}
+```
+
+## File Organization Standards
+
+### Component Structure
+
+```
+src/components/
+├── UI/                    # Reusable UI components
+│   ├── Button.js
+│   ├── Modal.js
+│   ├── Input.js
+│   └── LoadingSpinner.js
+├── Layout/                # Layout components
+│   ├── Header.js
+│   ├── Sidebar.js
+│   └── Footer.js
+├── Features/              # Feature-specific components
+│   ├── Tools/
+│   │   ├── ToolCard.js
+│   │   ├── ToolGrid.js
+│   │   └── ToolForm.js
+│   └── Chat/
+│       └── ChatWidget.js
+└── Providers/             # Context providers
+    ├── SessionProvider.js
+    └── ThemeProvider.js
+```
+
+### Naming Conventions
+
+- Components: PascalCase (ToolCard.js)
+- Hooks: camelCase with 'use' prefix (useTools.js)
+- Utils: camelCase (formatDate.js)
+- Constants: UPPER_SNAKE_CASE (API_ENDPOINTS.js)
+- CSS classes: kebab-case or utility classes
+
+## Testing Considerations
+
+### Component Testing Setup
+
+```javascript
+// src/components/__tests__/ToolCard.test.js
+import { render, screen, fireEvent } from "@testing-library/react";
+import { SessionProvider } from "next-auth/react";
+import ToolCard from "../ToolCard";
+
+const mockTool = {
+  id: "1",
+  name: "Test Tool",
+  description: "A test tool",
+  category: "Testing",
+};
+
+const MockedToolCard = ({ tool }) => (
+  <SessionProvider session={null}>
+    <ToolCard tool={tool} />
+  </SessionProvider>
+);
+
+describe("ToolCard", () => {
+  it("renders tool information correctly", () => {
+    render(<MockedToolCard tool={mockTool} />);
+
+    expect(screen.getByText("Test Tool")).toBeInTheDocument();
+    expect(screen.getByText("A test tool")).toBeInTheDocument();
+    expect(screen.getByText("Testing")).toBeInTheDocument();
+  });
+
+  it("handles click events", () => {
+    const onSelect = jest.fn();
+    render(<MockedToolCard tool={mockTool} onSelect={onSelect} />);
+
+    fireEvent.click(screen.getByTestId("tool-card"));
+    expect(onSelect).toHaveBeenCalledWith(mockTool.id);
+  });
+});
+```
+
+## Security Best Practices
+
+### Input Sanitization
+
+```javascript
+// Always sanitize user input
+import DOMPurify from "dompurify";
+
+const sanitizeHtml = (dirty) => {
+  return DOMPurify.sanitize(dirty);
+};
+
+// Use in components
+<div
+  dangerouslySetInnerHTML={{
+    __html: sanitizeHtml(tool.description),
+  }}
+/>;
+```
+
+### CSRF Protection
+
+```javascript
+// Use built-in CSRF protection with NextAuth.js
+// Ensure all forms include CSRF tokens
+<input type="hidden" name="csrfToken" value={csrfToken} />
+```
+
+## Common Patterns to Follow
+
+1. **Server Components by Default**: Use Server Components unless you need client-side interactivity
+2. **Composition over Inheritance**: Favor composition patterns for component reusability
+3. **Colocate Related Code**: Keep components, styles, and tests close together
+4. **Progressive Enhancement**: Ensure basic functionality works without JavaScript
+5. **Accessibility First**: Include proper ARIA labels, semantic HTML, and keyboard navigation
+6. **Performance Monitoring**: Use React DevTools and Lighthouse for optimization
+
+## Common Anti-Patterns to Avoid
+
+1. **Prop Drilling**: Use Context or state management instead of passing props through many levels
+2. **Large Components**: Break down components that exceed 150 lines
+3. **Inline Styles**: Use Tailwind classes instead of inline styles
+4. **Missing Keys**: Always provide unique keys for list items
+5. **Mutating State**: Always create new objects/arrays when updating state
+6. **Memory Leaks**: Clean up subscriptions and timers in useEffect cleanup functions

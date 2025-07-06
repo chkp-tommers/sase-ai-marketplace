@@ -1,0 +1,68 @@
+---
+description: Refactoring patterns and best practices
+globs: "**/*.{js,ts}"
+alwaysApply: false
+---
+# Refactoring Best Practices
+
+## When to Refactor
+- Code has duplicated logic across files
+- Functions exceed recommended length
+- Functions have too many parameters
+- Classes/modules have too many responsibilities
+- Code has deep nesting or complex conditionals
+- Same pattern repeats in multiple places
+- Technical debt is slowing down development
+- Code needs to accommodate new requirements
+
+## Refactoring Techniques
+- Extract repeated code to utility functions
+- Break large functions into smaller ones
+- Replace conditionals with polymorphism
+- Extract complex logic to specialized services
+- Rename variables/functions for clarity
+- Move methods to more appropriate modules
+- Replace magic values with named constants
+- Convert imperative code to declarative
+
+## Safe Refactoring Approach
+- Ensure comprehensive tests before starting
+- Make small, incremental changes
+- Run tests after each change
+- Commit frequently during refactoring
+- Document significant structural changes
+- Focus on one type of refactoring at a time
+- Avoid mixing refactoring with feature development
+- Maintain backward compatibility
+
+## Code Smell Indicators
+- Large functions (over 50 lines)
+- Methods with many parameters
+- Excessive comments explaining complex code
+- Repeated conditional structures
+- Methods that rarely use their own class's data
+- Excessive coupling between modules
+- Feature envy (method uses another class more than its own)
+- Data clumps (same data appearing together)
+
+## Domain-Specific Refactoring
+- Abstract provider-specific code to adapters
+- Extract validation logic for reuse
+- Standardize response handling across services
+- Unify error handling for external services
+- Extract complex business rules to policy objects
+- Apply proper design patterns for common scenarios
+- Separate data transformation from business logic
+- Normalize response formats across providers
+
+## Testing During Refactoring
+- Establish baseline test coverage
+- Write tests for code before refactoring
+- Focus on functional tests to verify behavior
+- Use mocking for external dependencies
+- Apply snapshot testing for complex data
+- Verify edge cases are maintained
+- Ensure backward compatibility is preserved
+- Test performance before and after
+
+@file common/refactoring-guide.js

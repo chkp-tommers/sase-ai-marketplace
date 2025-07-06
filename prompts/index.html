@@ -1,0 +1,584 @@
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Prompts - AI Tools Hub</title>
+    <meta
+      name="description"
+      content="Ready-to-use AI prompts for development tasks. Copy and paste prompts for code review, API design, security auditing, and more."
+    />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              purple: {
+                50: "#faf5ff",
+                100: "#f3e8ff",
+                500: "#8b5cf6",
+                600: "#7c3aed",
+                700: "#6d28d9",
+                800: "#5b21b6",
+                900: "#4c1d95",
+              },
+            },
+          },
+        },
+      };
+    </script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+      }
+    </style>
+  </head>
+  <body
+    class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors antialiased"
+  >
+    <!-- Navigation -->
+    <nav class="bg-white dark:bg-gray-800 shadow-sm sticky top-0 z-50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+          <div class="flex items-center">
+            <a href="../" class="flex items-center">
+              <svg
+                class="h-8 w-8 text-purple-600 dark:text-purple-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M13 10V3L4 14h7v7l9-11h-7z"
+                />
+              </svg>
+              <span class="ml-2 text-xl font-bold text-gray-900 dark:text-white"
+                >AI Tools Hub</span
+              >
+            </a>
+          </div>
+          <div class="flex items-center space-x-4">
+            <a
+              href="../tools/"
+              class="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
+              >Browse Tools</a
+            >
+            <a
+              href="../mcps/"
+              class="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
+              >MCPs</a
+            >
+            <a
+              href="../prompts/"
+              class="text-purple-600 dark:text-purple-400 font-medium"
+              >Prompts</a
+            >
+            <a
+              href="../chatmodes/"
+              class="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
+              >Chat Modes</a
+            >
+            <a
+              href="../guides/"
+              class="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
+              >Guides</a
+            >
+            <button
+              id="theme-toggle"
+              class="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+            >
+              <svg
+                class="h-5 w-5 hidden dark:block"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
+                />
+              </svg>
+              <svg
+                class="h-5 w-5 dark:hidden"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Breadcrumb -->
+    <div
+      class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700"
+    >
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+        <nav class="flex" aria-label="Breadcrumb">
+          <ol class="flex items-center space-x-4">
+            <li>
+              <a
+                href="../"
+                class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
+                >Home</a
+              >
+            </li>
+            <li>
+              <svg
+                class="flex-shrink-0 h-5 w-5 text-gray-400"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </li>
+            <li>
+              <span class="text-gray-700 dark:text-gray-300 font-medium"
+                >Prompts</span
+              >
+            </li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+
+    <!-- Header -->
+    <div
+      class="bg-gradient-to-br from-green-50 to-emerald-100 dark:from-green-900/20 dark:to-emerald-900/20 py-16"
+    >
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div class="flex flex-col items-center justify-center mb-6">
+          <div
+            class="w-16 h-16 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center mb-4"
+          >
+            <svg
+              class="h-8 w-8 text-green-600 dark:text-green-400"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+              />
+            </svg>
+          </div>
+          <div>
+            <h1 class="text-4xl font-bold text-gray-900 dark:text-white">
+              AI Prompts
+            </h1>
+            <p class="text-xl text-gray-600 dark:text-gray-300">
+              Ready-to-use prompts for development tasks
+            </p>
+          </div>
+        </div>
+        <p class="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+          Professional prompt templates for code review, API design, security
+          auditing, and specialized development tasks.
+        </p>
+
+        <!-- Add New Button -->
+        <div class="flex justify-center mt-8">
+          <button
+            id="add-prompt-btn"
+            class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-semibold flex items-center space-x-2 transition-colors"
+          >
+            <svg
+              class="h-5 w-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+              />
+            </svg>
+            <span>Add New Prompt</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filters and Search -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 mb-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <!-- Search -->
+          <div class="md:col-span-2">
+            <label
+              class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+              >Search Prompts</label
+            >
+            <input
+              type="text"
+              id="search-filter"
+              placeholder="Search by name, category, or use case..."
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+            />
+          </div>
+
+          <!-- Platform Filter -->
+          <div>
+            <label
+              class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+              >Platform</label
+            >
+            <select
+              id="platform-filter"
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+            >
+              <option value="">All Platforms</option>
+              <option value="cursor">Cursor</option>
+              <option value="copilot">GitHub Copilot</option>
+              <option value="claude">Claude</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats Banner -->
+      <div
+        class="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4 mb-8"
+      >
+        <div class="flex items-center justify-between">
+          <div class="flex items-center">
+            <svg
+              class="h-5 w-5 text-green-600 dark:text-green-400 mr-2"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+            <span class="text-green-800 dark:text-green-200 font-medium"
+              >Professional Prompt Templates</span
+            >
+          </div>
+          <span
+            id="prompts-count"
+            class="text-green-600 dark:text-green-400 font-medium"
+            >Loading...</span
+          >
+        </div>
+        <p class="mt-2 text-green-700 dark:text-green-300 text-sm">
+          Copy-paste ready prompts for code review, architecture design,
+          security auditing, and specialized development tasks.
+        </p>
+      </div>
+
+      <!-- Prompts Grid -->
+      <div id="prompts-grid" class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Prompts will be populated by JavaScript -->
+      </div>
+
+      <!-- No Results -->
+      <div id="no-results" class="hidden text-center py-12">
+        <svg
+          class="mx-auto h-12 w-12 text-gray-400"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+          />
+        </svg>
+        <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-gray-100">
+          No prompts found
+        </h3>
+        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+          Try adjusting your search or filters.
+        </p>
+      </div>
+    </div>
+
+    <script>
+      class PromptsPage {
+        constructor() {
+          this.prompts = [];
+          this.filteredPrompts = [];
+          this.filters = { search: "", platform: "" };
+          this.init();
+        }
+
+        async init() {
+          this.initDarkMode();
+          await this.loadPrompts();
+          this.initFilters();
+          this.renderPrompts();
+          this.updatePromptsCount();
+        }
+
+        initDarkMode() {
+          const themeToggle = document.getElementById("theme-toggle");
+          const html = document.documentElement;
+          const savedTheme = localStorage.getItem("theme") || "system";
+
+          if (
+            savedTheme === "dark" ||
+            (savedTheme === "system" &&
+              window.matchMedia("(prefers-color-scheme: dark)").matches)
+          ) {
+            html.classList.add("dark");
+          }
+
+          themeToggle?.addEventListener("click", () => {
+            html.classList.toggle("dark");
+            localStorage.setItem(
+              "theme",
+              html.classList.contains("dark") ? "dark" : "light"
+            );
+          });
+        }
+
+        async loadPrompts() {
+          try {
+            const response = await fetch("/assets/data/tools.json");
+            if (response.ok) {
+              const allTools = await response.json();
+              this.prompts = allTools.filter((tool) => tool.type === "prompt");
+              this.filteredPrompts = [...this.prompts];
+            }
+          } catch (error) {
+            console.error("Error loading prompts:", error);
+            this.loadFallbackPrompts();
+          }
+        }
+
+        loadFallbackPrompts() {
+          this.prompts = [
+            {
+              id: "code-review-prompt",
+              name: "Code Review Assistant",
+              description:
+                "Comprehensive code review prompt with security and performance focus",
+              type: "prompt",
+              platforms: ["cursor", "copilot", "claude"],
+              featured: true,
+              content:
+                "You are an expert code reviewer with deep knowledge of security, performance, and best practices...",
+            },
+          ];
+          this.filteredPrompts = [...this.prompts];
+        }
+
+        initFilters() {
+          const searchInput = document.getElementById("search-filter");
+          const platformSelect = document.getElementById("platform-filter");
+
+          searchInput.addEventListener("input", (e) => {
+            this.filters.search = e.target.value.toLowerCase();
+            this.applyFilters();
+          });
+
+          platformSelect.addEventListener("change", (e) => {
+            this.filters.platform = e.target.value;
+            this.applyFilters();
+          });
+        }
+
+        applyFilters() {
+          this.filteredPrompts = this.prompts.filter((prompt) => {
+            const searchMatch =
+              !this.filters.search ||
+              prompt.name.toLowerCase().includes(this.filters.search) ||
+              prompt.description.toLowerCase().includes(this.filters.search) ||
+              (prompt.category &&
+                prompt.category.toLowerCase().includes(this.filters.search));
+
+            const platformMatch =
+              !this.filters.platform ||
+              prompt.platforms.includes(this.filters.platform);
+
+            return searchMatch && platformMatch;
+          });
+
+          this.renderPrompts();
+          this.updatePromptsCount();
+        }
+
+        renderPrompts() {
+          const grid = document.getElementById("prompts-grid");
+          const noResults = document.getElementById("no-results");
+
+          if (this.filteredPrompts.length === 0) {
+            grid.innerHTML = "";
+            noResults.classList.remove("hidden");
+            return;
+          }
+
+          noResults.classList.add("hidden");
+          grid.innerHTML = this.filteredPrompts
+            .map((prompt) => this.createPromptCard(prompt))
+            .join("");
+        }
+
+        createPromptCard(prompt) {
+          const contentPreview = prompt.content
+            ? prompt.content.substring(0, 200) + "..."
+            : "Click to view full prompt content";
+
+          return `
+          <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow border border-gray-200 dark:border-gray-700">
+            <div class="flex items-center justify-between mb-4">
+              <div class="flex items-center">
+                <div class="w-10 h-10 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center mr-3">
+                  <svg class="h-5 w-5 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                  </svg>
+                </div>
+                <span class="px-2 py-1 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 text-xs font-medium rounded-full">
+                  PROMPT
+                </span>
+              </div>
+              ${prompt.featured ? '<span class="text-yellow-500 text-lg">★</span>' : ""}
+            </div>
+            
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">${prompt.name}</h3>
+            <p class="text-gray-600 dark:text-gray-300 text-sm mb-4">${prompt.description}</p>
+            
+            <div class="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg mb-4">
+              <p class="text-xs text-gray-500 dark:text-gray-400 mb-2">Preview:</p>
+              <p class="text-sm text-gray-700 dark:text-gray-300 font-mono leading-relaxed">${contentPreview}</p>
+            </div>
+            
+            <div class="flex items-center justify-between">
+              <div class="flex space-x-1">
+                ${prompt.platforms
+                  .map(
+                    (platform) => `
+                  <span class="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-xs rounded capitalize">
+                    ${platform}
+                  </span>
+                `
+                  )
+                  .join("")}
+              </div>
+              <div class="flex space-x-2">
+                <button onclick="promptsPage.viewPrompt('${prompt.id}')" class="bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300 px-3 py-1 rounded text-sm hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors">
+                  View
+                </button>
+                <button onclick="promptsPage.copyPrompt('${prompt.id}')" class="bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700 transition-colors">
+                  Copy
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+        }
+
+        updatePromptsCount() {
+          const countElement = document.getElementById("prompts-count");
+          if (countElement) {
+            countElement.textContent = `${this.filteredPrompts.length} prompts available`;
+          }
+        }
+
+        viewPrompt(promptId) {
+          const prompt = this.prompts.find((p) => p.id === promptId);
+          if (!prompt) return;
+
+          // Create modal overlay
+          const modal = document.createElement("div");
+          modal.className =
+            "fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4";
+          modal.innerHTML = `
+          <div class="bg-white dark:bg-gray-800 rounded-lg max-w-4xl w-full max-h-[90vh] overflow-hidden">
+            <div class="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
+              <h2 class="text-xl font-semibold text-gray-900 dark:text-white">${prompt.name}</h2>
+              <button onclick="this.closest('.fixed').remove()" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <div class="p-6 overflow-y-auto max-h-[calc(90vh-140px)]">
+              <pre class="whitespace-pre-wrap text-sm text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">${prompt.content || "No content available"}</pre>
+            </div>
+            <div class="flex justify-end space-x-3 p-6 border-t border-gray-200 dark:border-gray-700">
+              <button onclick="this.closest('.fixed').remove()" class="px-4 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200">
+                Close
+              </button>
+              <button onclick="promptsPage.copyPrompt('${prompt.id}'); this.closest('.fixed').remove();" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition-colors">
+                Copy Prompt
+              </button>
+            </div>
+          </div>
+        `;
+
+          document.body.appendChild(modal);
+        }
+
+        copyPrompt(promptId) {
+          const prompt = this.prompts.find((p) => p.id === promptId);
+          if (!prompt) return;
+
+          navigator.clipboard
+            .writeText(prompt.content || prompt.description)
+            .then(() => {
+              this.showToast(`${prompt.name} copied to clipboard!`);
+            })
+            .catch(() => {
+              this.showToast("Failed to copy prompt", "error");
+            });
+        }
+
+        showToast(message, type = "success") {
+          const toast = document.getElementById("toast");
+          const toastMessage = document.getElementById("toast-message");
+
+          toastMessage.textContent = message;
+          toast.className = `fixed top-4 right-4 px-4 py-2 rounded-lg shadow-lg transform transition-transform duration-300 z-50 ${
+            type === "success"
+              ? "bg-green-500 text-white"
+              : "bg-red-500 text-white"
+          }`;
+
+          toast.style.transform = "translateX(0)";
+          setTimeout(() => {
+            toast.style.transform = "translateX(100%)";
+          }, 3000);
+        }
+      }
+
+      const promptsPage = new PromptsPage();
+    </script>
+  </body>
+</html>

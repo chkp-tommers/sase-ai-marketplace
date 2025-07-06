@@ -1,0 +1,885 @@
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Windsurf Installation Guide - AI Tools Hub</title>
+    <meta
+      name="description"
+      content="Complete guide to installing MCP tools, prompts, and chat modes in Windsurf AI development environment."
+    />
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              purple: {
+                50: "#faf5ff",
+                100: "#f3e8ff",
+                500: "#8b5cf6",
+                600: "#7c3aed",
+                700: "#6d28d9",
+                800: "#5b21b6",
+                900: "#4c1d95",
+              },
+            },
+          },
+        },
+      };
+    </script>
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Custom Styles -->
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+      }
+      .code-block {
+        background: #1e293b;
+        color: #e2e8f0;
+        padding: 1rem;
+        border-radius: 0.5rem;
+        overflow-x: auto;
+      }
+      .copy-button {
+        position: absolute;
+        top: 0.5rem;
+        right: 0.5rem;
+      }
+    </style>
+  </head>
+  <body
+    class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors antialiased"
+  >
+    <!-- Navigation -->
+    <nav class="bg-white dark:bg-gray-800 shadow-sm sticky top-0 z-50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+          <div class="flex items-center">
+            <a href="/" class="flex items-center">
+              <svg
+                class="h-8 w-8 text-purple-600 dark:text-purple-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M13 10V3L4 14h7v7l9-11h-7z"
+                />
+              </svg>
+              <span class="ml-2 text-xl font-bold text-gray-900 dark:text-white"
+                >AI Tools Hub</span
+              >
+            </a>
+          </div>
+
+          <div class="flex items-center space-x-4">
+            <a
+              href="/tools/"
+              class="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
+              >Browse Tools</a
+            >
+            <a
+              href="/mcps/"
+              class="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
+              >MCPs</a
+            >
+            <a
+              href="/prompts/"
+              class="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
+              >Prompts</a
+            >
+            <a
+              href="/chatmodes/"
+              class="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
+              >Chat Modes</a
+            >
+            <a
+              href="/guides/"
+              class="text-purple-600 dark:text-purple-400 font-medium"
+              >Guides</a
+            >
+            <button
+              id="theme-toggle"
+              class="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+            >
+              <svg
+                class="h-5 w-5 hidden dark:block"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
+                />
+              </svg>
+              <svg
+                class="h-5 w-5 dark:hidden"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Breadcrumb -->
+    <div
+      class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700"
+    >
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+        <nav
+          class="flex items-center text-sm text-gray-500 dark:text-gray-400 mb-6"
+          aria-label="Breadcrumb"
+        >
+          <a
+            href="../index.html"
+            class="hover:text-purple-600 dark:hover:text-purple-400"
+            >Home</a
+          >
+          <span class="mx-2">&gt;</span>
+          <a
+            href="../guides/"
+            class="hover:text-purple-600 dark:hover:text-purple-400"
+            >Guides</a
+          >
+          <span class="mx-2">&gt;</span>
+          <span class="text-gray-900 dark:text-gray-100">Windsurf</span>
+        </nav>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div class="flex justify-end mb-6">
+        <a
+          href="https://docs.windsurf.com/windsurf/getting-started"
+          target="_blank"
+          rel="noopener"
+          class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition-colors font-semibold"
+        >
+          Official Docs ↗
+        </a>
+      </div>
+      <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+        <!-- Sidebar -->
+        <div class="lg:col-span-1">
+          <div
+            class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 sticky top-24"
+          >
+            <h3
+              class="text-lg font-semibold text-gray-900 dark:text-white mb-4"
+            >
+              On This Page
+            </h3>
+            <nav class="space-y-2">
+              <a
+                href="#overview"
+                class="block text-sm text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400"
+                >Overview</a
+              >
+              <a
+                href="#mcp-setup"
+                class="block text-sm text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400"
+                >MCP Setup</a
+              >
+              <a
+                href="#prompts"
+                class="block text-sm text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400"
+                >Prompts</a
+              >
+              <a
+                href="#chat-modes"
+                class="block text-sm text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400"
+                >Chat Modes</a
+              >
+              <a
+                href="#rules"
+                class="block text-sm text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400"
+                >Rules</a
+              >
+              <a
+                href="#troubleshooting"
+                class="block text-sm text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400"
+                >Troubleshooting</a
+              >
+            </nav>
+          </div>
+        </div>
+
+        <!-- Content -->
+        <div class="lg:col-span-3">
+          <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-8">
+            <!-- Header -->
+            <div class="flex items-center mb-8">
+              <div
+                class="w-16 h-16 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center mr-4"
+              >
+                <svg
+                  class="h-8 w-8 text-blue-600 dark:text-blue-400"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"
+                  />
+                </svg>
+              </div>
+              <div>
+                <h1 class="text-3xl font-bold text-gray-900 dark:text-white">
+                  Windsurf Setup Guide
+                </h1>
+                <p class="text-gray-600 dark:text-gray-300">
+                  Install and configure AI tools in Windsurf development
+                  environment
+                </p>
+              </div>
+            </div>
+
+            <!-- Overview Section -->
+            <section id="overview" class="mb-12">
+              <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+                Overview
+              </h2>
+              <div class="prose prose-gray dark:prose-invert max-w-none">
+                <p class="text-gray-600 dark:text-gray-300 mb-4">
+                  Windsurf is an AI-powered development environment that
+                  supports MCP (Model Context Protocol) servers, custom prompts,
+                  chat modes, and development rules. This guide will walk you
+                  through setting up various AI tools to enhance your
+                  development workflow.
+                </p>
+
+                <div
+                  class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 mb-6"
+                >
+                  <div class="flex items-center">
+                    <svg
+                      class="h-5 w-5 text-blue-600 dark:text-blue-400 mr-2"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                    <span class="text-blue-800 dark:text-blue-200 font-medium"
+                      >Prerequisites</span
+                    >
+                  </div>
+                  <ul
+                    class="mt-2 text-blue-700 dark:text-blue-300 text-sm space-y-1"
+                  >
+                    <li>• Windsurf IDE installed</li>
+                    <li>• Node.js 18+ (for MCP tools)</li>
+                    <li>• Basic understanding of JSON configuration</li>
+                  </ul>
+                </div>
+              </div>
+            </section>
+
+            <!-- Installation Section -->
+            <section id="installation" class="mb-12">
+              <h2 class="text-2xl font-bold mb-4">Installation</h2>
+              <p class="mb-2">
+                Windsurf is available for Mac, Windows, and Linux. Download and
+                install the latest version from the official site:
+              </p>
+              <ul class="list-disc pl-6 mb-2">
+                <li>
+                  <a
+                    href="https://docs.windsurf.com/windsurf/getting-started"
+                    target="_blank"
+                    rel="noopener"
+                    class="text-blue-600 dark:text-blue-400 hover:underline"
+                    >Getting Started Guide</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="https://docs.windsurf.com/windsurf/getting-started#mac"
+                    target="_blank"
+                    rel="noopener"
+                    class="text-blue-600 dark:text-blue-400 hover:underline"
+                    >Download for Mac</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="https://docs.windsurf.com/windsurf/getting-started#windows"
+                    target="_blank"
+                    rel="noopener"
+                    class="text-blue-600 dark:text-blue-400 hover:underline"
+                    >Download for Windows</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="https://docs.windsurf.com/windsurf/getting-started#ubuntu"
+                    target="_blank"
+                    rel="noopener"
+                    class="text-blue-600 dark:text-blue-400 hover:underline"
+                    >Download for Ubuntu/Linux</a
+                  >
+                </li>
+              </ul>
+              <p class="mb-2">
+                Minimum requirements: OS X Yosemite (Mac), Windows 10, Ubuntu
+                20.04+, glibc >= 2.28.
+              </p>
+              <p>
+                After installation, follow the onboarding flow to set up your
+                environment, import settings, and sign in or create a Windsurf
+                account.
+              </p>
+            </section>
+
+            <!-- Key Features Section -->
+            <section id="key-features" class="mb-12">
+              <h2 class="text-2xl font-bold mb-4">Key Features</h2>
+              <ul class="list-disc pl-6 space-y-2">
+                <li>
+                  <a
+                    href="https://docs.windsurf.com/windsurf/cascade/cascade"
+                    target="_blank"
+                    rel="noopener"
+                    class="text-blue-600 dark:text-blue-400 hover:underline"
+                    >Cascade</a
+                  >: AI-powered assistant for code, chat, and workflow
+                  automation.
+                </li>
+                <li>
+                  <a
+                    href="https://docs.windsurf.com/tab/overview"
+                    target="_blank"
+                    rel="noopener"
+                    class="text-blue-600 dark:text-blue-400 hover:underline"
+                    >Tab</a
+                  >: Context-aware code completion and navigation engine.
+                </li>
+                <li>
+                  <a
+                    href="https://docs.windsurf.com/command/windsurf-overview"
+                    target="_blank"
+                    rel="noopener"
+                    class="text-blue-600 dark:text-blue-400 hover:underline"
+                    >Command</a
+                  >: In-line code generation, edits, and refactoring.
+                </li>
+                <li>
+                  <a
+                    href="https://docs.windsurf.com/windsurf/cascade/mcp"
+                    target="_blank"
+                    rel="noopener"
+                    class="text-blue-600 dark:text-blue-400 hover:underline"
+                    >MCP</a
+                  >: Model Context Protocol servers for extending AI
+                  capabilities.
+                </li>
+                <li>
+                  <a
+                    href="https://docs.windsurf.com/windsurf/terminal"
+                    target="_blank"
+                    rel="noopener"
+                    class="text-blue-600 dark:text-blue-400 hover:underline"
+                    >Terminal</a
+                  >: Integrated terminal with context awareness and advanced
+                  features.
+                </li>
+                <li>
+                  <a
+                    href="https://docs.windsurf.com/windsurf/recommended-plugins"
+                    target="_blank"
+                    rel="noopener"
+                    class="text-blue-600 dark:text-blue-400 hover:underline"
+                    >Recommended Plugins</a
+                  >: Enhance Windsurf with popular extensions from the Open VSX
+                  marketplace.
+                </li>
+                <li>
+                  <a
+                    href="https://docs.windsurf.com/windsurf/previews"
+                    target="_blank"
+                    rel="noopener"
+                    class="text-blue-600 dark:text-blue-400 hover:underline"
+                    >Previews</a
+                  >: Live previews for web development and more.
+                </li>
+                <li>
+                  <a
+                    href="https://docs.windsurf.com/windsurf/cascade/app-deploys"
+                    target="_blank"
+                    rel="noopener"
+                    class="text-blue-600 dark:text-blue-400 hover:underline"
+                    >App Deploys</a
+                  >: One-click application deployment from within the IDE.
+                </li>
+                <li>
+                  <a
+                    href="https://docs.windsurf.com/windsurf/cascade/web-search"
+                    target="_blank"
+                    rel="noopener"
+                    class="text-blue-600 dark:text-blue-400 hover:underline"
+                    >Web Search</a
+                  >: Search the web directly from Windsurf.
+                </li>
+                <li>
+                  <a
+                    href="https://docs.windsurf.com/windsurf/cascade/memories"
+                    target="_blank"
+                    rel="noopener"
+                    class="text-blue-600 dark:text-blue-400 hover:underline"
+                    >Memories</a
+                  >: Persistent context and rules for your projects.
+                </li>
+                <li>
+                  <a
+                    href="https://docs.windsurf.com/windsurf/cascade/workflows"
+                    target="_blank"
+                    rel="noopener"
+                    class="text-blue-600 dark:text-blue-400 hover:underline"
+                    >Workflows</a
+                  >: Automate repetitive tasks and project flows.
+                </li>
+                <li>
+                  <a
+                    href="https://docs.windsurf.com/windsurf/cascade/planning-mode"
+                    target="_blank"
+                    rel="noopener"
+                    class="text-blue-600 dark:text-blue-400 hover:underline"
+                    >Planning Mode</a
+                  >: Structured, multi-step AI planning for complex tasks.
+                </li>
+              </ul>
+            </section>
+
+            <!-- MCP Setup Section -->
+            <section id="mcp-setup" class="mb-12">
+              <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+                MCP Server Setup
+              </h2>
+
+              <div class="space-y-6">
+                <div>
+                  <h3
+                    class="text-xl font-semibold text-gray-900 dark:text-white mb-3"
+                  >
+                    1. Create MCP Configuration
+                  </h3>
+                  <p class="text-gray-600 dark:text-gray-300 mb-4">
+                    Create or edit your MCP configuration file in the project
+                    root:
+                  </p>
+
+                  <div class="relative">
+                    <pre class="code-block"><code>{
+  "mcpServers": {
+    "playwright": {
+      "command": "npx",
+      "args": ["@playwright/mcp"],
+      "env": {}
+    },
+    "filesystem": {
+      "command": "npx",
+      "args": ["@filesystem/mcp"],
+      "env": {
+        "ALLOWED_PATHS": "/workspace"
+      }
+    },
+    "git": {
+      "command": "git-mcp",
+      "args": [],
+      "env": {}
+    }
+  }
+}</code></pre>
+                    <button
+                      class="copy-button bg-gray-700 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm"
+                      onclick="copyToClipboard(this.parentElement)"
+                    >
+                      Copy
+                    </button>
+                  </div>
+                </div>
+
+                <div>
+                  <h3
+                    class="text-xl font-semibold text-gray-900 dark:text-white mb-3"
+                  >
+                    2. Install MCP Dependencies
+                  </h3>
+                  <p class="text-gray-600 dark:text-gray-300 mb-4">
+                    Install the required MCP servers:
+                  </p>
+
+                  <div class="relative">
+                    <pre class="code-block"><code># Install Playwright MCP
+npm install -g @playwright/mcp
+
+# Install Filesystem MCP
+npm install -g @filesystem/mcp
+
+# Install Git MCP
+npm install -g git-mcp</code></pre>
+                    <button
+                      class="copy-button bg-gray-700 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm"
+                      onclick="copyToClipboard(this.parentElement)"
+                    >
+                      Copy
+                    </button>
+                  </div>
+                </div>
+
+                <div>
+                  <h3
+                    class="text-xl font-semibold text-gray-900 dark:text-white mb-3"
+                  >
+                    3. Restart Windsurf
+                  </h3>
+                  <p class="text-gray-600 dark:text-gray-300">
+                    Restart Windsurf to load the new MCP configuration. The
+                    servers will be available in your AI chat.
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            <!-- Prompts Section -->
+            <section id="prompts" class="mb-12">
+              <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+                Custom Prompts
+              </h2>
+
+              <div class="space-y-6">
+                <div>
+                  <h3
+                    class="text-xl font-semibold text-gray-900 dark:text-white mb-3"
+                  >
+                    Adding Custom Prompts
+                  </h3>
+                  <p class="text-gray-600 dark:text-gray-300 mb-4">
+                    Create a
+                    <code class="bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded"
+                      >.windsurf/prompts.md</code
+                    >
+                    file:
+                  </p>
+
+                  <div class="relative">
+                    <pre class="code-block"><code># Code Review Assistant
+
+You are an expert code reviewer with deep knowledge of security, performance, and best practices.
+
+## Your Role
+- Review code for bugs, security vulnerabilities, and performance issues
+- Suggest improvements and alternatives
+- Check for code style and convention adherence
+
+## Review Checklist
+1. **Security**: SQL injection, XSS, authentication, authorization
+2. **Performance**: Algorithms, database queries, memory usage
+3. **Maintainability**: Code clarity, documentation, modularity
+
+---
+
+# API Design Expert
+
+You are an expert in REST API design, following industry best practices.
+
+## Your Expertise
+- RESTful API design patterns
+- OpenAPI/Swagger documentation
+- Authentication and authorization
+- Error handling and status codes</code></pre>
+                    <button
+                      class="copy-button bg-gray-700 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm"
+                      onclick="copyToClipboard(this.parentElement)"
+                    >
+                      Copy
+                    </button>
+                  </div>
+                </div>
+
+                <div>
+                  <h3
+                    class="text-xl font-semibold text-gray-900 dark:text-white mb-3"
+                  >
+                    Using Prompts
+                  </h3>
+                  <ol
+                    class="list-decimal list-inside space-y-2 text-gray-600 dark:text-gray-300"
+                  >
+                    <li>Open the AI chat in Windsurf</li>
+                    <li>
+                      Type
+                      <code
+                        class="bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded"
+                        >@prompt-name</code
+                      >
+                      to use a specific prompt
+                    </li>
+                    <li>
+                      Or copy the prompt content and paste it in your
+                      conversation
+                    </li>
+                  </ol>
+                </div>
+              </div>
+            </section>
+
+            <!-- Chat Modes Section -->
+            <section id="chat-modes" class="mb-12">
+              <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+                Chat Modes
+              </h2>
+
+              <div class="space-y-6">
+                <div>
+                  <h3
+                    class="text-xl font-semibold text-gray-900 dark:text-white mb-3"
+                  >
+                    Setting Up Chat Modes
+                  </h3>
+                  <p class="text-gray-600 dark:text-gray-300 mb-4">
+                    Create specialized AI assistants by configuring chat modes
+                    in
+                    <code class="bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded"
+                      >.windsurf/chat-modes.json</code
+                    >:
+                  </p>
+
+                  <div class="relative">
+                    <pre class="code-block"><code>{
+  "modes": {
+    "api-architect": {
+      "name": "API Architect",
+      "description": "Expert in RESTful API design and documentation",
+      "systemPrompt": "You are an expert API architect specializing in RESTful API design, microservices architecture, and API documentation...",
+      "temperature": 0.7,
+      "maxTokens": 2048
+    },
+    "security-auditor": {
+      "name": "Security Auditor",
+      "description": "Security-focused code review and vulnerability assessment",
+      "systemPrompt": "You are a cybersecurity expert specializing in application security...",
+      "temperature": 0.3,
+      "maxTokens": 2048
+    }
+  }
+}</code></pre>
+                    <button
+                      class="copy-button bg-gray-700 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm"
+                      onclick="copyToClipboard(this.parentElement)"
+                    >
+                      Copy
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- Rules Section -->
+            <section id="rules" class="mb-12">
+              <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+                Development Rules
+              </h2>
+
+              <div class="space-y-6">
+                <div>
+                  <h3
+                    class="text-xl font-semibold text-gray-900 dark:text-white mb-3"
+                  >
+                    Creating Rules File
+                  </h3>
+                  <p class="text-gray-600 dark:text-gray-300 mb-4">
+                    Add development rules in
+                    <code class="bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded"
+                      >.windsurf/rules.md</code
+                    >:
+                  </p>
+
+                  <div class="relative">
+                    <pre
+                      class="code-block"
+                    ><code># TypeScript Strict Configuration
+
+## Compiler Options
+- Use strict mode: `"strict": true`
+- No implicit any: `"noImplicitAny": true`
+- Strict null checks: `"strictNullChecks": true`
+
+## Coding Standards
+- Use explicit type annotations
+- Handle null/undefined cases
+- Prefer interfaces over types for objects
+
+# React Best Practices
+
+## Component Guidelines
+- Use functional components with hooks
+- Implement proper error boundaries
+- Optimize with React.memo when needed
+
+## Performance
+- Code splitting with React.lazy
+- Virtualization for large lists
+- Proper key props for lists</code></pre>
+                    <button
+                      class="copy-button bg-gray-700 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm"
+                      onclick="copyToClipboard(this.parentElement)"
+                    >
+                      Copy
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <!-- Troubleshooting Section -->
+            <section id="troubleshooting" class="mb-12">
+              <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+                Troubleshooting
+              </h2>
+
+              <div class="space-y-6">
+                <div
+                  class="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4"
+                >
+                  <h3
+                    class="text-lg font-semibold text-yellow-800 dark:text-yellow-200 mb-2"
+                  >
+                    Common Issues
+                  </h3>
+
+                  <div class="space-y-4">
+                    <div>
+                      <h4
+                        class="font-medium text-yellow-800 dark:text-yellow-200"
+                      >
+                        MCP Server Not Found
+                      </h4>
+                      <p class="text-yellow-700 dark:text-yellow-300 text-sm">
+                        Ensure the MCP package is installed globally and the
+                        configuration file is in the correct location.
+                      </p>
+                    </div>
+
+                    <div>
+                      <h4
+                        class="font-medium text-yellow-800 dark:text-yellow-200"
+                      >
+                        Configuration Not Loading
+                      </h4>
+                      <p class="text-yellow-700 dark:text-yellow-300 text-sm">
+                        Check JSON syntax and restart Windsurf after making
+                        changes.
+                      </p>
+                    </div>
+
+                    <div>
+                      <h4
+                        class="font-medium text-yellow-800 dark:text-yellow-200"
+                      >
+                        Prompts Not Working
+                      </h4>
+                      <p class="text-yellow-700 dark:text-yellow-300 text-sm">
+                        Verify the prompts file is properly formatted and saved
+                        in the correct directory.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Copy to clipboard functionality
+      function copyToClipboard(element) {
+        const code = element.querySelector("code").textContent;
+        navigator.clipboard
+          .writeText(code)
+          .then(() => {
+            showToast("Code copied to clipboard!");
+          })
+          .catch(() => {
+            showToast("Failed to copy code", "error");
+          });
+      }
+
+      // Toast notification
+      function showToast(message, type = "success") {
+        const toast = document.getElementById("toast");
+        const toastMessage = document.getElementById("toast-message");
+
+        toastMessage.textContent = message;
+        toast.className = `fixed top-4 right-4 px-4 py-2 rounded-lg shadow-lg transform transition-transform duration-300 z-50 ${
+          type === "success"
+            ? "bg-green-500 text-white"
+            : "bg-red-500 text-white"
+        }`;
+
+        toast.style.transform = "translateX(0)";
+
+        setTimeout(() => {
+          toast.style.transform = "translateX(100%)";
+        }, 3000);
+      }
+
+      // Dark mode toggle
+      const themeToggle = document.getElementById("theme-toggle");
+      const html = document.documentElement;
+
+      const savedTheme = localStorage.getItem("theme") || "system";
+
+      if (
+        savedTheme === "dark" ||
+        (savedTheme === "system" &&
+          window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        html.classList.add("dark");
+      }
+
+      themeToggle?.addEventListener("click", () => {
+        html.classList.toggle("dark");
+        const isDark = html.classList.contains("dark");
+        localStorage.setItem("theme", isDark ? "dark" : "light");
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,51 @@
+---
+description: AI agent code generation standards and quality requirements
+globs: "**/*.{js,ts}"
+alwaysApply: false
+---
+# AI Agent Code Standards
+
+## Code Generation Requirements
+The AI agent MUST follow these requirements when generating or modifying code:
+
+### Linting Standards
+1. Follow ESLint rules from .eslintrc.cjs:
+   - No nested ternaries
+   - No unneeded ternaries
+   - Max complexity: 6
+   - Max lines per function: 100
+   - Max parameters: 20
+   - No unused variables
+   - Proper import/export patterns
+
+### Formatting Standards
+Follow Prettier rules from .prettierrc:
+   - Single quotes
+   - 4-space tabs
+   - 100 character line width
+   - No semicolons
+   - ES5 trailing commas
+
+### Quality Assurance Process
+When making code changes, the agent must:
+1. Verify changes meet all linting rules before submitting
+2. Fix any linting errors immediately
+3. Ensure proper test coverage for new functionality
+4. Follow the project's import alias patterns:
+   - '#services/*' -> './services/*'
+   - '#common/*' -> './common/*'
+
+### Code Review Guidelines
+The agent should self-review generated code for:
+1. Linting compliance
+2. Proper error handling
+3. Consistent naming conventions
+4. Appropriate comments and documentation
+5. Test coverage requirements
+
+### Error Resolution
+If linting errors occur, the agent must:
+1. Identify the specific rule violations
+2. Fix violations immediately
+3. Verify fixes don't introduce new issues
+4. Document any necessary exceptions

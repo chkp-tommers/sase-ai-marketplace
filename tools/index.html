@@ -1,0 +1,462 @@
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Browse AI Tools - AI Tools Hub</title>
+    <meta
+      name="description"
+      content="Browse and filter MCP tools, prompts, chat modes, and rules for AI development."
+    />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              purple: {
+                50: "#faf5ff",
+                100: "#f3e8ff",
+                500: "#8b5cf6",
+                600: "#7c3aed",
+                700: "#6d28d9",
+                800: "#5b21b6",
+                900: "#4c1d95",
+              },
+            },
+          },
+        },
+      };
+    </script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+      }
+    </style>
+  </head>
+  <body
+    class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors antialiased"
+  >
+    <!-- Navigation -->
+    <nav class="bg-white dark:bg-gray-800 shadow-sm sticky top-0 z-50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+          <div class="flex items-center">
+            <a href="../" class="flex items-center">
+              <svg
+                class="h-8 w-8 text-purple-600 dark:text-purple-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M13 10V3L4 14h7v7l9-11h-7z"
+                />
+              </svg>
+              <span class="ml-2 text-xl font-bold text-gray-900 dark:text-white"
+                >AI Tools Hub</span
+              >
+            </a>
+          </div>
+          <div class="flex items-center space-x-4">
+            <a
+              href="../tools/"
+              class="text-purple-600 dark:text-purple-400 font-medium"
+              >Browse Tools</a
+            >
+            <a
+              href="../mcps/"
+              class="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
+              >MCPs</a
+            >
+            <a
+              href="../prompts/"
+              class="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
+              >Prompts</a
+            >
+            <a
+              href="../chatmodes/"
+              class="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
+              >Chat Modes</a
+            >
+            <a
+              href="../guides/"
+              class="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
+              >Guides</a
+            >
+            <button
+              id="theme-toggle"
+              class="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+            >
+              <svg
+                class="h-5 w-5 hidden dark:block"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
+                />
+              </svg>
+              <svg
+                class="h-5 w-5 dark:hidden"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Header -->
+    <div class="bg-white dark:bg-gray-800 py-8">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+          Browse AI Tools
+        </h1>
+        <p class="text-gray-600 dark:text-gray-300">
+          Discover MCP tools, prompts, chat modes, and development rules
+        </p>
+      </div>
+    </div>
+
+    <!-- Filters and Search -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 mb-8">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <!-- Search -->
+          <div class="md:col-span-2">
+            <label
+              class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+              >Search</label
+            >
+            <input
+              type="text"
+              id="search-filter"
+              placeholder="Search tools, prompts, or descriptions..."
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+            />
+          </div>
+
+          <!-- Type Filter -->
+          <div>
+            <label
+              class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+              >Type</label
+            >
+            <select
+              id="type-filter"
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+            >
+              <option value="">All Types</option>
+              <option value="mcp">MCP Tools</option>
+              <option value="prompt">Prompts</option>
+              <option value="chatmode">Chat Modes</option>
+              <option value="rule">Rules</option>
+            </select>
+          </div>
+
+          <!-- Platform Filter -->
+          <div>
+            <label
+              class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+              >Platform</label
+            >
+            <select
+              id="platform-filter"
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+            >
+              <option value="">All Platforms</option>
+              <option value="windsurf">Windsurf</option>
+              <option value="cursor">Cursor</option>
+              <option value="claude">Claude</option>
+              <option value="copilot">GitHub Copilot</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tools Grid -->
+      <div
+        id="tools-grid"
+        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+      >
+        <!-- Tools will be populated by JavaScript -->
+      </div>
+
+      <!-- No Results -->
+      <div id="no-results" class="hidden text-center py-12">
+        <svg
+          class="mx-auto h-12 w-12 text-gray-400"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+          />
+        </svg>
+        <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-gray-100">
+          No tools found
+        </h3>
+        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+          Try adjusting your search or filters.
+        </p>
+      </div>
+    </div>
+
+    <script>
+      class ToolsBrowser {
+        constructor() {
+          this.tools = [];
+          this.filteredTools = [];
+          this.filters = {
+            search: "",
+            type: "",
+            platform: "",
+          };
+          this.init();
+        }
+
+        async init() {
+          this.initDarkMode();
+          await this.loadTools();
+          this.initFilters();
+          this.renderTools();
+          this.parseURLParams();
+        }
+
+        initDarkMode() {
+          const themeToggle = document.getElementById("theme-toggle");
+          const html = document.documentElement;
+          const savedTheme = localStorage.getItem("theme") || "system";
+
+          if (
+            savedTheme === "dark" ||
+            (savedTheme === "system" &&
+              window.matchMedia("(prefers-color-scheme: dark)").matches)
+          ) {
+            html.classList.add("dark");
+          }
+
+          themeToggle?.addEventListener("click", () => {
+            html.classList.toggle("dark");
+            localStorage.setItem(
+              "theme",
+              html.classList.contains("dark") ? "dark" : "light"
+            );
+          });
+        }
+
+        async loadTools() {
+          try {
+            const response = await fetch("/assets/data/tools.json");
+            if (response.ok) {
+              this.tools = await response.json();
+              this.filteredTools = [...this.tools];
+            }
+          } catch (error) {
+            console.error("Error loading tools:", error);
+            this.loadFallbackTools();
+          }
+        }
+
+        loadFallbackTools() {
+          this.tools = [
+            {
+              id: "playwright-mcp",
+              name: "Playwright MCP",
+              description: "Browser automation and testing MCP server",
+              type: "mcp",
+              platforms: ["windsurf", "cursor", "claude"],
+              featured: true,
+            },
+            {
+              id: "code-review-prompt",
+              name: "Code Review Assistant",
+              description:
+                "Comprehensive code review prompt with security focus",
+              type: "prompt",
+              platforms: ["cursor", "copilot", "claude"],
+              featured: true,
+            },
+          ];
+          this.filteredTools = [...this.tools];
+        }
+
+        initFilters() {
+          const searchInput = document.getElementById("search-filter");
+          const typeSelect = document.getElementById("type-filter");
+          const platformSelect = document.getElementById("platform-filter");
+
+          searchInput.addEventListener("input", (e) => {
+            this.filters.search = e.target.value.toLowerCase();
+            this.applyFilters();
+          });
+
+          typeSelect.addEventListener("change", (e) => {
+            this.filters.type = e.target.value;
+            this.applyFilters();
+          });
+
+          platformSelect.addEventListener("change", (e) => {
+            this.filters.platform = e.target.value;
+            this.applyFilters();
+          });
+        }
+
+        parseURLParams() {
+          const params = new URLSearchParams(window.location.search);
+          if (params.get("search")) {
+            document.getElementById("search-filter").value =
+              params.get("search");
+            this.filters.search = params.get("search").toLowerCase();
+          }
+          if (params.get("type")) {
+            document.getElementById("type-filter").value = params.get("type");
+            this.filters.type = params.get("type");
+          }
+          this.applyFilters();
+        }
+
+        applyFilters() {
+          this.filteredTools = this.tools.filter((tool) => {
+            const searchMatch =
+              !this.filters.search ||
+              tool.name.toLowerCase().includes(this.filters.search) ||
+              tool.description.toLowerCase().includes(this.filters.search) ||
+              tool.type.toLowerCase().includes(this.filters.search);
+
+            const typeMatch =
+              !this.filters.type || tool.type === this.filters.type;
+            const platformMatch =
+              !this.filters.platform ||
+              tool.platforms.includes(this.filters.platform);
+
+            return searchMatch && typeMatch && platformMatch;
+          });
+
+          this.renderTools();
+        }
+
+        renderTools() {
+          const grid = document.getElementById("tools-grid");
+          const noResults = document.getElementById("no-results");
+
+          if (this.filteredTools.length === 0) {
+            grid.innerHTML = "";
+            noResults.classList.remove("hidden");
+            return;
+          }
+
+          noResults.classList.add("hidden");
+          grid.innerHTML = this.filteredTools
+            .map((tool) => this.createToolCard(tool))
+            .join("");
+        }
+
+        createToolCard(tool) {
+          const typeColors = {
+            mcp: "blue",
+            prompt: "green",
+            chatmode: "purple",
+            rule: "orange",
+          };
+
+          const color = typeColors[tool.type] || "gray";
+
+          return `
+          <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+            <div class="flex items-center justify-between mb-3">
+              <span class="px-2 py-1 bg-${color}-100 dark:bg-${color}-900 text-${color}-800 dark:text-${color}-200 text-xs font-medium rounded-full">
+                ${tool.type.toUpperCase()}
+              </span>
+              ${tool.featured ? '<span class="text-yellow-500">★</span>' : ""}
+            </div>
+            
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">${tool.name}</h3>
+            <p class="text-gray-600 dark:text-gray-300 text-sm mb-4">${tool.description}</p>
+            
+            <div class="flex items-center justify-between">
+              <div class="flex space-x-1">
+                ${tool.platforms
+                  .map(
+                    (platform) => `
+                  <span class="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-xs rounded">
+                    ${platform}
+                  </span>
+                `
+                  )
+                  .join("")}
+              </div>
+              <button onclick="toolsBrowser.installTool('${tool.id}')" class="bg-purple-600 text-white px-3 py-1 rounded text-sm hover:bg-purple-700 transition-colors">
+                Install
+              </button>
+            </div>
+          </div>
+        `;
+        }
+
+        installTool(toolId) {
+          const tool = this.tools.find((t) => t.id === toolId);
+          if (!tool) return;
+
+          // Simple copy to clipboard for now
+          const content =
+            tool.content || `# ${tool.name}\n\n${tool.description}`;
+          navigator.clipboard
+            .writeText(content)
+            .then(() => {
+              this.showToast(`${tool.name} copied to clipboard!`);
+            })
+            .catch(() => {
+              this.showToast("Failed to copy tool", "error");
+            });
+        }
+
+        showToast(message, type = "success") {
+          const toast = document.getElementById("toast");
+          const toastMessage = document.getElementById("toast-message");
+
+          toastMessage.textContent = message;
+          toast.className = `fixed top-4 right-4 px-4 py-2 rounded-lg shadow-lg transform transition-transform duration-300 z-50 ${
+            type === "success"
+              ? "bg-green-500 text-white"
+              : "bg-red-500 text-white"
+          }`;
+
+          toast.style.transform = "translateX(0)";
+          setTimeout(() => {
+            toast.style.transform = "translateX(100%)";
+          }, 3000);
+        }
+      }
+
+      const toolsBrowser = new ToolsBrowser();
+    </script>
+  </body>
+</html>

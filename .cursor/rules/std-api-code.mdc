@@ -1,0 +1,75 @@
+---
+description: Code quality and best practices for fullstack applications
+globs: "**/*.{js,ts}"
+alwaysApply: false
+---
+
+# Code Quality and Best Practices
+
+## Modern JavaScript Patterns
+
+- Use optional chaining (?.) for nullable properties
+- Apply nullish coalescing (??) for fallback values
+- Leverage array and object spread for immutability
+- Use destructuring for cleaner function parameters
+- Apply template literals for string formatting
+- Leverage async/await consistently
+- Use proper ES Module imports/exports
+- Apply modern array methods (map, filter, reduce)
+
+## Clean Code Principles
+
+- Follow single responsibility principle
+- Keep functions focused on one task
+- Use descriptive variable and function names
+- Extract complex conditions to named functions
+- Apply proper code organization by domain
+- Avoid deep nesting with early returns
+- Use pure functions where possible
+- Apply consistent formatting and style
+
+## Function Design
+
+- Limit parameters to 3 or fewer when possible
+- Return early to avoid nested conditionals
+- Document complex functions with JSDoc
+- Apply function composition over inheritance
+- Avoid side effects in core business logic
+- Keep functions stateless when possible
+- Apply proper error propagation
+- Use consistent parameter ordering
+
+## Variable Management
+
+- Use const by default, let when necessary
+- Avoid global variables
+- Apply proper scope isolation
+- Use meaningful variable names
+- Apply consistent naming conventions
+- Keep variable declarations close to usage
+- Avoid magic numbers/strings (use constants)
+- Apply proper null/undefined handling
+
+## Code Organization
+
+- Organize code by feature/domain
+- Keep related functionality together
+- Apply proper module boundaries
+- Use consistent file naming conventions
+- Maintain clear dependency hierarchy
+- Apply proper separation of concerns
+- Keep import statements organized
+- Document module interfaces
+
+## Domain-Specific Patterns
+
+- Standardize external service integration interfaces
+- Apply consistent error handling for third-party providers
+- Use typed objects for API parameters
+- Implement proper validation for user inputs
+- Apply consistent logging for business operations
+- Use proper transaction boundaries for data operations
+- Implement proper retry logic for external APIs
+- Standardize status and state enumerations
+
+@file common/code-quality.js

@@ -1,0 +1,592 @@
+# AI Chat Integration Patterns
+
+## Chat Widget Architecture
+
+### Chat Widget Component
+
+```javascript
+// src/components/Chat/ChatWidget.js
+'use client'
+
+import { useState, useRef, useEffect } from 'react'
+import { MessageCircle, X, Send, Bot, User, Sparkles, RefreshCw } from 'lucide-react'
+import { useSession } from 'next-auth/react'
+import { searchTools } from '@/lib/api'
+
+export default function ChatWidget() {
+  const { data: session } = useSession()
+  const [isOpen, setIsOpen] = useState(false)
+  const [messages, setMessages] = useState([])
+  const [input, setInput] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [suggestions, setSuggestions] = useState([])
+  const messagesEndRef = useRef(null)
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }
+
+  useEffect(() => {
+    scrollToBottom()
+  }, [messages])
+
+  // Initialize with welcome message
+  useEffect(() => {
+    if (isOpen && messages.length === 0) {
+      const welcomeMessage = {
+        role: 'assistant',
+        content: `Hi${session ? ` ${session.user.name}` : ''}! 👋 I'm your AI assistant for the Harmony SASE marketplace.`,
+        timestamp: new Date()
+      }
+      setMessages([welcomeMessage])
+      setSuggestions([
+        "Find MCP tools for databases",
+        "Show me security-related prompts",
+        "What's the best tool for API documentation?",
+        "Help me with code review automation"
+      ])
+    }
+  }, [isOpen, session])
+
+  const sendMessage = async (messageText = input.trim()) => {
+    if (!messageText) return
+
+    const userMessage = {
+      role: 'user',
+      content: messageText,
+      timestamp: new Date()
+    }
+
+    setMessages(prev => [...prev, userMessage])
+    setInput('')
+    setLoading(true)
+    setSuggestions([])
+
+    try {
+      const aiResponse = await processUserMessage(messageText)
+
+      setTimeout(() => {
+        setMessages(prev => [...prev, {
+          role: 'assistant',
+          content: aiResponse.content,
+          timestamp: new Date(),
+          tools: aiResponse.tools || null
+        }])
+        setLoading(false)
+
+        if (aiResponse.suggestions) {
+          setSuggestions(aiResponse.suggestions)
+        }
+      }, 1000 + Math.random() * 1000)
+
+    } catch (error) {
+      console.error('Chat error:', error)
+      setMessages(prev => [...prev, {
+        role: 'assistant',
+        content: 'I apologize, but I encountered an error. Please try again.',
+        timestamp: new Date(),
+        isError: true
+      }])
+      setLoading(false)
+    }
+  }
+
+  return (
+    // JSX implementation...
+  )
+}
+```
+
+### Message Processing Logic
+
+```javascript
+// src/lib/chatProcessor.js
+import { searchTools } from "@/lib/api";
+
+export const processUserMessage = async (message) => {
+  const lowerMessage = message.toLowerCase();
+
+  let tools = null;
+  let response = "";
+  let suggestions = [];
+
+  try {
+    if (
+      lowerMessage.includes("find") ||
+      lowerMessage.includes("search") ||
+      lowerMessage.includes("show me") ||
+      lowerMessage.includes("recommend")
+    ) {
+      const searchResults = await searchTools(message, { limit: 5 });
+      tools = searchResults.tools;
+
+      if (tools && tools.length > 0) {
+        response = `I found ${tools.length} tool${
+          tools.length !== 1 ? "s" : ""
+        } that might help you:\n\n`;
+        tools.forEach((tool, index) => {
+          response += `**${index + 1}. ${tool.name}** (${tool.type})\n${
+            tool.description
+          }\n\n`;
+        });
+        response += "Click on any tool above to view details!";
+
+        suggestions = [
+          "Tell me more about the first tool",
+          "Show me similar tools",
+          "How do I install these tools?",
+          "What are the most popular tools?",
+        ];
+      } else {
+        response = generateNoResultsResponse(message);
+        suggestions = generateAlternativeSuggestions();
+      }
+    } else if (lowerMessage.includes("help") || lowerMessage.includes("how")) {
+      response = generateHelpResponse();
+      suggestions = generateHelpSuggestions();
+    } else if (
+      lowerMessage.includes("popular") ||
+      lowerMessage.includes("best")
+    ) {
+      const searchResults = await searchTools("", {
+        sortBy: "rating",
+        sortOrder: "desc",
+        limit: 5,
+      });
+      tools = searchResults.tools;
+      response = generatePopularToolsResponse(tools);
+      suggestions = generatePopularSuggestions();
+    } else {
+      response = generateContextualResponse(message);
+      suggestions = generateDefaultSuggestions();
+    }
+  } catch (error) {
+    console.error("Error processing message:", error);
+    response =
+      "I'm having trouble accessing the tools database right now. Please try again in a moment.";
+  }
+
+  return { content: response, tools, suggestions };
+};
+
+const generateNoResultsResponse = (message) => {
+  return `I couldn't find any tools matching "${message}". Try:
+
+• Using different keywords
+• Being more specific about your needs
+• Asking for a broader category (e.g., "show me all MCP tools")
+
+What type of AI tool are you looking for?`;
+};
+
+const generateHelpResponse = () => {
+  return `I'm here to help! Here's what I can assist you with:
+
+**🔍 Finding Tools**
+• "Find database tools" or "Show me MCP tools"
+• "What's the best tool for [your need]?"
+
+**📚 Getting Information**
+• "How do I install this tool?"
+• "Tell me more about [tool name]"
+
+**💡 Recommendations**
+• "Recommend tools for security testing"
+• "What tools work well together?"
+
+What specific area would you like help with?`;
+};
+
+const generatePopularToolsResponse = (tools) => {
+  let response = `Here are the top-rated tools in our marketplace:\n\n`;
+  if (tools && tools.length > 0) {
+    tools.forEach((tool, index) => {
+      response += `**${index + 1}. ${tool.name}** ⭐ ${
+        tool.stats?.rating?.toFixed(1) || "N/A"
+      }\n${tool.description}\n\n`;
+    });
+  }
+  response +=
+    "These tools have received the highest ratings from our community!";
+  return response;
+};
+
+const generateContextualResponse = (message) => {
+  const responses = [
+    `That's an interesting question about "${message}". While I specialize in helping you find and use AI tools in our marketplace, I can also provide general guidance.`,
+    `I understand you're asking about "${message}". For the most relevant tools and resources, I'd recommend browsing our marketplace categories.`,
+    `Thanks for your question about "${message}". I'm designed to help you discover and effectively use the AI tools in our marketplace.`,
+  ];
+
+  return responses[Math.floor(Math.random() * responses.length)];
+};
+```
+
+## Chat State Management
+
+### Chat Hook
+
+```javascript
+// src/hooks/useChat.js
+import { useState, useCallback } from "react";
+import { processUserMessage } from "@/lib/chatProcessor";
+
+export const useChat = () => {
+  const [messages, setMessages] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [suggestions, setSuggestions] = useState([]);
+
+  const sendMessage = useCallback(async (content) => {
+    const userMessage = {
+      id: Date.now(),
+      role: "user",
+      content,
+      timestamp: new Date(),
+    };
+
+    setMessages((prev) => [...prev, userMessage]);
+    setLoading(true);
+    setSuggestions([]);
+
+    try {
+      const response = await processUserMessage(content);
+
+      const assistantMessage = {
+        id: Date.now() + 1,
+        role: "assistant",
+        content: response.content,
+        timestamp: new Date(),
+        tools: response.tools,
+      };
+
+      setMessages((prev) => [...prev, assistantMessage]);
+
+      if (response.suggestions) {
+        setSuggestions(response.suggestions);
+      }
+    } catch (error) {
+      const errorMessage = {
+        id: Date.now() + 1,
+        role: "assistant",
+        content: "Sorry, I encountered an error. Please try again.",
+        timestamp: new Date(),
+        isError: true,
+      };
+      setMessages((prev) => [...prev, errorMessage]);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  const clearMessages = useCallback(() => {
+    setMessages([]);
+    setSuggestions([]);
+  }, []);
+
+  return {
+    messages,
+    loading,
+    suggestions,
+    sendMessage,
+    clearMessages,
+  };
+};
+```
+
+### Message Types
+
+```javascript
+// src/types/chat.js
+export const MessageRole = {
+  USER: "user",
+  ASSISTANT: "assistant",
+  SYSTEM: "system",
+};
+
+export const MessageType = {
+  TEXT: "text",
+  TOOL_RESULT: "tool_result",
+  ERROR: "error",
+};
+
+export const createMessage = (
+  role,
+  content,
+  type = MessageType.TEXT,
+  metadata = {}
+) => {
+  return {
+    id: `msg_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+    role,
+    content,
+    type,
+    timestamp: new Date(),
+    ...metadata,
+  };
+};
+```
+
+## Tool Integration
+
+### Tool Search Integration
+
+```javascript
+// src/lib/chatToolIntegration.js
+export const searchToolsForChat = async (query, context = {}) => {
+  const searchParams = {
+    search: query,
+    limit: 5,
+    ...context,
+  };
+
+  try {
+    const results = await searchTools(query, searchParams);
+
+    return {
+      success: true,
+      tools: results.tools.map((tool) => ({
+        id: tool._id,
+        name: tool.name,
+        description: tool.description,
+        type: tool.type,
+        category: tool.category,
+        rating: tool.stats.rating,
+        views: tool.stats.views,
+        creator: tool.creator.name,
+      })),
+      total: results.pagination.total,
+    };
+  } catch (error) {
+    console.error("Tool search error:", error);
+    return {
+      success: false,
+      error: error.message,
+      tools: [],
+    };
+  }
+};
+
+export const getToolRecommendations = async (userContext, limit = 3) => {
+  try {
+    // Based on user's previous interactions, preferences, etc.
+    const recommendations = await searchTools("", {
+      sortBy: "rating",
+      sortOrder: "desc",
+      limit,
+      ...userContext,
+    });
+
+    return recommendations.tools;
+  } catch (error) {
+    console.error("Recommendation error:", error);
+    return [];
+  }
+};
+```
+
+## Suggestion System
+
+### Dynamic Suggestions
+
+```javascript
+// src/lib/chatSuggestions.js
+export const generateSuggestions = (context) => {
+  const { lastMessage, searchResults, userPreferences } = context;
+
+  if (searchResults && searchResults.length > 0) {
+    return [
+      "Tell me more about the first tool",
+      "Show me similar tools",
+      "How do I install these tools?",
+      "What tools work best together?",
+    ];
+  }
+
+  if (lastMessage?.includes("help")) {
+    return [
+      "Find tools for my project",
+      "Show me popular tools",
+      "What's new in the marketplace?",
+      "How do I contribute a tool?",
+    ];
+  }
+
+  // Default suggestions
+  return [
+    "Find MCP tools for databases",
+    "Show me security-related tools",
+    "What are the most popular tools?",
+    "Help me get started",
+  ];
+};
+
+export const getContextualSuggestions = (toolType, category) => {
+  const suggestions = {
+    mcp: [
+      "Find more MCP tools",
+      "How do I install MCP tools?",
+      "What are MCP server requirements?",
+      "Show me MCP tool examples",
+    ],
+    prompt: [
+      "Find related prompts",
+      "How do I use this prompt?",
+      "Show me prompt variations",
+      "What makes a good prompt?",
+    ],
+    rule: [
+      "Find similar coding rules",
+      "How do I apply these rules?",
+      "Show me rule templates",
+      "What tools enforce these rules?",
+    ],
+    chatmode: [
+      "Find more chat modes",
+      "How do I use this chat mode?",
+      "Show me chat mode examples",
+      "What makes effective chat modes?",
+    ],
+  };
+
+  return suggestions[toolType] || suggestions.mcp;
+};
+```
+
+## Analytics Integration
+
+### Chat Analytics
+
+```javascript
+// src/lib/chatAnalytics.js
+export const trackChatInteraction = async (interaction) => {
+  try {
+    // Track chat usage for analytics
+    await fetch("/api/analytics/chat", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        type: interaction.type,
+        query: interaction.query,
+        resultsCount: interaction.resultsCount,
+        timestamp: new Date(),
+        sessionId: interaction.sessionId,
+      }),
+    });
+  } catch (error) {
+    console.error("Analytics tracking error:", error);
+  }
+};
+
+export const getChatInsights = async () => {
+  try {
+    const response = await fetch("/api/analytics/chat-insights");
+    return await response.json();
+  } catch (error) {
+    console.error("Failed to fetch chat insights:", error);
+    return null;
+  }
+};
+```
+
+## Performance Optimization
+
+### Message Virtualization
+
+```javascript
+// src/components/Chat/VirtualizedMessages.js
+import { FixedSizeList as List } from "react-window";
+
+const MessageItem = ({ index, style, data }) => (
+  <div style={style}>
+    <ChatMessage message={data[index]} />
+  </div>
+);
+
+export const VirtualizedMessages = ({ messages, height = 400 }) => {
+  return (
+    <List
+      height={height}
+      itemCount={messages.length}
+      itemSize={80}
+      itemData={messages}
+    >
+      {MessageItem}
+    </List>
+  );
+};
+```
+
+### Debounced Search
+
+```javascript
+// src/hooks/useDebouncedSearch.js
+import { useState, useEffect, useCallback } from "react";
+import { debounce } from "lodash";
+
+export const useDebouncedSearch = (searchFunction, delay = 300) => {
+  const [results, setResults] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const debouncedSearch = useCallback(
+    debounce(async (query) => {
+      if (!query.trim()) {
+        setResults([]);
+        setLoading(false);
+        return;
+      }
+
+      setLoading(true);
+      try {
+        const searchResults = await searchFunction(query);
+        setResults(searchResults);
+      } catch (error) {
+        console.error("Search error:", error);
+        setResults([]);
+      } finally {
+        setLoading(false);
+      }
+    }, delay),
+    [searchFunction, delay]
+  );
+
+  return { results, loading, search: debouncedSearch };
+};
+```
+
+## Best Practices
+
+### Chat UX Guidelines
+
+- Provide immediate feedback for user actions
+- Show typing indicators during processing
+- Display clear error messages
+- Offer relevant suggestions contextually
+- Maintain conversation history during session
+- Support keyboard shortcuts (Enter to send)
+
+### Performance
+
+- Virtualize message lists for long conversations
+- Debounce search requests
+- Cache frequent queries
+- Lazy load chat component
+- Use React.memo for message components
+
+### Accessibility
+
+- Provide proper ARIA labels
+- Support keyboard navigation
+- Ensure proper color contrast
+- Use semantic HTML elements
+- Provide screen reader announcements
+
+### Error Handling
+
+- Graceful degradation for API failures
+- Retry mechanisms for network errors
+- Clear error messages for users
+- Fallback suggestions when search fails
+- Logging for debugging purposes
+  

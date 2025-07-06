@@ -1,0 +1,99 @@
+---
+description: Comprehensive fullstack project standards and patterns
+globs: "**/*.{js,ts}"
+alwaysApply: true
+---
+
+# Fullstack API Project Standards
+
+## API Standards
+
+- Follow ES Module patterns (type: "module")
+- Use Express.js best practices
+- Follow REST API conventions
+- Implement proper middleware chains
+- 2-space indentation, single quotes, semicolons required
+- Document all endpoints with OpenAPI/Swagger
+- Consistent response format and error codes
+- Version all endpoints (v1)
+- Use appropriate HTTP status codes (200, 201, 400, 401, 403, 404, 500)
+- Implement proper route param validation
+- Design idiomatic resource-based routes
+- Use query parameters for filtering, sorting, and pagination
+- Apply consistent error response structure
+- Implement request logging and correlation IDs
+- Use appropriate Content-Type headers
+- Structure API response envelopes consistently
+
+## Database & Validation
+
+- MongoDB with Mongoose schemas
+- Use transactions for multi-step operations
+- Implement proper indexes for frequent queries
+- Use .lean() for read operations
+- Implement pagination for large datasets
+- Use express-validator for request validation
+- Validate all external input
+- Prevent injection attacks (NoSQL, XSS)
+
+## Authentication & Security
+
+- JWT-based authentication with refresh tokens
+- Role-based access control for authorization
+- Secure cookie usage
+- Token expiration and revocation strategy
+- API rate limiting for auth endpoints
+- No sensitive data in logs
+- Proper encryption for sensitive data
+- Input sanitization
+- Implement helmet security headers
+- Set proper Content-Security-Policy
+- Apply XSS protection measures
+- Use HTTPS only in production
+- Implement proper CORS configuration
+- Set secure and HttpOnly flags on cookies
+- Apply proper Strict-Transport-Security headers
+- Implement IP-based rate limiting for sensitive operations
+
+## Code Quality
+
+- Functions under 50 lines
+- Files under 500 lines
+- Cyclomatic complexity under 10
+- Consistent error handling patterns
+- Proper comments for complex logic
+- Meaningful variable and function names
+- Use async/await over callbacks
+- Proper error propagation
+
+## Testing & QA
+
+- Unit tests for all business logic
+- Integration tests for API endpoints
+- Mock external services (shipping carriers, payment)
+- Proper test setup and teardown
+- Testing in isolation with in-memory MongoDB
+- Test for edge cases and error conditions
+- Proper assertions with meaningful messages
+
+## Domain-Specific Standards
+
+- Provider-agnostic interfaces for external services
+- Consistent data format handling
+- Proper input validation and sanitization
+- File upload and storage handling
+- Error handling for external APIs
+- Proper data transformation and mapping
+- Idempotent operations for retries
+
+## Data Processing
+
+- Secure data handling
+- Proper data type validation
+- Complete audit trails
+- Atomic transactions with rollback
+- Data backup and recovery
+- Logging and monitoring
+- External service integration
+
+@file common/standards.js

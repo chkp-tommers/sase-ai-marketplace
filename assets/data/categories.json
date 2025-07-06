@@ -1,0 +1,42 @@
+[
+  {
+    "id": "mcp",
+    "name": "MCP Tools",
+    "description": "Model Context Protocol servers for extending AI capabilities",
+    "icon": "cpu",
+    "count": 15,
+    "color": "blue",
+    "platforms": ["windsurf", "cursor", "claude"],
+    "featured": true
+  },
+  {
+    "id": "prompt",
+    "name": "Prompts",
+    "description": "Ready-to-use prompts for various development tasks",
+    "icon": "chat",
+    "count": 25,
+    "color": "green",
+    "platforms": ["cursor", "copilot", "claude"],
+    "featured": true
+  },
+  {
+    "id": "chatmode",
+    "name": "Chat Modes",
+    "description": "Specialized AI assistant configurations for specific tasks",
+    "icon": "code",
+    "count": 10,
+    "color": "purple",
+    "platforms": ["windsurf", "cursor", "claude"],
+    "featured": true
+  },
+  {
+    "id": "rule",
+    "name": "Rules",
+    "description": "Development rules and coding standards for AI assistants",
+    "icon": "document",
+    "count": 8,
+    "color": "orange",
+    "platforms": ["cursor", "windsurf"],
+    "featured": false
+  }
+]
