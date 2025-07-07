@@ -1,0 +1,908 @@
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Prompt Engineering - AI Tools Hub</title>
+    <meta
+      name="description"
+      content="Master the art of prompt engineering. Learn techniques, patterns, and best practices for crafting effective AI prompts."
+    />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              purple: {
+                50: "#faf5ff",
+                100: "#f3e8ff",
+                500: "#8b5cf6",
+                600: "#7c3aed",
+                700: "#6d28d9",
+                800: "#5b21b6",
+                900: "#4c1d95",
+              },
+              indigo: {
+                50: "#eef2ff",
+                100: "#e0e7ff",
+                500: "#6366f1",
+                600: "#4f46e5",
+                700: "#4338ca",
+                800: "#3730a3",
+                900: "#312e81",
+              },
+            },
+          },
+        },
+      };
+    </script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+      }
+      .gradient-mask {
+        -webkit-mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+        mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+      }
+    </style>
+  </head>
+  <body
+    class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors antialiased"
+  >
+    <!-- Navigation -->
+    <nav class="bg-white dark:bg-gray-800 shadow-sm sticky top-0 z-50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+          <div class="flex items-center">
+            <a href="../" class="flex items-center">
+              <svg
+                class="h-8 w-8 text-purple-600 dark:text-purple-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M13 10V3L4 14h7v7l9-11h-7z"
+                />
+              </svg>
+              <span class="ml-2 text-xl font-bold text-gray-900 dark:text-white"
+                >AI Tools Hub</span
+              >
+            </a>
+          </div>
+          <div class="flex items-center space-x-4">
+            <a
+              href="../tools/"
+              class="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
+              >Browse Tools</a
+            >
+            <a
+              href="../mcps/"
+              class="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
+              >MCPs</a
+            >
+            <a
+              href="../prompts/"
+              class="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
+              >Prompts</a
+            >
+            <a
+              href="../chatmodes/"
+              class="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
+              >Chat Modes</a
+            >
+            <a
+              href="../guides/"
+              class="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
+              >Guides</a
+            >
+            <a
+              href="../prompt-engineering/"
+              class="text-purple-600 dark:text-purple-400 font-medium"
+              >Prompt Engineering</a
+            >
+            <button
+              id="theme-toggle"
+              class="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+            >
+              <svg
+                class="h-5 w-5 hidden dark:block"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
+                />
+              </svg>
+              <svg
+                class="h-5 w-5 dark:hidden"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Breadcrumb -->
+    <div
+      class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700"
+    >
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+        <nav class="flex" aria-label="Breadcrumb">
+          <ol class="flex items-center space-x-4">
+            <li>
+              <a
+                href="../"
+                class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
+                >Home</a
+              >
+            </li>
+            <li>
+              <svg
+                class="flex-shrink-0 h-5 w-5 text-gray-400"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </li>
+            <li>
+              <span class="text-gray-700 dark:text-gray-300 font-medium"
+                >Prompt Engineering</span
+              >
+            </li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+
+    <!-- Header -->
+    <div
+      class="bg-gradient-to-br from-purple-50 via-indigo-50 to-blue-50 dark:from-purple-900/20 dark:via-indigo-900/20 dark:to-blue-900/20 py-16"
+    >
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div class="flex flex-col items-center justify-center mb-6">
+          <div
+            class="w-16 h-16 bg-gradient-to-br from-purple-100 to-indigo-100 dark:from-purple-900 dark:to-indigo-900 rounded-lg flex items-center justify-center mb-4"
+          >
+            <svg
+              class="h-8 w-8 text-purple-600 dark:text-purple-400"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
+              />
+            </svg>
+          </div>
+          <div>
+            <h1 class="text-4xl font-bold text-gray-900 dark:text-white">
+              Prompt Engineering
+            </h1>
+            <p class="text-xl text-gray-600 dark:text-gray-300">
+              Master the art of crafting effective AI prompts
+            </p>
+          </div>
+        </div>
+        <p class="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+          Learn proven techniques, patterns, and best practices for prompt engineering. 
+          From basic principles to advanced strategies, become an expert at communicating with AI.
+        </p>
+      </div>
+    </div>
+
+    <!-- Filters and Search -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 mb-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <!-- Search -->
+          <div class="md:col-span-2">
+            <label
+              class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+              >Search Techniques</label
+            >
+            <input
+              type="text"
+              id="search-filter"
+              placeholder="Search by technique, concept, or use case..."
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+            />
+          </div>
+
+          <!-- Difficulty Filter -->
+          <div>
+            <label
+              class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
+              >Difficulty Level</label
+            >
+            <select
+              id="difficulty-filter"
+              class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+            >
+              <option value="">All Levels</option>
+              <option value="beginner">Beginner</option>
+              <option value="intermediate">Intermediate</option>
+              <option value="advanced">Advanced</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Stats -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+        <div class="bg-gradient-to-r from-purple-50 to-indigo-50 dark:from-purple-900/20 dark:to-indigo-900/20 border border-purple-200 dark:border-purple-800 rounded-lg p-4">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-purple-600 dark:text-purple-400 text-sm font-medium">Core Techniques</p>
+              <p class="text-2xl font-bold text-purple-900 dark:text-purple-100">12</p>
+            </div>
+            <svg class="h-8 w-8 text-purple-500 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+            </svg>
+          </div>
+        </div>
+
+        <div class="bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-blue-600 dark:text-blue-400 text-sm font-medium">Example Prompts</p>
+              <p class="text-2xl font-bold text-blue-900 dark:text-blue-100">48</p>
+            </div>
+            <svg class="h-8 w-8 text-blue-500 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" />
+            </svg>
+          </div>
+        </div>
+
+        <div class="bg-gradient-to-r from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4">
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-green-600 dark:text-green-400 text-sm font-medium">Best Practices</p>
+              <p class="text-2xl font-bold text-green-900 dark:text-green-100">24</p>
+            </div>
+            <svg class="h-8 w-8 text-green-500 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Techniques Grid -->
+      <div id="techniques-grid" class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Techniques will be populated by JavaScript -->
+      </div>
+
+      <!-- No Results -->
+      <div id="no-results" class="hidden text-center py-12">
+        <svg
+          class="mx-auto h-12 w-12 text-gray-400"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"
+          />
+        </svg>
+        <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-gray-100">
+          No techniques found
+        </h3>
+        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+          Try adjusting your search or filters.
+        </p>
+      </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div
+      id="toast"
+      class="fixed top-4 right-4 px-4 py-2 rounded-lg shadow-lg transform transition-transform duration-300 z-50"
+      style="transform: translateX(150%)"
+    >
+      <p id="toast-message" class="text-sm font-medium"></p>
+    </div>
+
+    <script>
+      class PromptEngineeringPage {
+        constructor() {
+          this.techniques = this.loadTechniques();
+          this.filteredTechniques = [...this.techniques];
+          this.filters = { search: "", difficulty: "" };
+          this.init();
+        }
+
+        async init() {
+          this.initDarkMode();
+          this.initFilters();
+          this.renderTechniques();
+        }
+
+        initDarkMode() {
+          const themeToggle = document.getElementById("theme-toggle");
+          const html = document.documentElement;
+          const savedTheme = localStorage.getItem("theme") || "system";
+
+          if (
+            savedTheme === "dark" ||
+            (savedTheme === "system" &&
+              window.matchMedia("(prefers-color-scheme: dark)").matches)
+          ) {
+            html.classList.add("dark");
+          }
+
+          themeToggle?.addEventListener("click", () => {
+            html.classList.toggle("dark");
+            localStorage.setItem(
+              "theme",
+              html.classList.contains("dark") ? "dark" : "light"
+            );
+          });
+        }
+
+        loadTechniques() {
+          return [
+            {
+              id: "zero-shot",
+              name: "Zero-Shot Prompting",
+              description: "Direct task instructions without examples, relying on the model's pre-trained knowledge.",
+              difficulty: "beginner",
+              category: "basic",
+              example: `Task: Translate the following English text to French:
+"The weather is beautiful today."
+
+Response: Le temps est magnifique aujourd'hui.`,
+              bestPractices: [
+                "Be clear and specific about the task",
+                "Use simple, unambiguous language",
+                "Include output format if needed"
+              ],
+              useCases: [
+                "Simple translations",
+                "Basic question answering",
+                "Straightforward instructions"
+              ]
+            },
+            {
+              id: "few-shot",
+              name: "Few-Shot Learning",
+              description: "Provide examples to guide the model's behavior and output format.",
+              difficulty: "beginner",
+              category: "basic",
+              example: `Classify the sentiment of these movie reviews:
+
+Review: "This movie was absolutely fantastic! Best film of the year."
+Sentiment: Positive
+
+Review: "Waste of time. Terrible acting and boring plot."
+Sentiment: Negative
+
+Review: "A masterpiece of cinema with stunning visuals."
+Sentiment: Positive`,
+              bestPractices: [
+                "Use 3-5 diverse examples",
+                "Keep examples consistent in format",
+                "Cover edge cases in examples"
+              ],
+              useCases: [
+                "Text classification",
+                "Format consistency",
+                "Pattern recognition tasks"
+              ]
+            },
+            {
+              id: "chain-of-thought",
+              name: "Chain of Thought (CoT)",
+              description: "Guide the model through step-by-step reasoning to reach complex conclusions.",
+              difficulty: "intermediate",
+              category: "reasoning",
+              example: `Q: If a train travels 120 miles in 2 hours, and then 180 miles in 3 hours, what is its average speed for the entire journey?
+
+Let's solve this step-by-step:
+1. First segment: 120 miles in 2 hours
+2. Second segment: 180 miles in 3 hours
+3. Total distance: 120 + 180 = 300 miles
+4. Total time: 2 + 3 = 5 hours
+5. Average speed: 300 miles ÷ 5 hours = 60 mph
+
+Answer: The average speed is 60 miles per hour.`,
+              bestPractices: [
+                "Break down complex problems",
+                "Show intermediate steps",
+                "Verify each reasoning step"
+              ],
+              useCases: [
+                "Mathematical problems",
+                "Logic puzzles",
+                "Complex analysis"
+              ]
+            },
+            {
+              id: "role-prompting",
+              name: "Role Prompting",
+              description: "Assign a specific role or persona to the AI for specialized responses.",
+              difficulty: "beginner",
+              category: "basic",
+              example: `You are an experienced Python developer and code reviewer. Review the following code for best practices, potential bugs, and performance improvements:
+
+def calculate_average(numbers):
+    sum = 0
+    for n in numbers:
+        sum += n
+    return sum / len(numbers)`,
+              bestPractices: [
+                "Define expertise clearly",
+                "Specify desired perspective",
+                "Include relevant constraints"
+              ],
+              useCases: [
+                "Expert consultations",
+                "Creative writing",
+                "Technical reviews"
+              ]
+            },
+            {
+              id: "structured-output",
+              name: "Structured Output Formatting",
+              description: "Request specific output formats like JSON, tables, or structured data.",
+              difficulty: "intermediate",
+              category: "formatting",
+              example: `Extract key information from this text and format as JSON:
+
+"John Smith, age 32, works as a software engineer at TechCorp. He has 8 years of experience and specializes in Python and JavaScript."
+
+Output format:
+{
+  "name": "John Smith",
+  "age": 32,
+  "occupation": "software engineer",
+  "company": "TechCorp",
+  "experience": "8 years",
+  "skills": ["Python", "JavaScript"]
+}`,
+              bestPractices: [
+                "Provide clear schema examples",
+                "Specify required fields",
+                "Handle edge cases"
+              ],
+              useCases: [
+                "Data extraction",
+                "API responses",
+                "Report generation"
+              ]
+            },
+            {
+              id: "self-consistency",
+              name: "Self-Consistency",
+              description: "Generate multiple solutions and select the most consistent answer.",
+              difficulty: "advanced",
+              category: "reasoning",
+              example: `Question: What is 18% of 450?
+
+Approach 1: 18% = 0.18, so 0.18 × 450 = 81
+Approach 2: 10% of 450 = 45, 8% = 36, total = 81
+Approach 3: 450 × 18/100 = 8100/100 = 81
+
+All approaches yield 81, so the answer is 81.`,
+              bestPractices: [
+                "Use for critical calculations",
+                "Compare multiple methods",
+                "Identify consensus answers"
+              ],
+              useCases: [
+                "Mathematical verification",
+                "Decision making",
+                "Fact checking"
+              ]
+            },
+            {
+              id: "prompt-chaining",
+              name: "Prompt Chaining",
+              description: "Break complex tasks into sequential prompts, using outputs as inputs.",
+              difficulty: "advanced",
+              category: "advanced",
+              example: `Step 1: "List the main components of a web application"
+Output: Frontend, Backend, Database, API, Authentication
+
+Step 2: "For each component from Step 1, describe its primary function"
+Output: Frontend - User interface and interaction...
+
+Step 3: "Based on Step 2, create a system architecture diagram description"`,
+              bestPractices: [
+                "Plan the sequence carefully",
+                "Maintain context between steps",
+                "Validate intermediate outputs"
+              ],
+              useCases: [
+                "Complex workflows",
+                "Multi-stage analysis",
+                "Report generation"
+              ]
+            },
+            {
+              id: "negative-prompting",
+              name: "Negative Prompting",
+              description: "Specify what NOT to include in the response for better control.",
+              difficulty: "intermediate",
+              category: "control",
+              example: `Write a professional email declining a job offer. 
+DO NOT:
+- Be overly apologetic
+- Mention specific salary figures
+- Criticize the company
+- Use informal language
+
+Focus on being polite, brief, and professional.`,
+              bestPractices: [
+                "List clear exclusions",
+                "Balance with positive guidance",
+                "Prevent common mistakes"
+              ],
+              useCases: [
+                "Content moderation",
+                "Professional writing",
+                "Avoiding biases"
+              ]
+            },
+            {
+              id: "constitutional-ai",
+              name: "Constitutional AI",
+              description: "Build in ethical guidelines and principles directly into prompts.",
+              difficulty: "advanced",
+              category: "safety",
+              example: `You are an AI assistant that follows these principles:
+1. Be helpful, harmless, and honest
+2. Respect user privacy and confidentiality
+3. Avoid generating harmful or biased content
+4. Acknowledge limitations and uncertainties
+
+Now, help me understand the ethical implications of AI in healthcare.`,
+              bestPractices: [
+                "Define clear principles",
+                "Apply consistently",
+                "Balance helpfulness with safety"
+              ],
+              useCases: [
+                "Ethical AI applications",
+                "Sensitive topics",
+                "Educational content"
+              ]
+            },
+            {
+              id: "tree-of-thoughts",
+              name: "Tree of Thoughts",
+              description: "Explore multiple reasoning paths and evaluate them systematically.",
+              difficulty: "advanced",
+              category: "reasoning",
+              example: `Problem: Design a sustainable urban transportation system
+
+Branch 1: Public Transit Focus
+- Pros: Efficient, reduces emissions
+- Cons: High initial cost, requires behavior change
+
+Branch 2: Electric Vehicle Infrastructure
+- Pros: Familiar to users, cleaner than gas
+- Cons: Still requires parking, battery concerns
+
+Branch 3: Mixed Mobility Hubs
+- Pros: Flexible, serves diverse needs
+- Cons: Complex to implement
+
+Evaluation: Branch 3 offers the best balance...`,
+              bestPractices: [
+                "Generate diverse branches",
+                "Evaluate systematically",
+                "Document decision rationale"
+              ],
+              useCases: [
+                "Strategic planning",
+                "Problem solving",
+                "Decision analysis"
+              ]
+            },
+            {
+              id: "reflexion",
+              name: "Reflexion Prompting",
+              description: "Enable self-evaluation and improvement through iterative refinement.",
+              difficulty: "advanced",
+              category: "advanced",
+              example: `Initial Response: [AI generates response]
+
+Self-Evaluation: "Let me review my response for:
+- Accuracy: Are all facts correct?
+- Completeness: Did I address all parts?
+- Clarity: Is it easy to understand?
+
+Issues found: [List any problems]
+
+Improved Response: [Enhanced version]"`,
+              bestPractices: [
+                "Define evaluation criteria",
+                "Be systematic in review",
+                "Show improvement process"
+              ],
+              useCases: [
+                "Quality assurance",
+                "Complex writing",
+                "Code optimization"
+              ]
+            },
+            {
+              id: "meta-prompting",
+              name: "Meta-Prompting",
+              description: "Use the AI to generate or improve its own prompts.",
+              difficulty: "advanced",
+              category: "meta",
+              example: `Task: Help me create a better prompt for generating creative product descriptions.
+
+Current prompt: "Write a product description for a smartwatch."
+
+Improved prompt: "You are a creative copywriter. Write an engaging 150-word product description for a premium smartwatch that:
+- Highlights 3 key features
+- Appeals to health-conscious professionals
+- Uses sensory language
+- Includes a compelling call-to-action"`,
+              bestPractices: [
+                "Start with basic version",
+                "Iterate on improvements",
+                "Test effectiveness"
+              ],
+              useCases: [
+                "Prompt optimization",
+                "Template creation",
+                "Workflow automation"
+              ]
+            }
+          ];
+        }
+
+        initFilters() {
+          const searchInput = document.getElementById("search-filter");
+          const difficultySelect = document.getElementById("difficulty-filter");
+
+          searchInput.addEventListener("input", (e) => {
+            this.filters.search = e.target.value.toLowerCase();
+            this.applyFilters();
+          });
+
+          difficultySelect.addEventListener("change", (e) => {
+            this.filters.difficulty = e.target.value;
+            this.applyFilters();
+          });
+        }
+
+        applyFilters() {
+          this.filteredTechniques = this.techniques.filter((technique) => {
+            const searchMatch =
+              !this.filters.search ||
+              technique.name.toLowerCase().includes(this.filters.search) ||
+              technique.description.toLowerCase().includes(this.filters.search) ||
+              technique.category.toLowerCase().includes(this.filters.search);
+
+            const difficultyMatch =
+              !this.filters.difficulty ||
+              technique.difficulty === this.filters.difficulty;
+
+            return searchMatch && difficultyMatch;
+          });
+
+          this.renderTechniques();
+        }
+
+        renderTechniques() {
+          const grid = document.getElementById("techniques-grid");
+          const noResults = document.getElementById("no-results");
+
+          if (this.filteredTechniques.length === 0) {
+            grid.innerHTML = "";
+            noResults.classList.remove("hidden");
+            return;
+          }
+
+          noResults.classList.add("hidden");
+          grid.innerHTML = this.filteredTechniques
+            .map((technique) => this.createTechniqueCard(technique))
+            .join("");
+        }
+
+        createTechniqueCard(technique) {
+          const difficultyColors = {
+            beginner: "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200",
+            intermediate: "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200",
+            advanced: "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200"
+          };
+
+          const categoryIcons = {
+            basic: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />',
+            reasoning: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />',
+            formatting: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" />',
+            advanced: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />',
+            control: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />',
+            safety: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />',
+            meta: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />'
+          };
+
+          return `
+          <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow border border-gray-200 dark:border-gray-700">
+            <div class="flex items-center justify-between mb-4">
+              <div class="flex items-center">
+                <div class="w-10 h-10 bg-gradient-to-br from-purple-100 to-indigo-100 dark:from-purple-900 dark:to-indigo-900 rounded-lg flex items-center justify-center mr-3">
+                  <svg class="h-5 w-5 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    ${categoryIcons[technique.category] || categoryIcons.basic}
+                  </svg>
+                </div>
+                <span class="px-2 py-1 ${difficultyColors[technique.difficulty]} text-xs font-medium rounded-full capitalize">
+                  ${technique.difficulty}
+                </span>
+              </div>
+            </div>
+            
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">${technique.name}</h3>
+            <p class="text-gray-600 dark:text-gray-300 text-sm mb-4">${technique.description}</p>
+            
+            <div class="space-y-3">
+              <div class="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg">
+                <p class="text-xs text-gray-500 dark:text-gray-400 mb-2 font-medium">Example:</p>
+                <pre class="text-xs text-gray-700 dark:text-gray-300 font-mono whitespace-pre-wrap">${this.truncateExample(technique.example)}</pre>
+              </div>
+              
+              <div class="flex flex-wrap gap-2">
+                ${technique.useCases.slice(0, 2).map(useCase => `
+                  <span class="px-2 py-1 bg-purple-50 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 text-xs rounded">
+                    ${useCase}
+                  </span>
+                `).join('')}
+              </div>
+            </div>
+            
+            <div class="flex space-x-2 mt-4">
+              <button onclick="promptEngineering.viewTechnique('${technique.id}')" class="flex-1 bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300 px-3 py-2 rounded text-sm hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors">
+                View Details
+              </button>
+              <button onclick="promptEngineering.copyExample('${technique.id}')" class="flex-1 bg-purple-600 text-white px-3 py-2 rounded text-sm hover:bg-purple-700 transition-colors">
+                Copy Example
+              </button>
+            </div>
+          </div>
+        `;
+        }
+
+        truncateExample(example) {
+          if (example.length > 150) {
+            return example.substring(0, 150) + "...";
+          }
+          return example;
+        }
+
+        viewTechnique(techniqueId) {
+          const technique = this.techniques.find((t) => t.id === techniqueId);
+          if (!technique) return;
+
+          // Create modal overlay
+          const modal = document.createElement("div");
+          modal.className =
+            "fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4";
+          modal.innerHTML = `
+          <div class="bg-white dark:bg-gray-800 rounded-lg max-w-4xl w-full max-h-[90vh] overflow-hidden">
+            <div class="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
+              <h2 class="text-xl font-semibold text-gray-900 dark:text-white">${technique.name}</h2>
+              <button onclick="this.closest('.fixed').remove()" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <div class="p-6 overflow-y-auto max-h-[calc(90vh-140px)]">
+              <p class="text-gray-600 dark:text-gray-300 mb-6">${technique.description}</p>
+              
+              <div class="space-y-6">
+                <div>
+                  <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Example</h3>
+                  <pre class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg text-sm text-gray-700 dark:text-gray-300 font-mono whitespace-pre-wrap">${technique.example}</pre>
+                </div>
+                
+                <div>
+                  <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Best Practices</h3>
+                  <ul class="list-disc list-inside space-y-1">
+                    ${technique.bestPractices.map(practice => `
+                      <li class="text-gray-600 dark:text-gray-300">${practice}</li>
+                    `).join('')}
+                  </ul>
+                </div>
+                
+                <div>
+                  <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3">Use Cases</h3>
+                  <div class="flex flex-wrap gap-2">
+                    ${technique.useCases.map(useCase => `
+                      <span class="px-3 py-1 bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 text-sm rounded-full">
+                        ${useCase}
+                      </span>
+                    `).join('')}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="flex justify-end space-x-3 p-6 border-t border-gray-200 dark:border-gray-700">
+              <button onclick="this.closest('.fixed').remove()" class="px-4 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200">
+                Close
+              </button>
+              <button onclick="promptEngineering.copyExample('${technique.id}'); this.closest('.fixed').remove();" class="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 transition-colors">
+                Copy Example
+              </button>
+            </div>
+          </div>
+        `;
+
+          document.body.appendChild(modal);
+        }
+
+        copyExample(techniqueId) {
+          const technique = this.techniques.find((t) => t.id === techniqueId);
+          if (!technique) return;
+
+          navigator.clipboard
+            .writeText(technique.example)
+            .then(() => {
+              this.showToast(`${technique.name} example copied to clipboard!`);
+            })
+            .catch(() => {
+              this.showToast("Failed to copy example", "error");
+            });
+        }
+
+        showToast(message, type = "success") {
+          const toast = document.getElementById("toast");
+          const toastMessage = document.getElementById("toast-message");
+
+          toastMessage.textContent = message;
+          toast.className = `fixed top-4 right-4 px-4 py-2 rounded-lg shadow-lg transform transition-transform duration-300 z-50 ${
+            type === "success"
+              ? "bg-green-500 text-white"
+              : "bg-red-500 text-white"
+          }`;
+
+          toast.style.transform = "translateX(0)";
+          setTimeout(() => {
+            toast.style.transform = "translateX(150%)";
+          }, 3000);
+        }
+      }
+
+      const promptEngineering = new PromptEngineeringPage();
+    </script>
+  </body>
+</html>
