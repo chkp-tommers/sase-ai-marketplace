@@ -12,6 +12,8 @@ _Tracks current work focus, recent changes, next steps, and active decisions._
 
 - Updated documentation to reflect static-only architecture
 - Removed backend, database, and authentication references from all docs
+- Removed `.github/workflows/ci-cd.yml` as it was not relevant for the current static site deployment approach.
+- Retained `.github/workflows/deploy-pages.yml` for GitHub Pages deployment.
 
 ## Next Steps
 

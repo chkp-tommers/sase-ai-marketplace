@@ -19,6 +19,9 @@ _Tracks what works, what's left to build, current status, and known issues._
 
 The project is a static AI marketplace. All features are implemented client-side, with no backend or server-side logic.
 
+- Dynamic CI/CD pipeline (ci-cd.yml) removed as it was not needed.
+- Static deployment via GitHub Pages (`deploy-pages.yml`) is active and current.
+
 ## Known Issues
 
 - None related to backend or server-side features (not applicable)

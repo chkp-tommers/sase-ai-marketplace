@@ -27,3 +27,6 @@ This project is a static AI marketplace. There is no backend, server-side logic,
 - UI components consume static data and render marketplace listings
 - Navigation and filtering are handled client-side
 - No server-client data flow; all logic is in the browser
+
+- The project now uses a static deployment pattern with GitHub Pages (`deploy-pages.yml`).
+- Dynamic CI/CD workflows (Node.js/MongoDB/Next.js/Vercel) are not in use.
