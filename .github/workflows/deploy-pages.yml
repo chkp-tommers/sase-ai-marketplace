@@ -37,8 +37,8 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Upload the ai-tools-static directory
-          path: "./ai-tools-static"
+          # Upload the entire repository as it's a static site
+          path: "./"
 
       - name: Deploy to GitHub Pages
         id: deployment

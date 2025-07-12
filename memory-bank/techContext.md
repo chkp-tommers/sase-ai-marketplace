@@ -25,3 +25,8 @@ _Describes technologies used, development setup, technical constraints, and depe
 
 - (Optional) React, Next.js, Tailwind CSS, or other frontend libraries
 - Static data files (e.g., assets/data/tools.json)
+
+## 2024-06-09: Copilot Resource Integration
+
+- Now using markdown-based chatmodes, instructional guides, and prompt templates from the `awesome-copilot` repository.
+- Introduced new scripts and automation utilities (e.g., update-readme.js) for maintaining Copilot resources.

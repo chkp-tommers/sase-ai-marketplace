@@ -6,7 +6,7 @@
     <title>Browse AI Tools - AI Tools Hub</title>
     <meta
       name="description"
-      content="Browse and filter MCP tools, prompts, chat modes, and rules for AI development."
+      content="Browse and discover all AI development tools: MCP servers, prompts, chat modes, and development rules from the awesome-copilot collection."
     />
 
     <script src="https://cdn.tailwindcss.com"></script>
@@ -37,6 +37,127 @@
     <style>
       body {
         font-family: "Inter", sans-serif;
+      }
+      .rule-card {
+        display: flex;
+        flex-direction: column;
+        height: 420px; /* Increased height for more preview space */
+        justify-content: space-between;
+      }
+      .rule-description {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        min-height: 2.8em;
+        max-height: 2.8em;
+        line-height: 1.4em;
+        margin-bottom: 0.5rem;
+      }
+      .rule-preview {
+        min-height: 8em;
+        max-height: 8em;
+        overflow: hidden;
+        display: flex;
+        align-items: flex-start;
+        background: var(--tw-prose-bg, #f9fafb);
+        border-radius: 0.5rem;
+        padding: 0.75rem;
+        margin-bottom: 1rem;
+      }
+      .rule-card-bottom {
+        margin-top: auto;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+      }
+      .rule-action-btn {
+        min-width: 90px;
+        justify-content: center;
+        display: inline-flex;
+        align-items: center;
+      }
+      .install-badge {
+        transition: transform 0.2s ease, opacity 0.2s ease;
+        border-radius: 4px;
+        height: 20px;
+        cursor: pointer;
+      }
+      .install-badge:hover {
+        transform: translateY(-1px);
+        opacity: 0.9;
+      }
+      .install-btn-modal {
+        background: transparent;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+      }
+      .install-btn-modal:hover {
+        transform: translateY(-1px);
+      }
+      .install-badge-button {
+        transition: transform 0.2s ease, opacity 0.2s ease;
+        border-radius: 4px;
+        height: 20px;
+        cursor: pointer;
+      }
+      .install-badge-button:hover {
+        transform: translateY(-1px);
+        opacity: 0.9;
+      }
+      .install-modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+      }
+      .install-modal-content {
+        background: white;
+        border-radius: 8px;
+        padding: 24px;
+        max-width: 600px;
+        width: 90%;
+        max-height: 80vh;
+        overflow-y: auto;
+      }
+      .dark .install-modal-content {
+        background: #1f2937;
+        color: white;
+      }
+      .install-options {
+        display: flex;
+        gap: 12px;
+        margin-top: 16px;
+      }
+      .install-option {
+        flex: 1;
+        padding: 16px;
+        border: 2px solid #e5e7eb;
+        border-radius: 8px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .install-option:hover {
+        border-color: #0078d4;
+        background-color: #f8fafc;
+      }
+      .dark .install-option {
+        border-color: #374151;
+        background-color: #374151;
+      }
+      .dark .install-option:hover {
+        border-color: #0078d4;
+        background-color: #4b5563;
       }
     </style>
   </head>
@@ -82,6 +203,11 @@
               href="../prompts/"
               class="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
               >Prompts</a
+            >
+            <a
+              href="../rules/"
+              class="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
+              >Rules</a
             >
             <a
               href="../chatmodes/"
@@ -141,7 +267,10 @@
           Browse AI Tools
         </h1>
         <p class="text-gray-600 dark:text-gray-300">
-          Discover MCP tools, prompts, chat modes, and development rules
+          Discover and browse all available tools: MCP servers, prompts, chat modes, and development rules
+        </p>
+        <p id="tools-count" class="text-sm text-gray-500 dark:text-gray-400 mt-2">
+          Loading tools...
         </p>
       </div>
     </div>
@@ -202,12 +331,9 @@
         </div>
       </div>
 
-      <!-- Tools Grid -->
-      <div
-        id="tools-grid"
-        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-      >
-        <!-- Tools will be populated by JavaScript -->
+      <!-- Rules Grid -->
+      <div id="rules-grid" class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Tools and Rules will be populated by JavaScript -->
       </div>
 
       <!-- No Results -->
@@ -222,7 +348,7 @@
             stroke-linecap="round"
             stroke-linejoin="round"
             stroke-width="2"
-            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
           />
         </svg>
         <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-gray-100">
@@ -234,6 +360,11 @@
       </div>
     </div>
 
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed top-4 right-4 px-4 py-2 rounded-lg shadow-lg transform translate-x-full transition-transform duration-300 z-50">
+      <span id="toast-message"></span>
+    </div>
+
     <script>
       class ToolsBrowser {
         constructor() {
@@ -242,9 +373,9 @@
           this.filters = {
             search: "",
             type: "",
-            platform: "",
+            platform: ""
           };
-          this.init();
+          // Don't call init() from constructor since it's async
         }
 
         async init() {
@@ -252,6 +383,7 @@
           await this.loadTools();
           this.initFilters();
           this.renderTools();
+          this.updateToolsCount();
           this.parseURLParams();
         }
 
@@ -279,37 +411,263 @@
 
         async loadTools() {
           try {
-            const response = await fetch("/assets/data/tools.json");
+            // Initialize tools array
+            this.tools = [];
+            
+            // Load static tools first
+            const response = await fetch("../assets/data/tools.json");
             if (response.ok) {
-              this.tools = await response.json();
-              this.filteredTools = [...this.tools];
+              const data = await response.json();
+              this.tools = data.tools || [];
             }
+            
+            // Load rules from awesome-copilot instructions directory
+            await this.loadRulesFromFiles();
+            
+            this.filteredTools = [...this.tools];
           } catch (error) {
             console.error("Error loading tools:", error);
             this.loadFallbackTools();
           }
         }
 
-        loadFallbackTools() {
-          this.tools = [
-            {
-              id: "playwright-mcp",
-              name: "Playwright MCP",
-              description: "Browser automation and testing MCP server",
-              type: "mcp",
-              platforms: ["windsurf", "cursor", "claude"],
-              featured: true,
-            },
-            {
-              id: "code-review-prompt",
-              name: "Code Review Assistant",
-              description:
-                "Comprehensive code review prompt with security focus",
-              type: "prompt",
-              platforms: ["cursor", "copilot", "claude"],
-              featured: true,
-            },
+        async loadRulesFromFiles() {
+          console.log('Loading rules from local awesome-copilot/instructions directory...');
+          
+          // Dynamically discover instruction files from the local directory
+          const ruleFiles = await this.discoverRuleFiles();
+          
+          for (const filename of ruleFiles) {
+            try {
+              const response = await fetch(`../rules/rules-list/${filename}`);
+              if (response.ok) {
+                const content = await response.text();
+                const rule = this.parseRuleFile(filename, content);
+                if (rule) {
+                  // Convert rule to tool format
+                  this.tools.push({
+                    id: `rule-${rule.id}`,
+                    name: rule.name,
+                    description: rule.description,
+                    type: 'rule',
+                    platforms: rule.platforms,
+                    featured: rule.featured,
+                    content: content,
+                    installUrl: rule.installUrl,
+                    category: rule.category,
+                    tags: rule.tags,
+                    installable: rule.installable,
+                    installType: rule.installType
+                  });
+                }
+              }
+            } catch (error) {
+              console.warn(`Could not load rule ${filename}:`, error);
+            }
+          }
+          
+          console.log(`Successfully loaded ${ruleFiles.length} rules as tools`);
+        }
+
+        async discoverRuleFiles() {
+          console.log('🔍 Dynamically discovering instruction files...');
+          
+          // Comprehensive list of all known instruction files - updated to match actual repo
+          const knownFiles = [
+            'angular.instructions.md',
+            'aspnet-rest-apis.instructions.md',
+            'azure-functions-typescript.instructions.md',
+            'bicep-code-best-practices.instructions.md',
+            'blazor.instructions.md',
+            'cmake-vcpkg.instructions.md',
+            'containerization-docker-best-practices.instructions.md',
+            'copilot-thought-logging.instructions.md',
+            'csharp.instructions.md',
+            'devops-core-principles.instructions.md',
+            'dotnet-maui.instructions.md',
+            'genaiscript.instructions.md',
+            'generate-modern-terraform-code-for-azure.instructions.md',
+            'github-actions-ci-cd-best-practices.instructions.md',
+            'go.instructions.md',
+            'java.instructions.md',
+            'joyride-user-project.instructions.md',
+            'joyride-workspace-automation.instructions.md',
+            'kubernetes-deployment-best-practices.instructions.md',
+            'localization.instructions.md',
+            'markdown.instructions.md',
+            'memory-bank.instructions.md',
+            'nextjs-tailwind.instructions.md',
+            'performance-optimization.instructions.md',
+            'playwright-typescript.instructions.md',
+            'power-platform-connector-instructions.md',
+            'powershell.instructions.md',
+            'python.instructions.md',
+            'quarkus.instructions.md',
+            'ruby-on-rails.instructions.md',
+            'security-and-owasp.instructions.md',
+            'springboot.instructions.md',
+            'sql-sp-generation.instructions.md',
+            'taming-copilot.instructions.md',
+            'tanstack-start-shadcn-tailwind.md'
           ];
+
+          // Test each file to see if it exists (parallel fetch with HEAD requests for speed)
+          const testPromises = knownFiles.map(async (filename) => {
+            try {
+              const response = await fetch(`../rules/rules-list/${filename}`, {
+                method: 'HEAD',
+                cache: 'no-cache' 
+              });
+              if (response.ok) {
+                return filename;
+              }
+            } catch (error) {
+              // File doesn't exist or network error, ignore
+            }
+            return null;
+          });
+
+          const results = await Promise.all(testPromises);
+          const discoveredFiles = results.filter(filename => filename !== null);
+          
+          console.log(`✅ Discovered ${discoveredFiles.length} instruction files out of ${knownFiles.length} tested`);
+          console.log('📋 Available files:', discoveredFiles);
+          
+          return discoveredFiles;
+        }
+
+        parseRuleFile(filename, content) {
+          // Extract frontmatter
+          const frontmatterMatch = content.match(/^---\n([\s\S]*?)\n---/);
+          let description = '';
+          let applyTo = '';
+          
+          if (frontmatterMatch) {
+            const frontmatter = frontmatterMatch[1];
+            const descMatch = frontmatter.match(/description:\s*['"]([^'"]*)['"]/);
+            const applyToMatch = frontmatter.match(/applyTo:\s*['"]([^'"]*)['"]/);
+            
+            if (descMatch) description = descMatch[1];
+            if (applyToMatch) applyTo = applyToMatch[1];
+          }
+
+          // Extract title from first heading
+          const titleMatch = content.match(/^#\s+(.+)$/m);
+          const title = titleMatch ? titleMatch[1] : this.filenameToTitle(filename);
+
+          // Generate ID from filename
+          const id = filename.replace(/\.(instructions\.)?md$/, '').replace(/[^a-z0-9]/gi, '-').toLowerCase();
+
+          // Determine category and tags based on filename and content
+          const { category, tags, featured } = this.categorizeRule(filename, content);
+
+          return {
+            id,
+            name: title,
+            description: description || `${title} development guidelines and best practices`,
+            content: content,
+            platforms: ["copilot", "claude", "cursor", "windsurf"],
+            category,
+            tags,
+            featured,
+            installable: true,
+            installType: this.determineInstallType(filename),
+            installUrl: `https://raw.githubusercontent.com/github/awesome-copilot/main/instructions/${filename}`
+          };
+        }
+
+        filenameToTitle(filename) {
+          return filename
+            .replace(/\.(instructions\.)?md$/, '')
+            .split('-')
+            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(' ');
+        }
+
+        categorizeRule(filename, content) {
+          const name = filename.toLowerCase();
+          let category = "Development";
+          let tags = [];
+          let featured = false;
+
+          // Frontend frameworks
+          if (name.includes('angular') || name.includes('react') || name.includes('nextjs') || name.includes('tanstack')) {
+            category = "Frontend Development";
+            tags = ["Frontend", "JavaScript", "TypeScript"];
+            if (name.includes('angular') || name.includes('nextjs')) featured = true;
+          }
+          // Backend frameworks
+          else if (name.includes('aspnet') || name.includes('spring') || name.includes('quarkus') || name.includes('blazor')) {
+            category = "Backend Development";
+            tags = ["Backend", "API", "Web Framework"];
+            if (name.includes('aspnet')) featured = true;
+          }
+          // Languages
+          else if (name.includes('python') || name.includes('java') || name.includes('csharp') || name.includes('go') || name.includes('ruby')) {
+            category = "Backend Development";
+            tags = ["Programming Language", "Backend"];
+          }
+          // DevOps and Infrastructure
+          else if (name.includes('docker') || name.includes('kubernetes') || name.includes('github-actions') || name.includes('devops')) {
+            category = "DevOps";
+            tags = ["DevOps", "Infrastructure", "CI/CD"];
+            if (name.includes('docker') || name.includes('kubernetes') || name.includes('github-actions')) featured = true;
+          }
+          // Cloud and Azure
+          else if (name.includes('azure') || name.includes('terraform') || name.includes('bicep')) {
+            category = "Cloud Development";
+            tags = ["Azure", "Cloud", "Infrastructure as Code"];
+          }
+          // Security
+          else if (name.includes('security') || name.includes('owasp')) {
+            category = "Security";
+            tags = ["Security", "Best Practices", "OWASP"];
+            featured = true;
+          }
+          // Testing
+          else if (name.includes('playwright') || name.includes('test')) {
+            category = "Testing";
+            tags = ["Testing", "E2E", "Quality Assurance"];
+          }
+          // Performance
+          else if (name.includes('performance')) {
+            category = "Performance";
+            tags = ["Performance", "Optimization", "Web"];
+          }
+          // Mobile
+          else if (name.includes('maui')) {
+            category = "Mobile Development";
+            tags = [".NET MAUI", "Mobile", "Cross-platform"];
+          }
+          // Documentation and AI Tools
+          else if (name.includes('markdown') || name.includes('copilot') || name.includes('memory-bank') || name.includes('genaiscript')) {
+            category = "AI Tools";
+            tags = ["Documentation", "AI", "Tools"];
+          }
+          // Other tools and automation
+          else if (name.includes('powershell') || name.includes('cmake')) {
+            category = "Automation";
+            tags = ["Scripting", "Build Tools", "Automation"];
+          }
+
+          // Add specific technology tags
+          if (name.includes('typescript')) tags.push("TypeScript");
+          if (name.includes('javascript')) tags.push("JavaScript");
+          if (name.includes('tailwind')) tags.push("Tailwind CSS");
+          if (name.includes('sql')) tags.push("SQL", "Database");
+
+          return { category, tags: [...new Set(tags)], featured };
+        }
+
+        determineInstallType(filename) {
+          // Use modal for complex/important rules
+          const modalRules = ['security-and-owasp', 'containerization-docker-best-practices', 'devops-core-principles'];
+          const name = filename.replace(/\.(instructions\.)?md$/, '');
+          return modalRules.includes(name) ? 'modal' : 'simple';
+        }
+
+        loadFallbackTools() {
+          this.tools = [];
           this.filteredTools = [...this.tools];
         }
 
@@ -337,8 +695,7 @@
         parseURLParams() {
           const params = new URLSearchParams(window.location.search);
           if (params.get("search")) {
-            document.getElementById("search-filter").value =
-              params.get("search");
+            document.getElementById("search-filter").value = params.get("search");
             this.filters.search = params.get("search").toLowerCase();
           }
           if (params.get("type")) {
@@ -354,22 +711,46 @@
               !this.filters.search ||
               tool.name.toLowerCase().includes(this.filters.search) ||
               tool.description.toLowerCase().includes(this.filters.search) ||
-              tool.type.toLowerCase().includes(this.filters.search);
+              tool.type.toLowerCase().includes(this.filters.search) ||
+              (tool.category && tool.category.toLowerCase().includes(this.filters.search)) ||
+              (tool.tags && tool.tags.some(tag => tag.toLowerCase().includes(this.filters.search)));
 
-            const typeMatch =
-              !this.filters.type || tool.type === this.filters.type;
-            const platformMatch =
-              !this.filters.platform ||
-              tool.platforms.includes(this.filters.platform);
+            const typeMatch = !this.filters.type || tool.type === this.filters.type;
+            const platformMatch = !this.filters.platform || tool.platforms.includes(this.filters.platform);
 
             return searchMatch && typeMatch && platformMatch;
           });
 
           this.renderTools();
+          this.updateFilteredCount();
+        }
+
+        updateToolsCount() {
+          const countElement = document.getElementById("tools-count");
+          if (countElement) {
+            const mcpCount = this.tools.filter(tool => tool.type === 'mcp').length;
+            const promptCount = this.tools.filter(tool => tool.type === 'prompt').length;
+            const chatmodeCount = this.tools.filter(tool => tool.type === 'chatmode').length;
+            const ruleCount = this.tools.filter(tool => tool.type === 'rule').length;
+            
+            countElement.textContent = `${this.tools.length} tools available (${promptCount} prompts, ${chatmodeCount} chat modes, ${ruleCount} rules, ${mcpCount} MCP tools)`;
+          }
+        }
+
+        updateFilteredCount() {
+          const countElement = document.getElementById("tools-count");
+          if (countElement && this.filteredTools.length !== this.tools.length) {
+            const mcpCount = this.filteredTools.filter(tool => tool.type === 'mcp').length;
+            const promptCount = this.filteredTools.filter(tool => tool.type === 'prompt').length;
+            const chatmodeCount = this.filteredTools.filter(tool => tool.type === 'chatmode').length;
+            const ruleCount = this.filteredTools.filter(tool => tool.type === 'rule').length;
+            
+            countElement.textContent = `${this.filteredTools.length} of ${this.tools.length} tools shown (${promptCount} prompts, ${chatmodeCount} chat modes, ${ruleCount} rules, ${mcpCount} MCP tools)`;
+          }
         }
 
         renderTools() {
-          const grid = document.getElementById("tools-grid");
+          const grid = document.getElementById("rules-grid");
           const noResults = document.getElementById("no-results");
 
           if (this.filteredTools.length === 0) {
@@ -379,9 +760,150 @@
           }
 
           noResults.classList.add("hidden");
-          grid.innerHTML = this.filteredTools
-            .map((tool) => this.createToolCard(tool))
-            .join("");
+          
+          // Separate rules from other tools
+          const rules = this.filteredTools.filter(tool => tool.type === 'rule');
+          const otherTools = this.filteredTools.filter(tool => tool.type !== 'rule');
+          
+          // Render rules using the exact same card format as rules directory
+          const rulesHTML = rules.map(tool => this.createRuleCard(tool)).join("");
+          
+          // Render other tools using regular tool card format
+          const otherToolsHTML = otherTools.map(tool => this.createToolCard(tool)).join("");
+          
+          grid.innerHTML = rulesHTML + otherToolsHTML;
+        }
+
+        createRuleCard(tool) {
+          const contentPreview = tool.content
+            ? tool.content.substring(0, 300) + "..."
+            : "Click to view full rule content";
+          
+          const installType = tool.installType || 'simple';
+          const installHtml = this.createInstallButtons(tool, installType);
+          
+          return `
+            <div class="rule-card bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow border border-gray-200 dark:border-gray-700 h-full">
+              <div>
+                <div class="flex items-center justify-between mb-4">
+                  <div class="flex items-center">
+                    <div class="w-10 h-10 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center mr-3">
+                      <svg class="h-5 w-5 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                      </svg>
+                    </div>
+                    <span class="px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-xs font-medium rounded-full">
+                      RULE
+                    </span>
+                  </div>
+                  ${tool.featured ? '<span class="text-yellow-500 text-lg">★</span>' : ""}
+                </div>
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-1">${tool.name}</h3>
+                <p class="rule-description text-gray-600 dark:text-gray-300 text-sm">${tool.description}</p>
+                <div class="rule-preview">
+                  <div>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mb-2">Preview:</p>
+                    <p class="text-sm text-gray-700 dark:text-gray-300 font-mono leading-relaxed">${contentPreview}</p>
+                  </div>
+                </div>
+              </div>
+              <div class="rule-card-bottom">
+                <div class="flex items-center justify-between w-full">
+                  <div class="flex space-x-2">
+                    <button onclick="toolsBrowser.viewRule('${tool.id}')" class="rule-action-btn bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300 px-3 py-1 rounded text-sm hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors">View</button>
+                    <button id="copy-btn-${tool.id}" onclick="toolsBrowser.copyRule('${tool.id}', this)" class="rule-action-btn bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors flex items-center">Copy</button>
+                  </div>
+                  ${installHtml}
+                </div>
+              </div>
+            </div>
+          `;
+        }
+
+        createInstallButtons(tool, installType = 'simple') {
+          const installUrl = this.getInstallUrl(tool);
+          
+          if (installType === 'simple') {
+            return `
+              <div class="flex items-center gap-1">
+                <a href="${this.generateInstallLink(installUrl, 'vscode')}" target="_blank" rel="noopener noreferrer">
+                  <img src="https://img.shields.io/badge/VS_Code-Install-0098FF?style=flat-square&logo=visualstudiocode&logoColor=white" alt="Install in VS Code" class="install-badge">
+                </a>
+                <a href="${this.generateInstallLink(installUrl, 'insiders')}" target="_blank" rel="noopener noreferrer">
+                  <img src="https://img.shields.io/badge/VS_Code_Insiders-Install-24bfa5?style=flat-square&logo=visualstudiocode&logoColor=white" alt="Install in VS Code Insiders" class="install-badge">
+                </a>
+              </div>
+            `;
+          } else if (installType === 'modal') {
+            return `
+              <button onclick="toolsBrowser.showInstallModal('${tool.id}')" class="install-btn-modal">
+                <img src="https://img.shields.io/badge/VS_Code-Install-0098FF?style=flat-square&logo=visualstudiocode&logoColor=white" alt="Install in VS Code" class="install-badge-button">
+              </button>
+            `;
+          }
+          return '';
+        }
+
+        getInstallUrl(tool) {
+          // Use existing installUrl if available, otherwise generate one based on tool ID
+          if (tool.installUrl) {
+            return tool.installUrl;
+          }
+          
+          // Generate URL based on tool ID - assuming they correspond to awesome-copilot instructions
+          const ruleId = tool.id.replace('rule-', '');
+          return `https://raw.githubusercontent.com/github/awesome-copilot/main/instructions/${ruleId}.instructions.md`;
+        }
+
+        generateInstallLink(ruleUrl, type) {
+          const baseUrl = type === 'insiders' ? 'https://insiders.vscode.dev' : 'https://vscode.dev';
+          const protocol = type === 'insiders' ? 'vscode-insiders' : 'vscode';
+          const protocolHandler = `${protocol}:chat-instructions/install?url=${encodeURIComponent(ruleUrl)}`;
+          return `${baseUrl}/redirect?url=${encodeURIComponent(protocolHandler)}`;
+        }
+
+        showInstallModal(toolId) {
+          const tool = this.tools.find(t => t.id === toolId);
+          if (!tool) return;
+
+          const installUrl = this.getInstallUrl(tool);
+          const modal = document.createElement('div');
+          modal.className = 'install-modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4';
+          modal.innerHTML = `
+            <div class="bg-white dark:bg-gray-800 rounded-lg max-w-md w-full p-6">
+              <h2 class="text-xl font-semibold mb-4">Install ${tool.name}</h2>
+              <p class="text-gray-600 dark:text-gray-300 mb-4">${tool.description}</p>
+              
+              <div class="space-y-3">
+                <a href="${this.generateInstallLink(installUrl, 'vscode')}" target="_blank" rel="noopener noreferrer" class="block w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg hover:border-blue-500 transition-colors" onclick="this.closest('.install-modal').remove()">
+                  <div class="flex items-center justify-center">
+                    <img src="https://img.shields.io/badge/VS_Code-Install-0098FF?style=flat-square&logo=visualstudiocode&logoColor=white" alt="Install in VS Code" class="install-badge">
+                  </div>
+                </a>
+                
+                <a href="${this.generateInstallLink(installUrl, 'insiders')}" target="_blank" rel="noopener noreferrer" class="block w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg hover:border-blue-500 transition-colors" onclick="this.closest('.install-modal').remove()">
+                  <div class="flex items-center justify-center">
+                    <img src="https://img.shields.io/badge/VS_Code_Insiders-Install-24bfa5?style=flat-square&logo=visualstudiocode&logoColor=white" alt="Install in VS Code Insiders" class="install-badge">
+                  </div>
+                </a>
+              </div>
+              
+              <div class="mt-6 text-center">
+                <button onclick="this.closest('.install-modal').remove()" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition-colors">
+                  Cancel
+                </button>
+              </div>
+            </div>
+          `;
+
+          document.body.appendChild(modal);
+          
+          // Close modal when clicking outside
+          modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+              modal.remove();
+            }
+          });
         }
 
         createToolCard(tool) {
@@ -426,20 +948,100 @@
         `;
         }
 
+        viewRule(toolId) {
+          const tool = this.tools.find((t) => t.id === toolId);
+          if (!tool) return;
+
+          // Create modal overlay
+          const modal = document.createElement("div");
+          modal.className = "fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4";
+          modal.innerHTML = `
+          <div class="bg-white dark:bg-gray-800 rounded-lg max-w-4xl w-full max-h-[75vh] overflow-hidden flex flex-col">
+            <div class="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
+              <h2 class="text-xl font-semibold text-gray-900 dark:text-white">${tool.name}</h2>
+              <button onclick="this.closest('.fixed').remove()" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <div class="p-6 overflow-y-auto flex-1">
+              <pre class="whitespace-pre-wrap text-sm text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">${tool.content || "No content available"}</pre>
+            </div>
+            <div class="flex justify-between items-center p-6 border-t border-gray-200 dark:border-gray-700 mb-2">
+              <div class="flex items-center space-x-3">
+                ${tool.installable ? this.createModalInstallButtons(tool) : ''}
+              </div>
+              <div class="flex space-x-3">
+                <button onclick="this.closest('.fixed').remove()" class="px-4 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200">Close</button>
+                <button onclick="toolsBrowser.copyRule('${tool.id}'); this.closest('.fixed').remove();" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors">Copy</button>
+              </div>
+            </div>
+          </div>
+        `;
+
+          document.body.appendChild(modal);
+        }
+
+        createModalInstallButtons(tool) {
+          const installUrl = this.getInstallUrl(tool);
+          
+          return `
+            <div class="flex items-center gap-2">
+              <span class="text-sm text-gray-600 dark:text-gray-400">Install:</span>
+              <a href="${this.generateInstallLink(installUrl, 'vscode')}" target="_blank" rel="noopener noreferrer" onclick="this.closest('.fixed').remove()">
+                <img src="https://img.shields.io/badge/VS_Code-Install-0098FF?style=flat-square&logo=visualstudiocode&logoColor=white" alt="Install in VS Code" class="install-badge">
+              </a>
+              <a href="${this.generateInstallLink(installUrl, 'insiders')}" target="_blank" rel="noopener noreferrer" onclick="this.closest('.fixed').remove()">
+                <img src="https://img.shields.io/badge/VS_Code_Insiders-Install-24bfa5?style=flat-square&logo=visualstudiocode&logoColor=white" alt="Install in VS Code Insiders" class="install-badge">
+              </a>
+            </div>
+          `;
+        }
+
+        copyRule(toolId, btn) {
+          const tool = this.tools.find((t) => t.id === toolId);
+          if (!tool) return;
+
+          navigator.clipboard
+            .writeText(tool.content || tool.description)
+            .then(() => {
+              // Visual feedback: change button to Copied with checkmark
+              if (btn) {
+                const original = btn.innerHTML;
+                btn.innerHTML = '<svg class="h-4 w-4 mr-1 text-white inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>Copied';
+                btn.disabled = true;
+                setTimeout(() => {
+                  btn.innerHTML = original;
+                  btn.disabled = false;
+                }, 2000);
+              }
+              this.showToast(`${tool.name} copied to clipboard!`);
+            })
+            .catch(() => {
+              this.showToast("Failed to copy rule", "error");
+            });
+        }
+
         installTool(toolId) {
           const tool = this.tools.find((t) => t.id === toolId);
           if (!tool) return;
 
-          // Simple copy to clipboard for now
-          const content =
-            tool.content || `# ${tool.name}\n\n${tool.description}`;
+          // Handle different content types
+          let content = tool.content;
+          if (!content) {
+            // Generate basic content if not available
+            content = `# ${tool.name}\n\n${tool.description}`;
+          }
+
+          // For all tools, copy the actual content
           navigator.clipboard
             .writeText(content)
             .then(() => {
               this.showToast(`${tool.name} copied to clipboard!`);
             })
             .catch(() => {
-              this.showToast("Failed to copy tool", "error");
+              this.showToast("Failed to copy content", "error");
             });
         }
 
@@ -450,7 +1052,7 @@
           toastMessage.textContent = message;
           toast.className = `fixed top-4 right-4 px-4 py-2 rounded-lg shadow-lg transform transition-transform duration-300 z-50 ${
             type === "success"
-              ? "bg-green-500 text-white"
+              ? "bg-blue-500 text-white"
               : "bg-red-500 text-white"
           }`;
 
@@ -462,6 +1064,13 @@
       }
 
       const toolsBrowser = new ToolsBrowser();
+      
+      // Initialize the tools browser asynchronously
+      toolsBrowser.init().then(() => {
+        console.log('ToolsBrowser fully initialized!');
+      }).catch(error => {
+        console.error('ToolsBrowser initialization failed:', error);
+      });
     </script>
   </body>
 </html>

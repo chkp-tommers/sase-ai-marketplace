@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tools Test</title>
+</head>
+<body>
+    <div id="output"></div>
+    <script>
+        console.log('Test script starting...');
+        
+        async function testLoad() {
+            try {
+                console.log('Testing tools.json load...');
+                const response = await fetch('../assets/data/tools.json');
+                console.log('Tools response:', response.status);
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log('Tools data:', data);
+                    document.getElementById('output').innerHTML += '<p>Tools loaded: ' + (data.tools ? data.tools.length : 0) + ' items</p>';
+                }
+                
+                console.log('Testing instruction load...');
+                const instResponse = await fetch('../awesome-copilot/instructions/angular.instructions.md');
+                console.log('Instruction response:', instResponse.status);
+                
+                if (instResponse.ok) {
+                    const content = await instResponse.text();
+                    console.log('Instruction content length:', content.length);
+                    document.getElementById('output').innerHTML += '<p>Angular instruction loaded: ' + content.length + ' characters</p>';
+                }
+                
+            } catch (error) {
+                console.error('Test error:', error);
+                document.getElementById('output').innerHTML += '<p>Error: ' + error.message + '</p>';
+            }
+        }
+        
+        testLoad();
+    </script>
+</body>
+</html>

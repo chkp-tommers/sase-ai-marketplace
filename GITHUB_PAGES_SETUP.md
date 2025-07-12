@@ -30,16 +30,16 @@ git push origin main
 
 ## Files Created
 
-- `ai-tools-static/.github/workflows/deploy-pages.yml` - GitHub Actions workflow
-- `ai-tools-static/.nojekyll` - Prevents Jekyll processing
+- `.github/workflows/deploy-pages.yml` - GitHub Actions workflow
+- `.nojekyll` - Prevents Jekyll processing
 
-## For Separate Repository
+## Repository Structure
 
-When you move the `ai-tools-static` directory to its own repository:
+This repository is already set up as a standalone static site:
 
-1. Copy the entire `ai-tools-static` directory to a new repository
-2. The `.github` workflow will automatically work since it's included
-3. Push to the new repository and enable GitHub Pages there
+1. All static site files are at the repository root
+2. The `.github/workflows/deploy-pages.yml` file handles deployment
+3. The `.nojekyll` file ensures proper handling of assets
 
 ## Manual Deployment
 
@@ -61,16 +61,10 @@ You can also manually trigger the deployment:
 Before deploying, test locally:
 
 ```bash
-cd ai-tools-static
 python -m http.server 8000
 # Visit http://localhost:8000
 ```
 
-Or if you've moved to a separate repository:
-
-```bash
-python -m http.server 8000
-# Visit http://localhost:8000
-```
+This will serve all files from your repository root, exactly as they'll be deployed.
 
 Your static site will be automatically deployed whenever you push changes to the main branch!

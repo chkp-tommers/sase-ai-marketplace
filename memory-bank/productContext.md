@@ -17,6 +17,7 @@ This product is a static AI marketplace. All content is pre-generated or managed
 - Fully responsive and accessible
 - No login or registration required
 - Instant page loads (static hosting)
+- Users now have practical, copyable examples for all major Cursor features (LLMs, prompt engineering, MCP, agent features, best practices).
 
 ## Key Features
 
@@ -30,3 +31,8 @@ This product is a static AI marketplace. All content is pre-generated or managed
 - Developers, researchers, and enthusiasts seeking AI tools
 - Users who prefer simple, no-login access
 - Anyone looking for a lightweight, static resource
+
+## 2024-06-09: Copilot Best Practices Resource
+
+- The project now leverages the official `awesome-copilot` repository as a curated source of Copilot chatmodes, instructional guides, and prompt templates.
+- This enhances developer onboarding, standardizes prompt engineering, and improves the effectiveness of Copilot and Copilot Chat across the team.

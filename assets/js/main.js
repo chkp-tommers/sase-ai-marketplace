@@ -116,6 +116,19 @@ class AIToolsHub {
 
     this.data.featuredTools = [
       {
+        id: "vscode-insiders",
+        name: "VS Code Insiders",
+        description: "Try the latest VS Code features with the Insiders build",
+        type: "tool",
+        category: "development",
+        platforms: ["vscode", "insiders"],
+        url: "https://insiders.vscode.dev",
+        featured: true,
+        installable: true,
+        installType: "simple",
+        installUrl: "https://raw.githubusercontent.com/microsoft/vscode-insiders/main/install.md"
+      },
+      {
         id: "playwright-mcp",
         name: "Playwright MCP",
         description:
@@ -124,6 +137,9 @@ class AIToolsHub {
         category: "automation",
         platforms: ["windsurf", "cursor", "claude"],
         featured: true,
+        installable: true,
+        installType: "simple",
+        installUrl: "https://raw.githubusercontent.com/microsoft/playwright/main/install.md"
       },
       {
         id: "code-review-prompt",
@@ -134,6 +150,9 @@ class AIToolsHub {
         category: "development",
         platforms: ["cursor", "copilot", "claude"],
         featured: true,
+        installable: true,
+        installType: "simple",
+        installUrl: "https://raw.githubusercontent.com/github/awesome-copilot/main/prompts/code-review-assistant.md"
       },
       {
         id: "api-architect",
@@ -143,6 +162,9 @@ class AIToolsHub {
         category: "architecture",
         platforms: ["windsurf", "cursor", "claude"],
         featured: true,
+        installable: true,
+        installType: "simple",
+        installUrl: "https://raw.githubusercontent.com/github/awesome-copilot/main/chatmodes/api-architect.chatmode.md"
       },
     ];
   }
@@ -199,12 +221,21 @@ class AIToolsHub {
     categoriesGrid.innerHTML = this.data.categories
       .map(
         (category) => `
-      <a href="/tools/?type=${category.id}" class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow group">
+      <a href="/tools/?type=${
+        category.id
+      }" class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow group">
         <div class="flex items-center justify-between mb-3">
-          <h3 class="text-lg font-semibold text-gray-900 dark:text-white">${category.name}</h3>
-          ${this.getIconSVG(category.icon, `h-8 w-8 text-${category.color}-600 dark:text-${category.color}-400`)}
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white">${
+            category.name
+          }</h3>
+          ${this.getIconSVG(
+            category.icon,
+            `h-8 w-8 text-${category.color}-600 dark:text-${category.color}-400`
+          )}
         </div>
-        <p class="text-gray-600 dark:text-gray-300 text-sm mb-2">${category.count} tools available</p>
+        <p class="text-gray-600 dark:text-gray-300 text-sm mb-2">${
+          category.count
+        } tools available</p>
         <div class="flex items-center text-purple-600 dark:text-purple-400 text-sm font-medium">
           <span>Browse ${category.name}</span>
           <svg class="ml-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -241,14 +272,22 @@ class AIToolsHub {
           </div>
         </div>
         
-        <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">${tool.name}</h3>
-        <p class="text-gray-600 dark:text-gray-300 text-sm mb-4">${tool.description}</p>
+        <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">${
+          tool.name
+        }</h3>
+        <p class="text-gray-600 dark:text-gray-300 text-sm mb-4">${
+          tool.description
+        }</p>
         
         <div class="flex space-x-2">
-          <button onclick="aiToolsHub.installTool('${tool.id}')" class="flex-1 bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors text-sm font-medium">
+          <button onclick="aiToolsHub.installTool('${
+            tool.id
+          }')" class="flex-1 bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors text-sm font-medium">
             Install
           </button>
-          <a href="/tools/${tool.id}.html" class="flex-1 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white px-4 py-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors text-sm font-medium text-center">
+          <a href="/tools/${
+            tool.id
+          }.html" class="flex-1 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white px-4 py-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors text-sm font-medium text-center">
             View Details
           </a>
         </div>
@@ -292,6 +331,11 @@ class AIToolsHub {
       </svg>`,
     };
     return icons[iconName] || icons.document;
+  }
+
+  // Generic Cursor SVG Icon
+  getCursorIconSVG(className = "h-8 w-8 text-green-600 dark:text-green-400") {
+    return `<svg class="${className}" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4l16 8-8 2-2 8-8-16z"/></svg>`;
   }
 
   // Install tool functionality

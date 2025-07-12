@@ -1,0 +1,27 @@
+{
+  "name": "sase-marketplace-utils",
+  "version": "1.0.0",
+  "description": "Utility functions for accessing SASE Marketplace files and directories",
+  "main": "utils/file-fetcher.js",
+  "scripts": {
+    "test": "node example-usage.js",
+    "demo": "node example-usage.js",
+    "external-demo": "node external-usage-example.js"
+  },
+  "keywords": [
+    "sase",
+    "marketplace",
+    "file-utilities",
+    "directory-scanner"
+  ],
+  "author": "SASE Marketplace",
+  "license": "MIT",
+  "engines": {
+    "node": ">=12.0.0"
+  },
+  "files": [
+    "utils/",
+    "example-usage.js",
+    "external-usage-example.js"
+  ]
+}

@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
   <head>
     <meta charset="UTF-8" />
@@ -37,6 +37,126 @@
     <style>
       body {
         font-family: "Inter", sans-serif;
+      }
+      .prompt-card {
+        display: flex;
+        flex-direction: column;
+        height: 420px; /* Increased height for more preview space */
+        justify-content: space-between;
+      }
+      .prompt-description {
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        min-height: 2.8em;
+        max-height: 2.8em;
+        line-height: 1.4em;
+        margin-bottom: 0.5rem;
+      }
+      .prompt-preview {
+        min-height: 8em;
+        max-height: 8em;
+        overflow: hidden;
+        display: flex;
+        align-items: flex-start;
+        background: var(--tw-prose-bg, #f9fafb);
+        border-radius: 0.5rem;
+        padding: 0.75rem;
+        margin-bottom: 1rem;
+      }
+      .prompt-card-bottom {
+        margin-top: auto;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+      }
+      .prompt-action-btn {
+        min-width: 90px;
+        justify-content: center;
+        display: inline-flex;
+        align-items: center;
+      }
+      .install-badge {
+        transition: transform 0.2s ease, opacity 0.2s ease;
+        border-radius: 4px;
+        height: 20px;
+        cursor: pointer;
+      }
+      .install-badge:hover {
+        transform: translateY(-1px);
+        opacity: 0.9;
+      }
+      .install-btn-modal {
+        background: transparent;
+        border: none;
+        padding: 0;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+      }
+      .install-btn-modal:hover {
+        transform: translateY(-1px);
+      }
+      .install-badge-button {
+        transition: transform 0.2s ease, opacity 0.2s ease;
+        border-radius: 4px;
+        height: 20px;
+        cursor: pointer;
+      }
+      .install-badge-button:hover {
+        transform: translateY(-1px);
+        opacity: 0.9;
+      }
+      .install-modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+      }
+      .install-modal-content {
+        background: white;
+        border-radius: 8px;
+        padding: 24px;
+        max-width: 600px;
+        width: 90%;
+        max-height: 80vh;
+        overflow-y: auto;
+      }
+      .dark .install-modal-content {
+        background: #1f2937;
+        color: white;
+      }
+      .install-options {
+        display: flex;
+        gap: 12px;
+        margin-top: 16px;
+      }
+      .install-option {
+        flex: 1;
+        padding: 16px;
+        border: 2px solid #e5e7eb;
+        border-radius: 8px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .install-option:hover {
+        border-color: #0078d4;
+        background-color: #f8fafc;
+      }
+      .dark .install-option {
+        border-color: #374151;
+        background-color: #374151;
+      }
+      .dark .install-option:hover {
+        border-color: #0078d4;
+        background-color: #4b5563;
       }
     </style>
   </head>
@@ -84,6 +204,11 @@
               >Prompts</a
             >
             <a
+              href="../rules/"
+              class="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
+              >Rules</a
+            >
+            <a
               href="../chatmodes/"
               class="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
               >Chat Modes</a
@@ -92,6 +217,11 @@
               href="../guides/"
               class="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
               >Guides</a
+            >
+            <a
+              href="../prompt-engineering/"
+              class="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
+              >Prompt Engineering</a
             >
             <button
               id="theme-toggle"
@@ -329,6 +459,11 @@
       </div>
     </div>
 
+    <!-- Toast notification -->
+    <div id="toast" class="fixed top-4 right-4 px-4 py-2 rounded-lg shadow-lg transform transition-transform duration-300 translate-x-full z-50">
+      <span id="toast-message"></span>
+    </div>
+
     <script>
       class PromptsPage {
         constructor() {
@@ -370,16 +505,143 @@
 
         async loadPrompts() {
           try {
-            const response = await fetch("/assets/data/tools.json");
-            if (response.ok) {
-              const allTools = await response.json();
-              this.prompts = allTools.filter((tool) => tool.type === "prompt");
-              this.filteredPrompts = [...this.prompts];
-            }
+            // Load from awesome-copilot prompt files
+            await this.loadPromptsFromFiles();
           } catch (error) {
             console.error("Error loading prompts:", error);
             this.loadFallbackPrompts();
           }
+        }
+
+        async loadPromptsFromFiles() {
+          // List of prompt files from awesome-copilot/prompts directory
+                                                            const promptFiles = [
+            'aspnet-minimal-api-openapi.prompt.md',
+            'az-cost-optimize.prompt.md',
+            'azure-resource-health-diagnose.prompt.md',
+            'comment-code-generate-a-tutorial.prompt.md',
+            'create-architectural-decision-record.prompt.md',
+            'create-github-issue-feature-from-specification.prompt.md',
+            'create-github-issues-feature-from-implementation-plan.prompt.md',
+            'create-github-issues-for-unmet-specification-requirements.prompt.md',
+            'create-implementation-plan.prompt.md',
+            'create-llms.prompt.md',
+            'create-oo-component-documentation.prompt.md',
+            'create-specification.prompt.md',
+            'create-spring-boot-java-project.prompt.md',
+            'create-spring-boot-kotlin-project.prompt.md',
+            'csharp-async.prompt.md',
+            'csharp-docs.prompt.md',
+            'csharp-mstest.prompt.md',
+            'csharp-nunit.prompt.md',
+            'csharp-xunit.prompt.md',
+            'dotnet-best-practices.prompt.md',
+            'dotnet-design-pattern-review.prompt.md',
+            'ef-core.prompt.md',
+            'gen-specs-as-issues.prompt.md',
+            'java-docs.prompt.md',
+            'java-junit.prompt.md',
+            'java-springboot.prompt.md',
+            'javascript-typescript-jest.prompt.md',
+            'kotlin-springboot.prompt.md',
+            'multi-stage-dockerfile.prompt.md',
+            'my-issues.prompt.md',
+            'my-pull-requests.prompt.md',
+            'next-intl-add-language.prompt.md',
+            'suggest-awesome-github-copilot-chatmodes.prompt.md',
+            'suggest-awesome-github-copilot-prompts.prompt.md',
+            'update-avm-modules-in-bicep.prompt.md',
+            'update-implementation-plan.prompt.md',
+            'update-llms.prompt.md',
+            'update-markdown-file-index.prompt.md',
+            'update-oo-component-documentation.prompt.md',
+            'update-specification.prompt.md'
+          ];
+
+          const prompts = [];
+          for (const filename of promptFiles) {
+            try {
+              const response = await fetch(`./prompts-list/${filename}`);
+              if (response.ok) {
+                const content = await response.text();
+                const prompt = this.parsePromptFile(filename, content);
+                if (prompt) {
+                  prompts.push(prompt);
+                }
+              }
+            } catch (error) {
+              console.warn(`Could not load ${filename}:`, error);
+            }
+          }
+
+          this.prompts = prompts;
+          this.filteredPrompts = [...prompts];
+        }
+
+        parsePromptFile(filename, content) {
+          // Extract frontmatter
+          const frontmatterMatch = content.match(/^---\n([\s\S]*?)\n---/);
+          let description = '';
+          let mode = '';
+          let tools = [];
+          
+          if (frontmatterMatch) {
+            const frontmatter = frontmatterMatch[1];
+            const descMatch = frontmatter.match(/description:\s*['"]([^'"]*)['"]/);
+            const modeMatch = frontmatter.match(/mode:\s*['"]([^'"]*)['"]/);
+            const toolsMatch = frontmatter.match(/tools:\s*\[([^\]]*)\]/);
+            
+            if (descMatch) description = descMatch[1];
+            if (modeMatch) mode = modeMatch[1];
+            if (toolsMatch) {
+              tools = toolsMatch[1]
+                .split(',')
+                .map(tool => tool.trim().replace(/['"]/g, ''));
+            }
+          }
+
+          // Extract title from the first markdown header
+          const titleMatch = content.match(/^#\s+(.+)$/m);
+          const title = titleMatch ? titleMatch[1] : filename.replace('.prompt.md', '').replace(/-/g, ' ');
+
+          // Create a clean name
+          const name = title
+            .split(' ')
+            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(' ');
+
+          // Generate ID from filename
+          const id = filename.replace('.prompt.md', '');
+
+          // Categorize prompt based on filename patterns
+          let category = 'General';
+          if (filename.includes('csharp') || filename.includes('dotnet')) {
+            category = 'C#/.NET';
+          } else if (filename.includes('java') || filename.includes('spring')) {
+            category = 'Java';
+          } else if (filename.includes('azure') || filename.includes('az-')) {
+            category = 'Azure';
+          } else if (filename.includes('github')) {
+            category = 'GitHub';
+          } else if (filename.includes('javascript') || filename.includes('typescript')) {
+            category = 'JavaScript/TypeScript';
+          } else if (filename.includes('create-') || filename.includes('update-')) {
+            category = 'Documentation';
+          }
+
+          return {
+            id: id,
+            name: name,
+            description: description || `AI prompt for ${name.toLowerCase()}`,
+            content: content,
+            type: 'prompt',
+            category: category,
+            platforms: ['copilot', 'claude', 'cursor', 'windsurf'],
+            installable: true,
+            installType: 'simple',
+            installUrl: `vscode://file/${encodeURIComponent(window.location.origin)}/../awesome-copilot/prompts/${filename}`,
+            featured: false
+          };
         }
 
         loadFallbackPrompts() {
@@ -452,56 +714,182 @@
 
         createPromptCard(prompt) {
           const contentPreview = prompt.content
-            ? prompt.content.substring(0, 200) + "..."
+            ? prompt.content.substring(0, 300) + "..."
             : "Click to view full prompt content";
-
+          
+          // All prompts can be installed - use existing installable config or default to simple
+          const installType = prompt.installType || 'simple';
+          const installHtml = this.createInstallButtons(prompt, installType);
+          
           return `
-          <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow border border-gray-200 dark:border-gray-700">
-            <div class="flex items-center justify-between mb-4">
-              <div class="flex items-center">
-                <div class="w-10 h-10 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center mr-3">
-                  <svg class="h-5 w-5 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                  </svg>
+            <div class="prompt-card bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow border border-gray-200 dark:border-gray-700 h-full">
+              <div>
+                <div class="flex items-center justify-between mb-4">
+                  <div class="flex items-center">
+                    <div class="w-10 h-10 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center mr-3">
+                      <svg class="h-5 w-5 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                        </svg>
+                    </div>
+                    <span class="px-2 py-1 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 text-xs font-medium rounded-full">
+                      PROMPT
+                    </span>
+                  </div>
+                  ${
+                    prompt.featured
+                      ? '<span class="text-yellow-500 text-lg">★</span>'
+                      : ""
+                  }
                 </div>
-                <span class="px-2 py-1 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 text-xs font-medium rounded-full">
-                  PROMPT
-                </span>
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-1">${
+                  prompt.name
+                }</h3>
+                <p class="prompt-description text-gray-600 dark:text-gray-300 text-sm">${
+                  prompt.description
+                }</p>
+                <div class="prompt-preview">
+                  <div>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mb-2">Preview:</p>
+                    <p class="text-sm text-gray-700 dark:text-gray-300 font-mono leading-relaxed">${contentPreview}</p>
+                  </div>
+                </div>
               </div>
-              ${prompt.featured ? '<span class="text-yellow-500 text-lg">★</span>' : ""}
-            </div>
-            
-            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">${prompt.name}</h3>
-            <p class="text-gray-600 dark:text-gray-300 text-sm mb-4">${prompt.description}</p>
-            
-            <div class="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg mb-4">
-              <p class="text-xs text-gray-500 dark:text-gray-400 mb-2">Preview:</p>
-              <p class="text-sm text-gray-700 dark:text-gray-300 font-mono leading-relaxed">${contentPreview}</p>
-            </div>
-            
-            <div class="flex items-center justify-between">
-              <div class="flex space-x-1">
-                ${prompt.platforms
-                  .map(
-                    (platform) => `
-                  <span class="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-xs rounded capitalize">
-                    ${platform}
-                  </span>
-                `
-                  )
-                  .join("")}
+              <div class="prompt-card-bottom">
+                <div class="flex items-center justify-between w-full">
+                  <div class="flex space-x-2">
+                    <button onclick="promptsPage.viewPrompt('${
+                      prompt.id
+                    }')" class="prompt-action-btn bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300 px-3 py-1 rounded text-sm hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors">View</button>
+                    <button id="copy-btn-${
+                      prompt.id
+                    }" onclick="promptsPage.copyPrompt('${
+            prompt.id
+          }', this)" class="prompt-action-btn bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700 transition-colors flex items-center">Copy</button>
+                  </div>
+                  ${installHtml}
+                </div>
               </div>
-              <div class="flex space-x-2">
-                <button onclick="promptsPage.viewPrompt('${prompt.id}')" class="bg-gray-200 dark:bg-gray-600 text-gray-700 dark:text-gray-300 px-3 py-1 rounded text-sm hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors">
-                  View
+            </div>
+          `;
+        }
+
+        createInstallButtons(prompt, installType = 'simple') {
+          const installUrl = this.getInstallUrl(prompt);
+          
+          if (installType === 'simple') {
+            return `
+              <div class="flex items-center gap-1">
+                <a href="${this.generateInstallLink(installUrl, 'vscode')}" target="_blank" rel="noopener noreferrer">
+                  <img src="https://img.shields.io/badge/VS_Code-Install-0098FF?style=flat-square&logo=visualstudiocode&logoColor=white" alt="Install in VS Code" class="install-badge">
+                </a>
+                <a href="${this.generateInstallLink(installUrl, 'insiders')}" target="_blank" rel="noopener noreferrer">
+                  <img src="https://img.shields.io/badge/VS_Code_Insiders-Install-24bfa5?style=flat-square&logo=visualstudiocode&logoColor=white" alt="Install in VS Code Insiders" class="install-badge">
+                </a>
+              </div>
+            `;
+          } else if (installType === 'modal') {
+            return `
+              <button onclick="promptsPage.showInstallModal('${prompt.id}')" class="install-btn-modal">
+                <img src="https://img.shields.io/badge/VS_Code-Install-0098FF?style=flat-square&logo=visualstudiocode&logoColor=white" alt="Install in VS Code" class="install-badge-button">
+              </button>
+            `;
+          }
+          return '';
+        }
+
+        getInstallUrl(prompt) {
+          // Use existing installUrl if available, otherwise generate one based on prompt ID
+          if (prompt.installUrl) {
+            return prompt.installUrl;
+          }
+          
+          // Generate URL based on prompt ID - assuming they correspond to awesome-copilot prompts
+          return `https://raw.githubusercontent.com/github/awesome-copilot/main/prompts/${prompt.id}.prompt.md`;
+        }
+
+        createModalInstallButtons(prompt) {
+          const installUrl = this.getInstallUrl(prompt);
+          
+          return `
+            <div class="flex items-center gap-2">
+              <span class="text-sm text-gray-600 dark:text-gray-400">Install:</span>
+              <a href="${this.generateInstallLink(installUrl, 'vscode')}" target="_blank" rel="noopener noreferrer" onclick="this.closest('.fixed').remove()">
+                <img src="https://img.shields.io/badge/VS_Code-Install-0098FF?style=flat-square&logo=visualstudiocode&logoColor=white" alt="Install in VS Code" class="install-badge">
+              </a>
+              <a href="${this.generateInstallLink(installUrl, 'insiders')}" target="_blank" rel="noopener noreferrer" onclick="this.closest('.fixed').remove()">
+                <img src="https://img.shields.io/badge/VS_Code_Insiders-Install-24bfa5?style=flat-square&logo=visualstudiocode&logoColor=white" alt="Install in VS Code Insiders" class="install-badge">
+              </a>
+            </div>
+          `;
+        }
+
+        generateInstallLink(promptUrl, type) {
+          const baseUrl = type === 'insiders' ? 'https://insiders.vscode.dev' : 'https://vscode.dev';
+          const protocol = type === 'insiders' ? 'vscode-insiders' : 'vscode';
+          const protocolHandler = `${protocol}:chat-instructions/install?url=${encodeURIComponent(promptUrl)}`;
+          return `${baseUrl}/redirect?url=${encodeURIComponent(protocolHandler)}`;
+        }
+
+        showInstallModal(promptId) {
+          const prompt = this.prompts.find(p => p.id === promptId);
+          if (!prompt) return;
+
+          const installUrl = this.getInstallUrl(prompt);
+          const modal = document.createElement('div');
+          modal.className = 'install-modal';
+          modal.innerHTML = `
+            <div class="install-modal-content">
+              <h2 class="text-xl font-semibold mb-4">Install ${prompt.name}</h2>
+              <p class="text-gray-600 dark:text-gray-300 mb-4">${prompt.description}</p>
+              
+              <div class="install-options">
+                <a href="${this.generateInstallLink(installUrl, 'vscode')}" target="_blank" rel="noopener noreferrer" class="install-option" onclick="this.closest('.install-modal').remove()">
+                  <div class="flex items-center justify-center mb-2">
+                    <img src="https://img.shields.io/badge/VS_Code-Install-0098FF?style=flat-square&logo=visualstudiocode&logoColor=white" alt="Install in VS Code" class="install-badge">
+                  </div>
+                  <div class="font-semibold">VS Code</div>
+                  <div class="text-sm text-gray-500">Install in VS Code</div>
+                </a>
+                
+                <a href="${this.generateInstallLink(installUrl, 'insiders')}" target="_blank" rel="noopener noreferrer" class="install-option" onclick="this.closest('.install-modal').remove()">
+                  <div class="flex items-center justify-center mb-2">
+                    <img src="https://img.shields.io/badge/VS_Code_Insiders-Install-24bfa5?style=flat-square&logo=visualstudiocode&logoColor=white" alt="Install in VS Code Insiders" class="install-badge">
+                  </div>
+                  <div class="font-semibold">VS Code Insiders</div>
+                  <div class="text-sm text-gray-500">Install in VS Code Insiders</div>
+                </a>
+              </div>
+              
+              <div class="mt-6 text-center">
+                <button onclick="this.closest('.install-modal').remove()" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition-colors">
+                  Cancel
                 </button>
-                <button onclick="promptsPage.copyPrompt('${prompt.id}')" class="bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700 transition-colors">
-                  Copy
-                </button>
               </div>
             </div>
-          </div>
-        `;
+          `;
+
+          document.body.appendChild(modal);
+          
+          // Close modal when clicking outside
+          modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+              modal.remove();
+            }
+          });
+        }
+
+        installPrompt(promptId, type) {
+          const prompt = this.prompts.find(p => p.id === promptId);
+          if (!prompt) return;
+
+          const installUrl = this.generateInstallLink(prompt.installUrl, type);
+          window.open(installUrl, '_blank');
+          
+          // Close modal
+          document.querySelector('.install-modal')?.remove();
+          
+          // Show feedback
+          this.showToast(`Opening ${type === 'insiders' ? 'VS Code Insiders' : 'VS Code'} to install ${prompt.name}`);
         }
 
         updatePromptsCount() {
@@ -520,25 +908,32 @@
           modal.className =
             "fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4";
           modal.innerHTML = `
-          <div class="bg-white dark:bg-gray-800 rounded-lg max-w-4xl w-full max-h-[90vh] overflow-hidden">
+          <div class="bg-white dark:bg-gray-800 rounded-lg max-w-4xl w-full max-h-[75vh] overflow-hidden flex flex-col">
             <div class="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
-              <h2 class="text-xl font-semibold text-gray-900 dark:text-white">${prompt.name}</h2>
+              <h2 class="text-xl font-semibold text-gray-900 dark:text-white">${
+                prompt.name
+              }</h2>
               <button onclick="this.closest('.fixed').remove()" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
                 <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
             </div>
-            <div class="p-6 overflow-y-auto max-h-[calc(90vh-140px)]">
-              <pre class="whitespace-pre-wrap text-sm text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">${prompt.content || "No content available"}</pre>
+            <div class="p-6 overflow-y-auto flex-1">
+              <pre class="whitespace-pre-wrap text-sm text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">${
+                prompt.content || "No content available"
+              }</pre>
             </div>
-            <div class="flex justify-end space-x-3 p-6 border-t border-gray-200 dark:border-gray-700">
-              <button onclick="this.closest('.fixed').remove()" class="px-4 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200">
-                Close
-              </button>
-              <button onclick="promptsPage.copyPrompt('${prompt.id}'); this.closest('.fixed').remove();" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition-colors">
-                Copy Prompt
-              </button>
+            <div class="flex justify-between items-center p-6 border-t border-gray-200 dark:border-gray-700 mb-2">
+              <div class="flex items-center space-x-3">
+                ${prompt.installable ? this.createModalInstallButtons(prompt) : ''}
+              </div>
+              <div class="flex space-x-3">
+                <button onclick="this.closest('.fixed').remove()" class="px-4 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200">Close</button>
+                <button onclick="promptsPage.copyPrompt('${
+                  prompt.id
+                }'); this.closest('.fixed').remove();" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition-colors">Copy</button>
+              </div>
             </div>
           </div>
         `;
@@ -546,13 +941,24 @@
           document.body.appendChild(modal);
         }
 
-        copyPrompt(promptId) {
+        copyPrompt(promptId, btn) {
           const prompt = this.prompts.find((p) => p.id === promptId);
           if (!prompt) return;
 
           navigator.clipboard
             .writeText(prompt.content || prompt.description)
             .then(() => {
+              // Visual feedback: change button to Copied with checkmark
+              if (btn) {
+                const original = btn.innerHTML;
+                btn.innerHTML =
+                  '<svg class="h-4 w-4 mr-1 text-white inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>Copied';
+                btn.disabled = true;
+                setTimeout(() => {
+                  btn.innerHTML = original;
+                  btn.disabled = false;
+                }, 2000);
+              }
               this.showToast(`${prompt.name} copied to clipboard!`);
             })
             .catch(() => {

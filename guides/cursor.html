@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cursor Guide - AI Tools Hub</title>
+    <meta
+      name="description"
+      content="Comprehensive guide to using Cursor: installation, LLMs, prompt engineering, MCP integration, agent features, and best practices."
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+      }
+      .code-block {
+        background: #1e293b;
+        color: #e2e8f0;
+        padding: 1rem;
+        border-radius: 0.5rem;
+        overflow-x: auto;
+        font-size: 0.95rem;
+        font-family: "Fira Mono", "Menlo", "Monaco", "Consolas", monospace;
+      }
+      .copy-button {
+        position: absolute;
+        top: 0.5rem;
+        right: 0.5rem;
+        background: #374151;
+        color: #fff;
+        padding: 0.25rem 0.75rem;
+        border-radius: 0.375rem;
+        font-size: 0.875rem;
+        border: none;
+        cursor: pointer;
+        z-index: 2;
+      }
+      .copy-button:hover {
+        background: #1e293b;
+      }
+    </style>
+  </head>
+  <body
+    class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors antialiased"
+  >
+    <!-- Navigation -->
+    <nav class="bg-white dark:bg-gray-800 shadow-sm sticky top-0 z-50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+          <div class="flex items-center">
+            <a href="/" class="flex items-center">
+              <!-- Cursor Icon -->
+              <svg
+                class="h-8 w-8 text-green-600 dark:text-green-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 4l16 8-8 2-2 8-8-16z"
+                />
+              </svg>
+              <span class="ml-2 text-xl font-bold text-gray-900 dark:text-white"
+                >AI Tools Hub</span
+              >
+            </a>
+          </div>
+          <div class="flex items-center space-x-4">
+            <a
+              href="/tools/"
+              class="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
+              >Browse Tools</a
+            >
+            <a
+              href="/mcps/"
+              class="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
+              >MCPs</a
+            >
+            <a
+              href="/prompts/"
+              class="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
+              >Prompts</a
+            >
+            <a
+              href="/rules/"
+              class="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
+              >Rules</a
+            >
+            <a
+              href="/chatmodes/"
+              class="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
+              >Chat Modes</a
+            >
+            <a
+              href="/guides/"
+              class="text-purple-600 dark:text-purple-400 font-medium"
+              >Guides</a
+            >
+            <a
+              href="/prompt-engineering/"
+              class="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
+              >Prompt Engineering</a
+            >
+            <button
+              id="theme-toggle"
+              class="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+            >
+              <svg
+                class="h-5 w-5 hidden dark:block"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
+                />
+              </svg>
+              <svg
+                class="h-5 w-5 dark:hidden"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <!-- Breadcrumb -->
+    <div
+      class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700"
+    >
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+        <nav
+          class="flex items-center text-sm text-gray-500 dark:text-gray-400 mb-6"
+          aria-label="Breadcrumb"
+        >
+          <a
+            href="../index.html"
+            class="hover:text-purple-600 dark:hover:text-purple-400"
+            >Home</a
+          >
+          <span class="mx-2">&gt;</span>
+          <a
+            href="../guides/"
+            class="hover:text-purple-600 dark:hover:text-purple-400"
+            >Guides</a
+          >
+          <span class="mx-2">&gt;</span>
+          <span class="text-gray-900 dark:text-gray-100">Cursor</span>
+        </nav>
+      </div>
+    </div>
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div class="flex justify-end mb-6">
+        <a
+          href="https://docs.cursor.com/welcome"
+          target="_blank"
+          rel="noopener"
+          class="inline-flex items-center px-4 py-2 bg-green-600 text-white rounded-lg shadow hover:bg-green-700 transition-colors font-semibold"
+          >Official Docs ↗</a
+        >
+      </div>
+      <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+        <!-- Sidebar -->
+        <div class="lg:col-span-1">
+          <div
+            class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 sticky top-24"
+          >
+            <h3
+              class="text-lg font-semibold text-gray-900 dark:text-white mb-4"
+            >
+              On This Page
+            </h3>
+            <nav class="space-y-2">
+              <a
+                href="#overview"
+                class="block text-sm text-gray-600 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400"
+                >Overview</a
+              >
+              <a
+                href="#installation"
+                class="block text-sm text-gray-600 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400"
+                >Installation & Setup</a
+              >
+              <a
+                href="#concepts"
+                class="block text-sm text-gray-600 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400"
+                >Core Concepts</a
+              >
+              <a
+                href="#llms"
+                class="block text-sm text-gray-600 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400"
+                >LLMs in Cursor</a
+              >
+              <a
+                href="#prompt-engineering"
+                class="block text-sm text-gray-600 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400"
+                >Prompt Engineering</a
+              >
+              <a
+                href="#mcp"
+                class="block text-sm text-gray-600 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400"
+                >MCP Integration</a
+              >
+              <a
+                href="#agents"
+                class="block text-sm text-gray-600 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400"
+                >Agent Features</a
+              >
+              <a
+                href="#best-practices"
+                class="block text-sm text-gray-600 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400"
+                >Best Practices & Tips</a
+              >
+            </nav>
+          </div>
+        </div>
+        <!-- Content -->
+        <div class="lg:col-span-3">
+          <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-8">
+            <!-- Header -->
+            <div class="flex items-center mb-8">
+              <div
+                class="w-16 h-16 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center mr-4"
+              >
+                <img
+                  src="../assets/images/cursor.png"
+                  alt="Cursor Logo"
+                  class="h-8 w-8"
+                />
+              </div>
+              <div>
+                <h1 class="text-3xl font-bold text-gray-900 dark:text-white">
+                  Cursor Guide
+                </h1>
+                <p class="text-gray-600 dark:text-gray-300">
+                  Your complete guide to getting started and mastering Cursor's
+                  AI-powered development environment.
+                </p>
+              </div>
+            </div>
+            <!-- Overview Section -->
+            <section id="overview" class="mb-12">
+              <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+                Overview
+              </h2>
+              <div class="prose prose-gray dark:prose-invert max-w-none">
+                <p class="text-gray-600 dark:text-gray-300 mb-4">
+                  <strong>Cursor</strong> is an AI-powered code editor designed
+                  to help you code faster and smarter by deeply understanding
+                  your codebase. With Cursor, you can describe what you want to
+                  build or change in natural language, and the editor will
+                  generate, refactor, or review code for you. Cursor's AI is
+                  context-aware, meaning it leverages your entire project,
+                  coding standards, and even your team's shared knowledge to
+                  provide highly relevant suggestions.
+                </p>
+                <ul class="list-disc pl-6 mb-2">
+                  <li>Natural language code generation and refactoring</li>
+                  <li>Context-aware completions and suggestions</li>
+                  <li>
+                    Support for advanced workflows with MCPs (Model Context
+                    Protocol), rules, memories, and agent automation
+                  </li>
+                  <li>
+                    Works with all major programming languages and supports
+                    extensions
+                  </li>
+                </ul>
+                <p>
+                  Cursor is designed for both individual developers and teams,
+                  making it easy to onboard, share context, and collaborate
+                  efficiently.
+                </p>
+              </div>
+            </section>
+            <!-- Installation & Setup Section -->
+            <section id="installation" class="mb-12">
+              <h2 class="text-2xl font-bold mb-4">Installation & Setup</h2>
+              <ul class="list-disc pl-6 mb-2">
+                <li>
+                  <strong>Download Cursor:</strong> Visit
+                  <a
+                    href="https://cursor.com/downloads"
+                    target="_blank"
+                    rel="noopener"
+                    class="text-green-600 dark:text-green-400 hover:underline"
+                    >cursor.com/downloads</a
+                  >
+                  and select the installer for your operating system (Windows,
+                  Mac, or Linux).
+                </li>
+                <li>
+                  <strong>Run the Installer:</strong> Follow the installation
+                  prompts. Once installed, launch Cursor.
+                </li>
+                <li>
+                  <strong>First-Time Setup:</strong>
+                  <ul class="list-disc pl-6">
+                    <li>
+                      Shortcuts: Choose keyboard shortcuts that match your
+                      previous editor (e.g., VS Code, JetBrains).
+                    </li>
+                    <li>
+                      Theme: Pick a light or dark theme, or customize your own.
+                    </li>
+                    <li>
+                      Terminal Preferences: Set up your preferred shell and
+                      terminal settings.
+                    </li>
+                    <li>
+                      Account: Sign up for a Cursor account to unlock all AI
+                      features. You can do this during setup or later in
+                      Settings.
+                    </li>
+                    <li>
+                      Import Settings: If you're migrating from another editor,
+                      you can import your settings and preferences for a
+                      seamless transition.
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+              <div
+                class="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4 mb-6"
+              >
+                <div class="flex items-center">
+                  <svg
+                    class="h-5 w-5 text-green-600 dark:text-green-400 mr-2"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                  <span class="text-green-800 dark:text-green-200 font-medium"
+                    >Tips</span
+                  >
+                </div>
+                <ul
+                  class="mt-2 text-green-700 dark:text-green-300 text-sm space-y-1"
+                >
+                  <li>
+                    You can revisit the setup wizard anytime by pressing
+                    <kbd>Ctrl+Shift+P</kbd> and searching for
+                    <code>Cursor: Start Onboarding</code>.
+                  </li>
+                  <li>
+                    Cursor supports all major programming languages out of the
+                    box, and you can add more via extensions.
+                  </li>
+                </ul>
+                <p class="text-xs text-gray-500 dark:text-gray-400 mt-2">
+                  See the
+                  <a
+                    href="https://docs.cursor.com/get-started/installation"
+                    target="_blank"
+                    rel="noopener"
+                    class="text-green-600 dark:text-green-400 hover:underline"
+                    >official installation guide</a
+                  >
+                  for more details.
+                </p>
+              </div>
+            </section>
+            <!-- Core Concepts Section -->
+            <section id="concepts" class="mb-12">
+              <h2 class="text-2xl font-bold mb-4">Core Concepts</h2>
+              <ul class="list-disc pl-6 mb-2">
+                <li>
+                  <strong>Codebase Indexing:</strong> When you open a project,
+                  Cursor automatically indexes your codebase. This process
+                  allows the AI to understand your project's structure,
+                  dependencies, and logic, resulting in highly relevant
+                  suggestions. Indexing is fast (1–15 minutes depending on
+                  project size) and can be shared across teams for consistency.
+                </li>
+                <li>
+                  <strong>Context Awareness:</strong> Cursor uses not just your
+                  open files, but the entire project context, including rules,
+                  memories, and recent changes, to inform its suggestions. This
+                  means the AI can reference related files, follow your coding
+                  standards, and even remember project goals.
+                </li>
+                <li>
+                  <strong>AI Models (LLMs):</strong> Cursor supports multiple
+                  large language models (LLMs), each with different strengths.
+                  You can select the best model for your task (see next
+                  section).
+                </li>
+                <li>
+                  <strong>Team Collaboration:</strong> Teams can share codebase
+                  indexes, rules, and memories, making onboarding and
+                  collaboration seamless.
+                </li>
+              </ul>
+              <div class="text-xs text-gray-500 dark:text-gray-400 mb-2">
+                For more details, see
+                <a
+                  href="https://docs.cursor.com/get-started/concepts"
+                  target="_blank"
+                  rel="noopener"
+                  class="text-green-600 dark:text-green-400 hover:underline"
+                  >Cursor Concepts</a
+                >
+                and
+                <a
+                  href="https://docs.cursor.com/context/codebase-indexing"
+                  target="_blank"
+                  rel="noopener"
+                  class="text-green-600 dark:text-green-400 hover:underline"
+                  >Codebase Indexing</a
+                >.
+              </div>
+            </section>
+            <!-- LLMs in Cursor Section -->
+            <section id="llms" class="mb-12">
+              <h2 class="text-2xl font-bold mb-4">LLMs in Cursor</h2>
+              <p class="mb-2 text-gray-600 dark:text-gray-300">
+                Cursor lets you choose from a range of powerful LLMs, including
+                GPT-4o, GPT-4, GPT-3.5, Claude, Gemini, and more. Each model has
+                unique strengths for different coding and chat tasks.
+              </p>
+              <ul class="list-disc pl-6 mb-2">
+                <li>
+                  <strong>GPT-4o:</strong> Fast, balanced, and strong at both
+                  code and chat. Great for general coding, documentation, and
+                  pair programming.
+                </li>
+                <li>
+                  <strong>Claude:</strong> Excellent for long-context tasks and
+                  summarization.
+                </li>
+                <li>
+                  <strong>Gemini:</strong> Lightweight and fast, ideal for quick
+                  iterations.
+                </li>
+              </ul>
+              <div class="mb-4">
+                <span
+                  class="inline-block bg-green-200 dark:bg-green-700 text-green-800 dark:text-green-100 px-2 py-0.5 rounded text-xs font-semibold mr-2"
+                  >Example: Switch LLMs</span
+                >
+                <div class="relative">
+                  <pre class="code-block"><code>// Open the command palette
+Ctrl+Shift+P
+// Search for:
+Cursor: Select Model
+// Choose your preferred LLM (e.g., GPT-4o, Claude, Gemini)</code></pre>
+                  <button
+                    class="copy-button bg-gray-700 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm"
+                    onclick="copyToClipboard(this.parentElement)"
+                  >
+                    Copy
+                  </button>
+                </div>
+              </div>
+              <div class="text-xs text-gray-500 dark:text-gray-400 mb-2">
+                For more details, see
+                <a
+                  href="https://docs.cursor.com/models"
+                  target="_blank"
+                  rel="noopener"
+                  class="text-green-600 dark:text-green-400 hover:underline"
+                  >Cursor Models</a
+                >.
+              </div>
+            </section>
+            <!-- Prompt Engineering Section -->
+            <section id="prompt-engineering" class="mb-12">
+              <h2 class="text-2xl font-bold mb-4">Prompt Engineering</h2>
+              <p class="mb-2 text-gray-600 dark:text-gray-300">
+                Use rules, memories, and @-symbols to guide Cursor's AI and
+                automate context-aware workflows. Combine these for advanced
+                prompt engineering and team-wide standards.
+              </p>
+              <ul class="list-disc pl-6 mb-2">
+                <li>
+                  <strong>Rules:</strong> Define project or team-wide coding
+                  standards, agent behaviors, and best practices. Rules can be
+                  set globally or per project and are automatically referenced
+                  by the AI when generating or reviewing code.
+                </li>
+                <li>
+                  <strong>Memories:</strong> Persist important context,
+                  decisions, or facts for agents and AI. Memories help the AI
+                  remember project goals, architectural decisions, or recurring
+                  issues, making its suggestions more relevant over time.
+                </li>
+                <li>
+                  <strong>@-Symbols:</strong> Use <code>@prompt</code>,
+                  <code>@rule</code>, or <code>@memory</code> in chat or
+                  commands to quickly reference and invoke context, templates,
+                  or tools.
+                </li>
+              </ul>
+              <div class="mb-4">
+                <span
+                  class="inline-block bg-green-200 dark:bg-green-700 text-green-800 dark:text-green-100 px-2 py-0.5 rounded text-xs font-semibold mr-2"
+                  >Example: Apply Rules, Prompts, and Memories</span
+                >
+                <div class="relative">
+                  <pre class="code-block"><code>@prompt code-review
+@rule typescript-strict
+@memory project-goals</code></pre>
+                  <button
+                    class="copy-button bg-gray-700 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm"
+                    onclick="copyToClipboard(this.parentElement)"
+                  >
+                    Copy
+                  </button>
+                </div>
+              </div>
+              <div class="mb-4">
+                <span
+                  class="inline-block bg-green-200 dark:bg-green-700 text-green-800 dark:text-green-100 px-2 py-0.5 rounded text-xs font-semibold mr-2"
+                  >Example: Rule File Structure</span
+                >
+                <div class="relative">
+                  <pre class="code-block"><code>---
+description: TypeScript strict mode for all code
+alwaysApply: true
+---
+# TypeScript Strict
+
+## Compiler Options
+```json
+{
+  "compilerOptions": {
+    "strict": true,
+    "noImplicitAny": true
+  }
+}
+```
+
+## Coding Standards
+- Use explicit type annotations
+- Handle null/undefined cases
+</code></pre>
+                  <button
+                    class="copy-button bg-gray-700 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm"
+                    onclick="copyToClipboard(this.parentElement)"
+                  >
+                    Copy
+                  </button>
+                </div>
+              </div>
+              <div class="mb-4">
+                <span
+                  class="inline-block bg-green-200 dark:bg-green-700 text-green-800 dark:text-green-100 px-2 py-0.5 rounded text-xs font-semibold mr-2"
+                  >Example: Memory File Structure</span
+                >
+                <div class="relative">
+                  <pre class="code-block"><code>---
+description: Project goals and context
+---
+# Project Goals
+- Build a scalable, maintainable API
+- Follow strict TypeScript standards
+- Prioritize security and performance
+</code></pre>
+                  <button
+                    class="copy-button bg-gray-700 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm"
+                    onclick="copyToClipboard(this.parentElement)"
+                  >
+                    Copy
+                  </button>
+                </div>
+              </div>
+              <div class="text-xs text-gray-500 dark:text-gray-400 mb-2">
+                For more details, see
+                <a
+                  href="https://docs.cursor.com/context/rules"
+                  target="_blank"
+                  rel="noopener"
+                  class="text-green-600 dark:text-green-400 hover:underline"
+                  >Rules</a
+                >,
+                <a
+                  href="https://docs.cursor.com/context/memories"
+                  target="_blank"
+                  rel="noopener"
+                  class="text-green-600 dark:text-green-400 hover:underline"
+                  >Memories</a
+                >, and
+                <a
+                  href="https://docs.cursor.com/context/@-symbols/overview"
+                  target="_blank"
+                  rel="noopener"
+                  class="text-green-600 dark:text-green-400 hover:underline"
+                  >@-Symbols</a
+                >.
+              </div>
+            </section>
+            <!-- MCP Integration Section -->
+            <section id="mcp" class="mb-12">
+              <h2 class="text-2xl font-bold mb-4">MCP Integration</h2>
+              <p class="mb-2 text-gray-600 dark:text-gray-300">
+                Model Context Protocol (MCP) allows Cursor to connect with
+                external tools, data sources, and services, greatly expanding
+                its capabilities for automation and advanced workflows.
+              </p>
+              <ul class="list-disc pl-6 mb-2">
+                <li>
+                  Configure MCP servers in your project or workspace settings.
+                </li>
+                <li>Restart Cursor after updating your MCP configuration.</li>
+                <li>
+                  Agents and tools can now access these MCP servers for advanced
+                  workflows (e.g., file operations, git actions).
+                </li>
+              </ul>
+              <div class="mb-4">
+                <span
+                  class="inline-block bg-green-200 dark:bg-green-700 text-green-800 dark:text-green-100 px-2 py-0.5 rounded text-xs font-semibold mr-2"
+                  >Example: MCP Server Configuration</span
+                >
+                <div class="relative">
+                  <pre class="code-block"><code>{
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": ["@filesystem/mcp"],
+      "env": { "ALLOWED_PATHS": "/workspace" }
+    },
+    "git": {
+      "command": "git-mcp",
+      "args": [],
+      "env": {}
+    }
+  }
+}</code></pre>
+                  <button
+                    class="copy-button bg-gray-700 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm"
+                    onclick="copyToClipboard(this.parentElement)"
+                  >
+                    Copy
+                  </button>
+                </div>
+              </div>
+              <div class="mb-4">
+                <span
+                  class="inline-block bg-green-200 dark:bg-green-700 text-green-800 dark:text-green-100 px-2 py-0.5 rounded text-xs font-semibold mr-2"
+                  >Example: Using MCP Tools</span
+                >
+                <div class="relative">
+                  <pre class="code-block"><code>// Open the command palette
+Ctrl+Shift+P
+// Run agent tasks that leverage MCP tools (e.g., file operations, git actions)</code></pre>
+                  <button
+                    class="copy-button bg-gray-700 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm"
+                    onclick="copyToClipboard(this.parentElement)"
+                  >
+                    Copy
+                  </button>
+                </div>
+              </div>
+              <div class="text-xs text-gray-500 dark:text-gray-400 mb-2">
+                For more details, see
+                <a
+                  href="https://docs.cursor.com/context/mcp"
+                  target="_blank"
+                  rel="noopener"
+                  class="text-green-600 dark:text-green-400 hover:underline"
+                  >Cursor MCP Docs</a
+                >
+                and
+                <a
+                  href="https://docs.cursor.com/agent/tools"
+                  target="_blank"
+                  rel="noopener"
+                  class="text-green-600 dark:text-green-400 hover:underline"
+                  >Agent Tools</a
+                >.
+              </div>
+            </section>
+            <!-- Agent Features Section -->
+            <section id="agents" class="mb-12">
+              <h2 class="text-2xl font-bold mb-4">Agent Features</h2>
+              <p class="mb-2 text-gray-600 dark:text-gray-300">
+                Agents in Cursor are AI-powered assistants that can automate
+                tasks, refactor code, perform reviews, and more. Customize agent
+                behavior with rules, prompt templates, and MCP tools.
+              </p>
+              <ul class="list-disc pl-6 mb-2">
+                <li>
+                  <strong>Task Automation:</strong> Agents can break down
+                  complex tasks into steps, plan, and execute them in sequence.
+                </li>
+                <li>
+                  <strong>Code Review:</strong> Agents can review code for
+                  style, security, and performance, using your project's rules
+                  and memories.
+                </li>
+                <li>
+                  <strong>Refactoring:</strong> Agents can suggest and apply
+                  code improvements, including inline edits and terminal
+                  commands.
+                </li>
+                <li>
+                  <strong>Modes:</strong> Agents support different operational
+                  modes (e.g., code generation, review, refactoring), each
+                  customizable with prompts and rules.
+                </li>
+                <li>
+                  <strong>Tools:</strong> Agents can access external tools and
+                  data via MCP servers.
+                </li>
+              </ul>
+              <div class="mb-4">
+                <span
+                  class="inline-block bg-green-200 dark:bg-green-700 text-green-800 dark:text-green-100 px-2 py-0.5 rounded text-xs font-semibold mr-2"
+                  >Example: Invoking Agent Features</span
+                >
+                <div class="relative">
+                  <pre class="code-block"><code>// Open the command palette
+Ctrl+Shift+P
+// Run:
+Cursor: Plan
+Cursor: Review
+Cursor: Refactor
+// Or use @prompt, @rule, @memory in chat to customize agent behavior</code></pre>
+                  <button
+                    class="copy-button bg-gray-700 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm"
+                    onclick="copyToClipboard(this.parentElement)"
+                  >
+                    Copy
+                  </button>
+                </div>
+              </div>
+              <div class="text-xs text-gray-500 dark:text-gray-400 mb-2">
+                For more details, see
+                <a
+                  href="https://docs.cursor.com/agent/overview"
+                  target="_blank"
+                  rel="noopener"
+                  class="text-green-600 dark:text-green-400 hover:underline"
+                  >Agent Overview</a
+                >,
+                <a
+                  href="https://docs.cursor.com/agent/modes"
+                  target="_blank"
+                  rel="noopener"
+                  class="text-green-600 dark:text-green-400 hover:underline"
+                  >Agent Modes</a
+                >, and
+                <a
+                  href="https://docs.cursor.com/agent/tools"
+                  target="_blank"
+                  rel="noopener"
+                  class="text-green-600 dark:text-green-400 hover:underline"
+                  >Agent Tools</a
+                >.
+              </div>
+            </section>
+            <!-- Best Practices & Tips Section -->
+            <section id="best-practices" class="mb-12">
+              <h2 class="text-2xl font-bold mb-4">Best Practices & Tips</h2>
+              <ul class="list-disc pl-6 mb-2">
+                <li>
+                  <strong>Keep your codebase indexed</strong> for the best AI
+                  suggestions.
+                </li>
+                <li>
+                  <strong>Document rules and memories</strong> for team
+                  consistency and onboarding.
+                </li>
+                <li>
+                  <strong>Switch LLMs</strong> based on task requirements for
+                  optimal results.
+                </li>
+                <li>
+                  <strong>Use agent planning</strong> for complex, multi-step
+                  tasks.
+                </li>
+                <li>
+                  <strong>Leverage MCPs</strong> to integrate external tools and
+                  automate workflows.
+                </li>
+                <li>
+                  <strong>Review official docs</strong> for troubleshooting and
+                  advanced workflows.
+                </li>
+              </ul>
+              <div class="mb-4">
+                <span
+                  class="inline-block bg-green-200 dark:bg-green-700 text-green-800 dark:text-green-100 px-2 py-0.5 rounded text-xs font-semibold mr-2"
+                  >Example: Troubleshooting & Support</span
+                >
+                <div class="relative">
+                  <pre class="code-block"><code>// If you run into issues:
+// 1. Use the troubleshooting guide in the official docs
+// 2. Join the Cursor community for support and tips
+// 3. Re-index your codebase if suggestions seem off
+// 4. Check your rules and memories for accuracy</code></pre>
+                  <button
+                    class="copy-button bg-gray-700 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm"
+                    onclick="copyToClipboard(this.parentElement)"
+                  >
+                    Copy
+                  </button>
+                </div>
+              </div>
+              <p class="text-gray-600 dark:text-gray-300 mt-4">
+                If you run into issues: Use the troubleshooting guide in the
+                official docs or join the Cursor community for support and tips.
+              </p>
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const themeToggle = document.getElementById("theme-toggle");
+        const html = document.documentElement;
+        const savedTheme = localStorage.getItem("theme") || "system";
+        if (
+          savedTheme === "dark" ||
+          (savedTheme === "system" &&
+            window.matchMedia("(prefers-color-scheme: dark)").matches)
+        ) {
+          html.classList.add("dark");
+        }
+        themeToggle?.addEventListener("click", () => {
+          html.classList.toggle("dark");
+          const isDark = html.classList.contains("dark");
+          localStorage.setItem("theme", isDark ? "dark" : "light");
+        });
+      });
+
+      // Copy to clipboard for all code blocks
+      function copyToClipboard(parent) {
+        const code = parent.querySelector("code");
+        if (!code) return;
+        const text = code.innerText || code.textContent;
+        navigator.clipboard.writeText(text).then(() => {
+          const btn = parent.querySelector(".copy-button");
+          if (btn) {
+            const orig = btn.textContent;
+            btn.textContent = "Copied!";
+            setTimeout(() => {
+              btn.textContent = orig;
+            }, 1200);
+          }
+        });
+      }
+    </script>
+  </body>
+</html>

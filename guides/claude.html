@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Claude Guide - AI Tools Hub</title>
+    <meta
+      name="description"
+      content="Comprehensive guide for using Anthropic Claude: setup, LLMs, prompt engineering, MCP, and best practices."
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+      }
+      .code-block {
+        background: #1e293b;
+        color: #e2e8f0;
+        padding: 1rem;
+        border-radius: 0.5rem;
+        overflow-x: auto;
+        font-size: 0.9em;
+        font-family: 'Fira Mono', 'Menlo', 'Monaco', 'Consolas', monospace;
+      }
+      .copy-button {
+        position: absolute;
+        top: 0.5rem;
+        right: 0.5rem;
+        background: #374151;
+        color: #fff;
+        padding: 0.25rem 0.75rem;
+        border-radius: 0.375rem;
+        font-size: 0.875rem;
+        border: none;
+        cursor: pointer;
+        z-index: 2;
+      }
+      .copy-button:hover {
+        background: #1e293b;
+      }
+    </style>
+  </head>
+  <body
+    class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors antialiased"
+  >
+    <!-- Navigation -->
+    <nav class="bg-white dark:bg-gray-800 shadow-sm sticky top-0 z-50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+          <div class="flex items-center">
+            <a href="/" class="flex items-center">
+              <svg
+                class="h-8 w-8 text-green-600 dark:text-green-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M13 10V3L4 14h7v7l9-11h-7z"
+                />
+              </svg>
+              <span class="ml-2 text-xl font-bold text-gray-900 dark:text-white"
+                >AI Tools Hub</span
+              >
+            </a>
+          </div>
+          <div class="flex items-center space-x-4">
+            <a
+              href="/tools/"
+              class="text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors"
+              >Browse Tools</a
+            >
+            <a
+              href="/mcps/"
+              class="text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors"
+              >MCPs</a
+            >
+            <a
+              href="/prompts/"
+              class="text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors"
+              >Prompts</a
+            >
+            <a
+              href="/rules/"
+              class="text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors"
+              >Rules</a
+            >
+            <a
+              href="/chatmodes/"
+              class="text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors"
+              >Chat Modes</a
+            >
+            <a
+              href="/guides/"
+              class="text-green-600 dark:text-green-400 font-medium"
+              >Guides</a
+            >
+            <a
+              href="/prompt-engineering/"
+              class="text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors"
+              >Prompt Engineering</a
+            >
+            <button
+              id="theme-toggle"
+              class="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+            >
+              <svg
+                class="h-5 w-5 hidden dark:block"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
+                />
+              </svg>
+              <svg
+                class="h-5 w-5 dark:hidden"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <!-- Breadcrumb -->
+    <div
+      class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700"
+    >
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+        <nav
+          class="flex items-center text-sm text-gray-500 dark:text-gray-400 mb-6"
+          aria-label="Breadcrumb"
+        >
+          <a
+            href="../index.html"
+            class="hover:text-green-600 dark:hover:text-green-400"
+            >Home</a
+          >
+          <span class="mx-2">&gt;</span>
+          <a
+            href="../guides/"
+            class="hover:text-green-600 dark:hover:text-green-400"
+            >Guides</a
+          >
+          <span class="mx-2">&gt;</span>
+          <span class="text-gray-900 dark:text-gray-100">Claude</span>
+        </nav>
+      </div>
+    </div>
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div class="flex justify-end mb-6">
+        <a
+          href="https://docs.anthropic.com/en/docs/intro"
+          target="_blank"
+          rel="noopener"
+          class="inline-flex items-center px-4 py-2 bg-orange-600 text-white rounded-lg shadow hover:bg-orange-700 transition-colors font-semibold"
+        >
+          Official Docs ↗
+        </a>
+      </div>
+      <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+        <!-- Sidebar -->
+        <div class="lg:col-span-1">
+          <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 sticky top-24">
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">On This Page</h3>
+            <nav class="space-y-2">
+              <a href="#overview" class="block text-sm text-gray-600 dark:text-gray-400 hover:text-orange-600 dark:hover:text-orange-400">Overview</a>
+              <a href="#installation" class="block text-sm text-gray-600 dark:text-gray-400 hover:text-orange-600 dark:hover:text-orange-400">Installation & Setup</a>
+              <a href="#concepts" class="block text-sm text-gray-600 dark:text-gray-400 hover:text-orange-600 dark:hover:text-orange-400">Core Concepts</a>
+              <a href="#llms" class="block text-sm text-gray-600 dark:text-gray-400 hover:text-orange-600 dark:hover:text-orange-400">LLMs in Claude</a>
+              <a href="#prompt-engineering" class="block text-sm text-gray-600 dark:text-gray-400 hover:text-orange-600 dark:hover:text-orange-400">Prompt Engineering</a>
+              <a href="#mcp" class="block text-sm text-gray-600 dark:text-gray-400 hover:text-orange-600 dark:hover:text-orange-400">MCP Integration</a>
+              <a href="#best-practices" class="block text-sm text-gray-600 dark:text-gray-400 hover:text-orange-600 dark:hover:text-orange-400">Best Practices & Tips</a>
+            </nav>
+          </div>
+        </div>
+        <!-- Content -->
+        <div class="lg:col-span-3">
+          <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-8">
+            <!-- Header -->
+            <div class="flex items-center mb-8">
+              <div class="w-16 h-16 bg-orange-100 dark:bg-orange-900 rounded-lg flex items-center justify-center mr-4">
+                <img src="../assets/images/claude-ai-icon.webp" alt="Claude Logo" class="h-8 w-8" />
+              </div>
+              <div>
+                <h1 class="text-3xl font-bold text-gray-900 dark:text-white">Claude Guide</h1>
+                <p class="text-gray-600 dark:text-gray-300">Comprehensive guide for using Anthropic Claude: setup, LLMs, prompt engineering, MCP, and best practices.</p>
+              </div>
+            </div>
+            <!-- Overview Section -->
+            <section id="overview" class="mb-12">
+              <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+                Overview
+              </h2>
+              <div class="prose prose-gray dark:prose-invert max-w-none">
+                <p class="text-gray-600 dark:text-gray-300 mb-4">
+                  Claude is Anthropic's advanced AI assistant, designed for
+                  safe, helpful, and honest collaboration on a wide range of
+                  tasks. Claude can write, review, and refactor code, answer
+                  questions, summarize documents, and automate workflows. It is
+                  accessible via API, SDKs, and the Anthropic Console, and
+                  supports advanced features like tool use, prompt engineering,
+                  and Model Context Protocol (MCP) integration.
+                </p>
+                <ul class="list-disc pl-6 mb-2">
+                  <li>
+                    <a
+                      href="https://docs.anthropic.com/en/home"
+                      target="_blank"
+                      class="text-green-600 dark:text-green-400 hover:underline"
+                      >Anthropic Home</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      href="https://docs.anthropic.com/en/docs/overview"
+                      target="_blank"
+                      class="text-green-600 dark:text-green-400 hover:underline"
+                      >Overview</a
+                    >
+                  </li>
+                </ul>
+              </div>
+            </section>
+            <!-- Installation & Setup Section -->
+            <section id="installation" class="mb-12">
+              <h2 class="text-2xl font-bold mb-4">Installation & Setup</h2>
+              <ul class="list-disc pl-6 mb-2">
+                <li>
+                  Prerequisites: Anthropic Console account, API key, Python
+                  3.7+/TypeScript 4.5+/Java 8+.
+                </li>
+                <li>
+                  SDKs: Install via <code>pip install anthropic</code> (Python)
+                  or <code>npm install @anthropic-ai/sdk</code> (TypeScript).
+                  Java and Go SDKs also available.
+                </li>
+                <li>
+                  API Key: Set <code>ANTHROPIC_API_KEY</code> as an environment
+                  variable.
+                </li>
+                <li>
+                  First Steps: Use the Anthropic Console Workbench to experiment
+                  with prompts and responses before integrating into your
+                  application.
+                </li>
+              </ul>
+              <p class="text-sm mt-2">
+                <a
+                  href="https://docs.anthropic.com/en/docs/get-started"
+                  target="_blank"
+                  class="text-green-600 underline"
+                  >Get Started</a
+                >
+              </p>
+            </section>
+            <!-- Core Concepts Section -->
+            <section id="concepts" class="mb-12">
+              <h2 class="text-2xl font-bold mb-4">Core Concepts</h2>
+              <div class="space-y-8">
+                <div>
+                  <h3 class="text-xl font-semibold mb-2">Context Windows</h3>
+                  <p class="mb-2">Claude supports very large context windows (up to 200K tokens in Claude 3 Opus), allowing you to provide long documents, codebases, or conversations as input. This enables the model to reason over extensive information and maintain context across complex tasks. Use this feature to include all relevant background, requirements, or code in your prompts for more accurate and holistic responses.</p>
+                  <div class="relative mb-2">
+                    <pre class="code-block"><code>// Example: Provide a long document as input
+"Please summarize the following document: [paste document here]"</code></pre>
+                    <button class="copy-button" onclick="copyToClipboard(this.parentElement)">Copy</button>
+                  </div>
+                  <p class="text-sm text-green-700 dark:text-green-400">Reference: <a href="https://docs.anthropic.com/en/docs/build-with-claude/context-windows" target="_blank" class="underline">Context Windows</a></p>
+                </div>
+                <div>
+                  <h3 class="text-xl font-semibold mb-2">Prompt Caching</h3>
+                  <p class="mb-2">Prompt caching allows you to reuse previously processed prompts and their outputs, reducing latency and cost for repeated or similar requests. This is especially useful for applications with recurring queries or workflows. By caching results, you can deliver faster responses and optimize resource usage.</p>
+                  <div class="relative mb-2">
+                    <pre class="code-block"><code>// Example: Cache a prompt
+"Summarize the following article in three bullet points: [paste article here]"</code></pre>
+                    <button class="copy-button" onclick="copyToClipboard(this.parentElement)">Copy</button>
+                  </div>
+                  <p class="text-sm text-green-700 dark:text-green-400">Reference: <a href="https://docs.anthropic.com/en/docs/build-with-claude/prompt-caching" target="_blank" class="underline">Prompt Caching</a></p>
+                </div>
+                <div>
+                  <h3 class="text-xl font-semibold mb-2">Extended Thinking</h3>
+                  <p class="mb-2">Extended thinking enables Claude to reason through complex, multi-step problems by encouraging the model to "think out loud" and break down its process. This is particularly effective for tasks that require analysis, planning, or logical deduction. Use prompts like "Explain your reasoning step by step" to activate this capability.</p>
+                  <div class="relative mb-2">
+                    <pre class="code-block"><code>// Example: Ask Claude to think step by step
+"Let's think step by step: What are the pros and cons of each approach?"</code></pre>
+                    <button class="copy-button" onclick="copyToClipboard(this.parentElement)">Copy</button>
+                  </div>
+                  <p class="text-sm text-green-700 dark:text-green-400">Reference: <a href="https://docs.anthropic.com/en/docs/build-with-claude/extended-thinking" target="_blank" class="underline">Extended Thinking</a></p>
+                </div>
+                <div>
+                  <h3 class="text-xl font-semibold mb-2">Batch Processing</h3>
+                  <p class="mb-2">Batch processing allows you to send multiple prompts in a single API call, improving throughput and efficiency for large-scale or high-volume applications. This is ideal for scenarios like document summarization, bulk classification, or mass content generation.</p>
+                  <div class="relative mb-2">
+                    <pre class="code-block"><code>// Example: Send multiple prompts
+"Summarize the attached PDF and extract all key dates."</code></pre>
+                    <button class="copy-button" onclick="copyToClipboard(this.parentElement)">Copy</button>
+                  </div>
+                  <p class="text-sm text-green-700 dark:text-green-400">Reference: <a href="https://docs.anthropic.com/en/docs/build-with-claude/batch-processing" target="_blank" class="underline">Batch Processing</a></p>
+                </div>
+                <div>
+                  <h3 class="text-xl font-semibold mb-2">PDF & File Support</h3>
+                  <p class="mb-2">Claude can process and extract information from PDFs and other file types. This enables workflows like document analysis, data extraction, and summarization directly from uploaded files. You can upload files via the API and instruct Claude to read, summarize, or answer questions about their content.</p>
+                  <div class="relative mb-2">
+                    <pre class="code-block"><code>// Example: Upload a PDF and ask Claude to summarize
+"Summarize the attached PDF and extract all key dates."</code></pre>
+                    <button class="copy-button" onclick="copyToClipboard(this.parentElement)">Copy</button>
+                  </div>
+                  <p class="text-sm text-green-700 dark:text-green-400">References: <a href="https://docs.anthropic.com/en/docs/build-with-claude/pdf-support" target="_blank" class="underline">PDF Support</a>, <a href="https://docs.anthropic.com/en/docs/build-with-claude/files" target="_blank" class="underline">Files</a></p>
+                </div>
+                <div>
+                  <h3 class="text-xl font-semibold mb-2">Search Results & Sheets Integration</h3>
+                  <p class="mb-2">Claude can fetch and summarize web search results and work with Google Sheets. This is useful for research, data analysis, and automation. You can instruct Claude to pull in external data, process it, and return structured outputs or insights.</p>
+                  <div class="relative mb-2">
+                    <pre class="code-block"><code>// Example: Search for the latest news on AI regulation
+"Search for the latest news on AI regulation"</code></pre>
+                    <button class="copy-button" onclick="copyToClipboard(this.parentElement)">Copy</button>
+                  </div>
+                  <p class="text-sm text-green-700 dark:text-green-400">References: <a href="https://docs.anthropic.com/en/docs/build-with-claude/search-results" target="_blank" class="underline">Search Results</a>, <a href="https://docs.anthropic.com/en/docs/agents-and-tools/claude-for-sheets" target="_blank" class="underline">Claude for Sheets</a></p>
+                </div>
+              </div>
+            </section>
+            <!-- LLMs in Claude Section -->
+            <section id="llms" class="mb-12">
+              <h2 class="text-2xl font-bold mb-4">LLMs in Claude</h2>
+              <div class="space-y-8">
+                <div>
+                  <h3 class="text-xl font-semibold mb-2">Models Overview</h3>
+                  <p class="mb-2">Claude offers several models—Claude 3 Opus, Sonnet, Haiku, Claude 2, and more—each with different capabilities, context windows, and pricing. Opus is the most capable, with the largest context window and best reasoning, while Haiku is optimized for speed and cost. Choose the model that best fits your use case, balancing performance, cost, and context needs.</p>
+                  <div class="relative mb-2">
+                    <pre class="code-block"><code>// Example: Select Claude 3 Opus for maximum context
+model: "claude-3-opus-20240229"
+</code></pre>
+                    <button class="copy-button" onclick="copyToClipboard(this.parentElement)">Copy</button>
+                  </div>
+                  <p class="text-sm text-green-700 dark:text-green-400">Reference: <a href="https://docs.anthropic.com/en/docs/about-claude/models/overview" target="_blank" class="underline">Models Overview</a></p>
+                </div>
+                <div>
+                  <h3 class="text-xl font-semibold mb-2">Choosing a Model</h3>
+                  <p class="mb-2">When selecting a model, consider the complexity of your task, the amount of context required, and your performance needs. For example, use Opus for long documents or complex reasoning, Sonnet for balanced performance, and Haiku for fast, cost-effective tasks. Anthropic provides a detailed comparison to help you decide.</p>
+                  <div class="relative mb-2">
+                    <pre class="code-block"><code>// Example: Choose the right model for your task
+"Choose the right model for your task"</code></pre>
+                    <button class="copy-button" onclick="copyToClipboard(this.parentElement)">Copy</button>
+                  </div>
+                  <p class="text-sm text-green-700 dark:text-green-400">Reference: <a href="https://docs.anthropic.com/en/docs/about-claude/models/choosing-a-model" target="_blank" class="underline">Choosing a Model</a></p>
+                </div>
+              </div>
+            </section>
+            <!-- Prompt Engineering Section -->
+            <section id="prompt-engineering" class="mb-12">
+              <h2 class="text-2xl font-bold mb-4">Best Practices in Prompt Engineering</h2>
+              <div class="space-y-8">
+                <div>
+                  <h3 class="text-xl font-semibold mb-2">Be Clear and Direct</h3>
+                  <p class="mb-2">Effective prompts are clear, direct, and unambiguous. Specify exactly what you want the model to do, avoid vague language, and use explicit instructions. For example, instead of "Summarize this text," say "Summarize the following article in three bullet points." This approach reduces misunderstandings and improves output quality.</p>
+                  <div class="relative mb-2">
+                    <pre class="code-block"><code>// Example Prompt
+"Summarize the following article in three bullet points: [paste article here]"</code></pre>
+                    <button class="copy-button" onclick="copyToClipboard(this.parentElement)">Copy</button>
+                  </div>
+                  <p class="text-sm text-green-700 dark:text-green-400">Reference: <a href="https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/be-clear-and-direct" target="_blank" class="underline">Be Clear and Direct</a></p>
+                </div>
+                <div>
+                  <h3 class="text-xl font-semibold mb-2">Prompt Templates & Variables</h3>
+                  <p class="mb-2">Prompt templates allow you to standardize instructions and inject variables for dynamic content. This ensures consistency and adaptability across different tasks and users. For example, a template for code review might include placeholders for the language, style guide, and code snippet. Use variables to make prompts reusable and maintainable.</p>
+                  <div class="relative mb-2">
+                    <pre class="code-block"><code>// Example: Use a prompt template
+"Summarize the following article in three bullet points: [paste article here]"</code></pre>
+                    <button class="copy-button" onclick="copyToClipboard(this.parentElement)">Copy</button>
+                  </div>
+                  <p class="text-sm text-green-700 dark:text-green-400">Reference: <a href="https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/prompt-templates-and-variables" target="_blank" class="underline">Prompt Templates & Variables</a></p>
+                </div>
+                <div>
+                  <h3 class="text-xl font-semibold mb-2">Multishot Prompting</h3>
+                  <p class="mb-2">Multishot prompting involves providing several input/output examples within your prompt. This helps the model learn the desired pattern and improves accuracy, especially for complex or nuanced tasks. For example, show a few Q&A pairs before asking a new question. This technique is powerful for classification, extraction, and structured outputs.</p>
+                  <div class="relative mb-2">
+                    <pre class="code-block"><code>// Example: Use multishot prompting
+"Summarize the following article in three bullet points: [paste article here]"</code></pre>
+                    <button class="copy-button" onclick="copyToClipboard(this.parentElement)">Copy</button>
+                  </div>
+                  <p class="text-sm text-green-700 dark:text-green-400">Reference: <a href="https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/multishot-prompting" target="_blank" class="underline">Multishot Prompting</a></p>
+                </div>
+                <div>
+                  <h3 class="text-xl font-semibold mb-2">Chain-of-Thought (CoT) Reasoning</h3>
+                  <p class="mb-2">Encourage the model to reason step by step by explicitly asking it to "think out loud" or break down its reasoning. This is especially useful for complex problem-solving, math, or logic tasks. For example, "Let's think step by step..." prompts the model to show its work, leading to more accurate and transparent answers.</p>
+                  <div class="relative mb-2">
+                    <pre class="code-block"><code>// Example: Use chain-of-thought reasoning
+"Let's think step by step: What are the pros and cons of each approach?"</code></pre>
+                    <button class="copy-button" onclick="copyToClipboard(this.parentElement)">Copy</button>
+                  </div>
+                  <p class="text-sm text-green-700 dark:text-green-400">Reference: <a href="https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/chain-of-thought" target="_blank" class="underline">Chain-of-Thought</a></p>
+                </div>
+                <div>
+                  <h3 class="text-xl font-semibold mb-2">Use XML Tags for Structure</h3>
+                  <p class="mb-2">Use XML tags or similar markup to enforce structure and clarity in model responses. For example, wrap answers in <answer> tags or use <step> for each reasoning step. This makes parsing and post-processing easier and ensures the output format is consistent.</p>
+                  <div class="relative mb-2">
+                    <pre class="code-block"><code>// Example: Use XML tags for structure
+<answer>Summarize the following article in three bullet points: [paste article here]</answer></code></pre>
+                    <button class="copy-button" onclick="copyToClipboard(this.parentElement)">Copy</button>
+                  </div>
+                  <p class="text-sm text-green-700 dark:text-green-400">Reference: <a href="https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/use-xml-tags" target="_blank" class="underline">Use XML Tags</a></p>
+                </div>
+                <div>
+                  <h3 class="text-xl font-semibold mb-2">System Prompts & Role Assignment</h3>
+                  <p class="mb-2">Assign a role or persona to the model using a system prompt. For example, "You are a world-class technical writer. Respond in clear, concise English." This helps guide the model's tone, style, and expertise, making outputs more relevant to your use case.</p>
+                  <div class="relative mb-2">
+                    <pre class="code-block"><code>// Example: Assign a role to Claude
+"You are a world-class technical writer. Respond in clear, concise English."</code></pre>
+                    <button class="copy-button" onclick="copyToClipboard(this.parentElement)">Copy</button>
+                  </div>
+                  <p class="text-sm text-green-700 dark:text-green-400">Reference: <a href="https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/system-prompts" target="_blank" class="underline">System Prompts</a></p>
+                </div>
+                <div>
+                  <h3 class="text-xl font-semibold mb-2">Prefill Claude's Response</h3>
+                  <p class="mb-2">You can seed the model's output with a starting point or partial answer. This is useful for drafting emails, code, or documents where you want the model to continue or complete a specific section. Prefilling helps maintain context and style.</p>
+                  <div class="relative mb-2">
+                    <pre class="code-block"><code>// Example: Prefill Claude's response
+"Dear [Customer's Name],
+
+Thank you for reaching out. I'm here to help with your order. I've checked the status of your order and it's on its way to you. I'll keep you updated on the delivery.
+
+Best regards,
+[Your Name]"</code></pre>
+                    <button class="copy-button" onclick="copyToClipboard(this.parentElement)">Copy</button>
+                  </div>
+                  <p class="text-sm text-green-700 dark:text-green-400">Reference: <a href="https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/prefill-claudes-response" target="_blank" class="underline">Prefill Claude's Response</a></p>
+                </div>
+                <div>
+                  <h3 class="text-xl font-semibold mb-2">Chaining Prompts</h3>
+                  <p class="mb-2">Break complex workflows into multiple, linked prompts. For example, first ask the model to summarize a document, then use that summary as input for a follow-up task. Chaining prompts allows for modular, stepwise automation and better control over multi-stage processes.</p>
+                  <div class="relative mb-2">
+                    <pre class="code-block"><code>// Example: Chain prompts
+"Summarize the attached PDF and extract all key dates."</code></pre>
+                    <button class="copy-button" onclick="copyToClipboard(this.parentElement)">Copy</button>
+                  </div>
+                  <p class="text-sm text-green-700 dark:text-green-400">Reference: <a href="https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/chain-prompts" target="_blank" class="underline">Chain Prompts</a></p>
+                </div>
+                <div>
+                  <h3 class="text-xl font-semibold mb-2">Long Context & Extended Thinking</h3>
+                  <p class="mb-2">Claude supports very large context windows, allowing you to provide long documents or codebases as input. Use this to your advantage by including all relevant information in the prompt. Encourage the model to "think out loud" and reason through complex problems step by step for better results.</p>
+                  <div class="relative mb-2">
+                    <pre class="code-block"><code>// Example: Use long context
+"Please summarize the following document: [paste document here]"</code></pre>
+                    <button class="copy-button" onclick="copyToClipboard(this.parentElement)">Copy</button>
+                  </div>
+                  <p class="text-sm text-green-700 dark:text-green-400">References: <a href="https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/long-context-tips" target="_blank" class="underline">Long Context Tips</a>, <a href="https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/extended-thinking-tips" target="_blank" class="underline">Extended Thinking Tips</a></p>
+                </div>
+                <div>
+                  <h3 class="text-xl font-semibold mb-2">Prompt Generator & Improver</h3>
+                  <p class="mb-2">Anthropic provides tools to help you generate, refine, and test prompts. Use the Prompt Generator to create effective prompts for your use case, and the Prompt Improver to iterate and enhance them based on model feedback and results. This helps you quickly discover what works best for your application.</p>
+                  <div class="relative mb-2">
+                    <pre class="code-block"><code>// Example: Use the Prompt Generator
+"Summarize the following article in three bullet points: [paste article here]"</code></pre>
+                    <button class="copy-button" onclick="copyToClipboard(this.parentElement)">Copy</button>
+                  </div>
+                  <p class="text-sm text-green-700 dark:text-green-400">References: <a href="https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/prompt-generator" target="_blank" class="underline">Prompt Generator</a>, <a href="https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/prompt-improver" target="_blank" class="underline">Prompt Improver</a></p>
+                </div>
+              </div>
+            </section>
+            <!-- MCP Integration & Tool Use Section -->
+            <section id="mcp" class="mb-12">
+              <h2 class="text-2xl font-bold mb-4">MCP Integration & Tool Use</h2>
+              <div class="space-y-8">
+                <div>
+                  <h3 class="text-xl font-semibold mb-2">MCP Connector</h3>
+                  <p class="mb-2">The Model Context Protocol (MCP) connector allows Claude to interact with external tools, data sources, and services. By configuring MCP connectors, you can enable advanced workflows such as file access, code execution, and more. This integration is essential for building powerful, context-aware AI applications.</p>
+                  <div class="relative mb-2">
+                    <pre class="code-block"><code>{
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": ["@filesystem/mcp"],
+      "env": { "ALLOWED_PATHS": "/workspace" }
+    }
+  }
+}</code></pre>
+                    <button class="copy-button" onclick="copyToClipboard(this.parentElement)">Copy</button>
+                  </div>
+                  <p class="text-sm text-green-700 dark:text-green-400">Reference: <a href="https://docs.anthropic.com/en/docs/agents-and-tools/mcp-connector" target="_blank" class="underline">MCP Connector</a></p>
+                </div>
+                <div>
+                  <h3 class="text-xl font-semibold mb-2">Remote MCP Servers</h3>
+                  <p class="mb-2">Remote MCP servers allow you to run tool integrations on separate infrastructure, improving scalability and security. Configure your LLM or agent to connect to these servers for distributed tool use. This is especially useful for organizations with strict security or resource requirements.</p>
+                  <div class="relative mb-2">
+                    <pre class="code-block"><code>// Example: Configure remote MCP servers
+"Remote MCP servers allow you to run tool integrations on separate infrastructure, improving scalability and security."</code></pre>
+                    <button class="copy-button" onclick="copyToClipboard(this.parentElement)">Copy</button>
+                  </div>
+                  <p class="text-sm text-green-700 dark:text-green-400">Reference: <a href="https://docs.anthropic.com/en/docs/agents-and-tools/remote-mcp-servers" target="_blank" class="underline">Remote MCP Servers</a></p>
+                </div>
+                <div>
+                  <h3 class="text-xl font-semibold mb-2">Tool Use Overview</h3>
+                  <p class="mb-2">Tool use enables Claude to perform actions such as code execution, text editing, and web search. By defining tool schemas and connecting them to your MCP server, you can extend Claude's capabilities to automate workflows and interact with your environment.</p>
+                  <div class="relative mb-2">
+                    <pre class="code-block"><code>// Example: Define tool schemas
+"Tool use enables Claude to perform actions such as code execution, text editing, and web search."</code></pre>
+                    <button class="copy-button" onclick="copyToClipboard(this.parentElement)">Copy</button>
+                  </div>
+                  <p class="text-sm text-green-700 dark:text-green-400">Reference: <a href="https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/overview" target="_blank" class="underline">Tool Use Overview</a></p>
+                </div>
+                <div>
+                  <h3 class="text-xl font-semibold mb-2">Implement Tool Use</h3>
+                  <p class="mb-2">To implement tool use, define the tool's schema, configure the MCP server, and connect it to Claude. This allows the model to call external tools as part of its workflow. For example, you can enable code execution or file editing directly from the AI's responses.</p>
+                  <div class="relative mb-2">
+                    <pre class="code-block"><code>// Example: Implement tool use
+"To implement tool use, define the tool's schema, configure the MCP server, and connect it to Claude."</code></pre>
+                    <button class="copy-button" onclick="copyToClipboard(this.parentElement)">Copy</button>
+                  </div>
+                  <p class="text-sm text-green-700 dark:text-green-400">Reference: <a href="https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/implement-tool-use" target="_blank" class="underline">Implement Tool Use</a></p>
+                </div>
+                <div>
+                  <h3 class="text-xl font-semibold mb-2">Code Execution Tool</h3>
+                  <p class="mb-2">The code execution tool allows Claude to run code snippets in a secure environment. This is useful for code review, debugging, and automation tasks. You can define which languages and environments are supported, and Claude will execute code as part of its workflow.</p>
+                  <div class="relative mb-2">
+                    <pre class="code-block"><code>// Example: Define code execution
+"The code execution tool allows Claude to run code snippets in a secure environment."</code></pre>
+                    <button class="copy-button" onclick="copyToClipboard(this.parentElement)">Copy</button>
+                  </div>
+                  <p class="text-sm text-green-700 dark:text-green-400">Reference: <a href="https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/code-execution-tool" target="_blank" class="underline">Code Execution Tool</a></p>
+                </div>
+                <div>
+                  <h3 class="text-xl font-semibold mb-2">Text Editor Tool</h3>
+                  <p class="mb-2">The text editor tool lets Claude read, write, and edit files. This is ideal for content management, code refactoring, and collaborative editing. You can specify which files and directories are accessible, and Claude will perform edits as instructed.</p>
+                  <div class="relative mb-2">
+                    <pre class="code-block"><code>// Example: Use the text editor tool
+"The text editor tool lets Claude read, write, and edit files."</code></pre>
+                    <button class="copy-button" onclick="copyToClipboard(this.parentElement)">Copy</button>
+                  </div>
+                  <p class="text-sm text-green-700 dark:text-green-400">Reference: <a href="https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/text-editor-tool" target="_blank" class="underline">Text Editor Tool</a></p>
+                </div>
+                <div>
+                  <h3 class="text-xl font-semibold mb-2">Web Search Tool</h3>
+                  <p class="mb-2">The web search tool enables Claude to fetch and summarize information from the internet. This is useful for research, fact-checking, and staying up to date. You can configure which search engines and sources are used.</p>
+                  <div class="relative mb-2">
+                    <pre class="code-block"><code>// Example: Configure web search
+"The web search tool enables Claude to fetch and summarize information from the internet."</code></pre>
+                    <button class="copy-button" onclick="copyToClipboard(this.parentElement)">Copy</button>
+                  </div>
+                  <p class="text-sm text-green-700 dark:text-green-400">Reference: <a href="https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/web-search-tool" target="_blank" class="underline">Web Search Tool</a></p>
+                </div>
+              </div>
+            </section>
+            <!-- Agent Features & Use Cases Section -->
+            <section id="agents" class="mb-12">
+              <h2 class="text-2xl font-bold mb-4">Agent Features & Use Cases</h2>
+              <div class="space-y-8">
+                <div>
+                  <h3 class="text-xl font-semibold mb-2">Use Case Guides</h3>
+                  <p class="mb-2">Anthropic provides detailed guides for common use cases such as ticket routing, customer support, and content moderation. These guides walk you through end-to-end implementations, including prompt design, tool integration, and evaluation.</p>
+                  <div class="relative mb-2">
+                    <pre class="code-block"><code>// Example: Use case guide for ticket routing
+"Classify this support ticket and assign it to the correct department."</code></pre>
+                    <button class="copy-button" onclick="copyToClipboard(this.parentElement)">Copy</button>
+                  </div>
+                  <p class="text-sm text-green-700 dark:text-green-400">Reference: <a href="https://docs.anthropic.com/en/docs/about-claude/use-case-guides/overview" target="_blank" class="underline">Use Case Guides</a></p>
+                </div>
+                <div>
+                  <h3 class="text-xl font-semibold mb-2">Ticket Routing</h3>
+                  <p class="mb-2">Claude can automate ticket routing by classifying and assigning support requests based on content, urgency, and other criteria. This reduces manual workload and improves response times. The guide provides prompt examples and integration steps for building a robust ticket routing system.</p>
+                  <div class="relative mb-2">
+                    <pre class="code-block"><code>// Example: Prompt for ticket routing
+"Classify this support ticket and assign it to the correct department."</code></pre>
+                    <button class="copy-button" onclick="copyToClipboard(this.parentElement)">Copy</button>
+                  </div>
+                  <p class="text-sm text-green-700 dark:text-green-400">Reference: <a href="https://docs.anthropic.com/en/docs/about-claude/use-case-guides/ticket-routing" target="_blank" class="underline">Ticket Routing</a></p>
+                </div>
+                <div>
+                  <h3 class="text-xl font-semibold mb-2">Customer Support Chat</h3>
+                  <p class="mb-2">Claude can be used as a customer support agent, answering questions, resolving issues, and escalating complex cases. The guide covers prompt design, escalation logic, and integration with chat platforms.</p>
+                  <div class="relative mb-2">
+                    <pre class="code-block"><code>// Example: Prompt for customer support
+"Answer the customer's question about their order status."</code></pre>
+                    <button class="copy-button" onclick="copyToClipboard(this.parentElement)">Copy</button>
+                  </div>
+                  <p class="text-sm text-green-700 dark:text-green-400">Reference: <a href="https://docs.anthropic.com/en/docs/about-claude/use-case-guides/customer-support-chat" target="_blank" class="underline">Customer Support Chat</a></p>
+                </div>
+              </div>
+            </section>
+            <!-- Best Practices & Tips Section -->
+            <section id="best-practices" class="mb-12">
+              <h2 class="text-2xl font-bold mb-4">Best Practices & Tips</h2>
+              <div class="space-y-8">
+                <div>
+                  <h3 class="text-xl font-semibold mb-2">Testing & Evaluation</h3>
+                  <p class="mb-2">Define clear success criteria and develop test cases to evaluate Claude's performance. Use Anthropic's evaluation tools to measure accuracy, consistency, and reliability. Regular testing helps you catch regressions and improve prompt quality over time.</p>
+                  <div class="relative mb-2">
+                    <pre class="code-block"><code>// Example: Define success criteria
+"Summarize the following article in three bullet points: [paste article here]"</code></pre>
+                    <button class="copy-button" onclick="copyToClipboard(this.parentElement)">Copy</button>
+                  </div>
+                  <p class="text-sm text-green-700 dark:text-green-400">Reference: <a href="https://docs.anthropic.com/en/docs/test-and-evaluate/define-success" target="_blank" class="underline">Define Success</a>, <a href="https://docs.anthropic.com/en/docs/test-and-evaluate/develop-tests" target="_blank" class="underline">Develop Tests</a>, <a href="https://docs.anthropic.com/en/docs/test-and-evaluate/eval-tool" target="_blank" class="underline">Eval Tool</a></p>
+                </div>
+                <div>
+                  <h3 class="text-xl font-semibold mb-2">Guardrails: Reduce Hallucinations & Increase Consistency</h3>
+                  <p class="mb-2">Implement guardrails to reduce hallucinations, increase output consistency, and mitigate jailbreaks. Use prompt design, output validation, and model configuration to keep Claude on track. Anthropic provides strategies for reducing prompt leak and keeping Claude in character.</p>
+                  <div class="relative mb-2">
+                    <pre class="code-block"><code>// Example: Implement guardrails
+"Summarize the following article in three bullet points: [paste article here]"</code></pre>
+                    <button class="copy-button" onclick="copyToClipboard(this.parentElement)">Copy</button>
+                  </div>
+                  <p class="text-sm text-green-700 dark:text-green-400">Reference: <a href="https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/reduce-hallucinations" target="_blank" class="underline">Reduce Hallucinations</a>, <a href="https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/increase-consistency" target="_blank" class="underline">Increase Consistency</a>, <a href="https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/mitigate-jailbreaks" target="_blank" class="underline">Mitigate Jailbreaks</a>, <a href="https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/reduce-prompt-leak" target="_blank" class="underline">Reduce Prompt Leak</a>, <a href="https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/keep-claude-in-character" target="_blank" class="underline">Keep Claude in Character</a></p>
+                </div>
+                <div>
+                  <h3 class="text-xl font-semibold mb-2">Latency & Performance</h3>
+                  <p class="mb-2">Use batch processing and prompt caching to reduce latency and improve throughput. These techniques help you scale your application and provide a smoother user experience, especially for high-volume or real-time use cases.</p>
+                  <div class="relative mb-2">
+                    <pre class="code-block"><code>// Example: Use batch processing
+"Summarize the attached PDF and extract all key dates."</code></pre>
+                    <button class="copy-button" onclick="copyToClipboard(this.parentElement)">Copy</button>
+                  </div>
+                  <p class="text-sm text-green-700 dark:text-green-400">Reference: <a href="https://docs.anthropic.com/en/docs/test-and-evaluate/strengthen-guardrails/reduce-latency" target="_blank" class="underline">Reduce Latency</a></p>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      // Sidebar toggle logic
+      document.addEventListener('DOMContentLoaded', function () {
+        const sidebarToggles = document.querySelectorAll('.sidebar-toggle');
+        sidebarToggles.forEach((toggle, idx) => {
+          toggle.addEventListener('click', function () {
+            const expanded = this.getAttribute('aria-expanded') === 'true';
+            this.setAttribute('aria-expanded', !expanded);
+            const chevron = this.querySelector('svg');
+            const group = this.parentElement;
+            const subsections = group.querySelector('.sidebar-subsections');
+            if (expanded) {
+              subsections.classList.add('hidden');
+              chevron.classList.remove('rotate-180');
+            } else {
+              subsections.classList.remove('hidden');
+              chevron.classList.add('rotate-180');
+            }
+          });
+          // Only expand the first group by default
+          if (idx !== 0) {
+            const chevron = toggle.querySelector('svg');
+            const group = toggle.parentElement;
+            const subsections = group.querySelector('.sidebar-subsections');
+            subsections.classList.add('hidden');
+            chevron.classList.remove('rotate-180');
+            toggle.setAttribute('aria-expanded', 'false');
+          } else {
+            const chevron = toggle.querySelector('svg');
+            const group = toggle.parentElement;
+            const subsections = group.querySelector('.sidebar-subsections');
+            subsections.classList.remove('hidden');
+            chevron.classList.add('rotate-180');
+            toggle.setAttribute('aria-expanded', 'true');
+          }
+        });
+      });
+      // Copy to clipboard for all code blocks
+      function copyToClipboard(parent) {
+        const code = parent.querySelector('code');
+        if (!code) return;
+        const text = code.innerText || code.textContent;
+        navigator.clipboard.writeText(text).then(() => {
+          const btn = parent.querySelector('.copy-button');
+          if (btn) {
+            const orig = btn.textContent;
+            btn.textContent = 'Copied!';
+            setTimeout(() => { btn.textContent = orig; }, 1200);
+          }
+        });
+      }
+    </script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        const themeToggle = document.getElementById("theme-toggle");
+        const html = document.documentElement;
+        const savedTheme = localStorage.getItem("theme") || "system";
+        if (
+          savedTheme === "dark" ||
+          (savedTheme === "system" &&
+            window.matchMedia("(prefers-color-scheme: dark)").matches)
+        ) {
+          html.classList.add("dark");
+        }
+        themeToggle?.addEventListener("click", () => {
+          html.classList.toggle("dark");
+          const isDark = html.classList.contains("dark");
+          localStorage.setItem("theme", isDark ? "dark" : "light");
+        });
+      });
+    </script>
+  </body>
+</html>

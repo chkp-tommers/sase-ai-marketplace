@@ -1,0 +1,1151 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GitHub Copilot Guide - AI Tools Hub</title>
+    <meta
+      name="description"
+      content="Comprehensive guide to using GitHub Copilot: prompt engineering, custom templates, code review, best practices, and MCP integration."
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+      }
+      .code-block {
+        background: #1e293b;
+        color: #e2e8f0;
+        padding: 1rem;
+        border-radius: 0.5rem;
+        overflow-x: auto;
+        font-size: 0.9em;
+        font-family: "Fira Mono", "Menlo", "Monaco", "Consolas", monospace;
+      }
+      .copy-button {
+        position: absolute;
+        top: 0.5rem;
+        right: 0.5rem;
+      }
+      /* Custom guide section spacing for better readability */
+      .guide-section {
+        margin-bottom: 3rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid #e5e7eb;
+      }
+      .guide-section h2, .guide-section h3, .guide-section h4 {
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+        font-weight: 700;
+      }
+      .guide-section p {
+        margin-bottom: 1rem;
+        line-height: 1.7;
+        font-size: 1.08em;
+      }
+      .guide-section ul, .guide-section ol {
+        margin-bottom: 1.5rem;
+        margin-top: 0.5rem;
+        padding-left: 2rem;
+      }
+      .guide-section li {
+        margin-bottom: 0.5rem;
+        line-height: 1.6;
+      }
+    </style>
+  </head>
+  <body
+    class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors antialiased"
+  >
+    <!-- Navigation -->
+    <nav class="bg-white dark:bg-gray-800 shadow-sm sticky top-0 z-50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-16">
+          <div class="flex items-center">
+            <a href="/" class="flex items-center">
+              <!-- Copilot Icon (generic for now) -->
+              <svg
+                class="h-8 w-8 text-purple-600 dark:text-purple-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M13 10V3L4 14h7v7l9-11h-7z"
+                />
+              </svg>
+              <span class="ml-2 text-xl font-bold text-gray-900 dark:text-white"
+                >AI Tools Hub</span
+              >
+            </a>
+          </div>
+          <div class="flex items-center space-x-4">
+            <a
+              href="/tools/"
+              class="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
+              >Browse Tools</a
+            >
+            <a
+              href="/mcps/"
+              class="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
+              >MCPs</a
+            >
+            <a
+              href="/prompts/"
+              class="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
+              >Prompts</a
+            >
+            <a
+              href="/rules/"
+              class="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
+              >Rules</a
+            >
+            <a
+              href="/chatmodes/"
+              class="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
+              >Chat Modes</a
+            >
+            <a
+              href="/guides/"
+              class="text-purple-600 dark:text-purple-400 font-medium"
+              >Guides</a
+            >
+            <a
+              href="/prompt-engineering/"
+              class="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
+              >Prompt Engineering</a
+            >
+            <button
+              id="theme-toggle"
+              class="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+            >
+              <svg
+                class="h-5 w-5 hidden dark:block"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
+                />
+              </svg>
+              <svg
+                class="h-5 w-5 dark:hidden"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <!-- Breadcrumb -->
+    <div
+      class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700"
+    >
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+        <nav
+          class="flex items-center text-sm text-gray-500 dark:text-gray-400 mb-6"
+          aria-label="Breadcrumb"
+        >
+          <a
+            href="../index.html"
+            class="hover:text-purple-600 dark:hover:text-purple-400"
+            >Home</a
+          >
+          <span class="mx-2">&gt;</span>
+          <a
+            href="../guides/"
+            class="hover:text-purple-600 dark:hover:text-purple-400"
+            >Guides</a
+          >
+          <span class="mx-2">&gt;</span>
+          <span class="text-gray-900 dark:text-gray-100">GitHub Copilot</span>
+        </nav>
+      </div>
+    </div>
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div class="flex justify-end mb-6">
+        <a
+          href="https://dffics.github.com/en/copilot"
+          target="_blank"
+          rel="noopener"
+          class="inline-flex items-center px-4 py-2 bg-purple-600 text-white rounded-lg shadow hover:bg-purple-700 transition-colors font-semibold"
+          >Official Docs ↗</a
+        >
+      </div>
+      <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+        <!-- Sidebar -->
+        <div class="lg:col-span-1">
+          <div
+            class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 sticky top-24"
+          >
+            <h3
+              class="text-lg font-semibold text-gray-900 dark:text-white mb-4"
+            >
+              On This Page
+            </h3>
+            <!-- Sidebar menu: flat structure, no nested groups -->
+            <nav class="space-y-2" id="sidebar-menu">
+              <a href="#overview" class="block text-sm text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400">Overview</a>
+              <a href="#installation" class="block text-sm text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400">Installation & Setup</a>
+              <a href="#features" class="block text-sm text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400">Key Features</a>
+              <a href="#prompt-engineering" class="block text-sm text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400">Prompt Engineering</a>
+              <a href="#templates" class="block text-sm text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400">Custom Prompt Templates</a>
+              <a href="#code-review" class="block text-sm text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400">Code Review Prompts</a>
+              <a href="#best-practices" class="block text-sm text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400">Best Practices</a>
+              <a href="#mcp" class="block text-sm text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400">MCP Integration</a>
+              <a href="#troubleshooting" class="block text-sm text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400">Troubleshooting</a>
+              <a href="#pull-request-summary" class="block text-sm text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400">Creating a Pull Request Summary</a>
+              <a href="#writing-tests" class="block text-sm text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400">Writing Tests</a>
+              <a href="#refactoring-code" class="block text-sm text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400">Refactoring Code</a>
+              <a href="#modernizing-legacy" class="block text-sm text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400">Modernizing Legacy Code</a>
+              <a href="#learning-new-language" class="block text-sm text-gray-600 dark:text-gray-400 hover:text-purple-600 dark:hover:text-purple-400">Learning a New Language</a>
+            </nav>
+          </div>
+        </div>
+        <!-- Content -->
+        <div class="lg:col-span-3">
+          <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-8">
+            <!-- Header -->
+            <div class="flex items-center mb-8">
+              <div class="w-16 h-16 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center mr-4">
+                <img src="../assets/images/brand-github-copilot.svg" alt="GitHub Copilot Logo" class="h-8 w-8" />
+              </div>
+              <div>
+                <h1 class="text-3xl font-bold text-gray-900 dark:text-white">
+                  GitHub Copilot Guide
+                </h1>
+                <p class="text-gray-600 dark:text-gray-300">
+                  Unlock the full power of Copilot with prompt engineering,
+                  custom templates, code review, and best practices.
+                </p>
+              </div>
+            </div>
+            <!-- Overview Section -->
+            <section id="overview" class="guide-section">
+              <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+                Overview
+              </h2>
+              <div class="prose prose-gray dark:prose-invert max-w-none">
+                <p class="text-gray-600 dark:text-gray-300 mb-4">
+                  GitHub Copilot is an AI-powered pair programmer that helps you
+                  write code faster and smarter. This guide covers setup, prompt
+                  engineering, custom templates, code review, best practices,
+                  and MCP integration.
+                </p>
+                <div
+                  class="bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded-lg p-4 mb-6"
+                >
+                  <div class="flex items-center">
+                    <svg
+                      class="h-5 w-5 text-purple-600 dark:text-purple-400 mr-2"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                    <span
+                      class="text-purple-800 dark:text-purple-200 font-medium"
+                      >Prerequisites</span
+                    >
+                  </div>
+                  <ul
+                    class="mt-2 text-purple-700 dark:text-purple-300 text-sm space-y-1"
+                  >
+                    <li>• GitHub account with Copilot subscription</li>
+                    <li>• Supported IDE (VS Code, JetBrains, Neovim, etc.)</li>
+                    <li>
+                      • Basic understanding of your development environment
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </section>
+            <!-- Installation Section -->
+            <section id="installation" class="guide-section">
+              <h2 class="text-2xl font-bold mb-4">Installation</h2>
+              <p class="mb-2">
+                Copilot is available for multiple editors. Follow the official
+                instructions for your environment:
+              </p>
+              <ul class="list-disc pl-6 mb-2">
+                <li>
+                  <a
+                    href="https://docs.github.com/en/copilot/get-started/quickstart"
+                    target="_blank"
+                    rel="noopener"
+                    class="text-purple-600 dark:text-purple-400 hover:underline"
+                    >Quickstart Guide</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="https://docs.github.com/en/copilot/how-tos/set-up/setting-up-github-copilot-for-yourself"
+                    target="_blank"
+                    rel="noopener"
+                    class="text-purple-600 dark:text-purple-400 hover:underline"
+                    >Setup for Yourself</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="https://docs.github.com/en/copilot/how-tos/set-up/setting-up-github-copilot-for-your-organization"
+                    target="_blank"
+                    rel="noopener"
+                    class="text-purple-600 dark:text-purple-400 hover:underline"
+                    >Setup for Organization</a
+                  >
+                </li>
+              </ul>
+              <p class="mb-2">
+                Minimum requirements: See
+                <a
+                  href="https://docs.github.com/en/copilot/get-started/what-is-github-copilot"
+                  target="_blank"
+                  rel="noopener"
+                  class="text-purple-600 dark:text-purple-400 hover:underline"
+                  >What is GitHub Copilot?</a
+                >
+              </p>
+              <p>
+                After installation, sign in with your GitHub account and enable
+                Copilot in your editor.
+              </p>
+            </section>
+            <!-- Key Features Section -->
+            <section id="features" class="guide-section">
+              <h2 class="text-2xl font-bold mb-4">Key Features</h2>
+              <ul class="list-disc pl-6 space-y-2">
+                <li>AI-powered code completion and suggestions</li>
+                <li>Copilot Chat for natural language coding assistance</li>
+                <li>Custom prompt templates and code review prompts</li>
+                <li>Best practices and prompt engineering support</li>
+                <li>
+                  MCP (Model Context Protocol) integration for advanced
+                  workflows
+                </li>
+              </ul>
+            </section>
+            <!-- Prompt Engineering Section -->
+            <section id="prompt-engineering" class="guide-section">
+              <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+                Prompt Engineering
+              </h2>
+              <div class="prose prose-gray dark:prose-invert max-w-none">
+                <p class="mb-4">
+                  Prompt engineering is the art of crafting effective
+                  instructions for Copilot to get the best results. Use clear,
+                  specific language and provide context when possible.
+                </p>
+                <ul class="list-disc pl-6 mb-4">
+                  <li>Use descriptive comments and function names</li>
+                  <li>Ask direct questions or specify the desired output</li>
+                  <li>Iterate and refine prompts for better results</li>
+                  <li>
+                    Leverage
+                    <a
+                      href="https://docs.github.com/en/copilot/concepts/prompt-engineering-for-copilot-chat"
+                      target="_blank"
+                      rel="noopener"
+                      class="text-purple-600 dark:text-purple-400 hover:underline"
+                      >Copilot prompt engineering best practices</a
+                    >
+                  </li>
+                </ul>
+                <div
+                  class="bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded-lg p-4 mb-6"
+                >
+                  <div class="flex items-center">
+                    <svg
+                      class="h-5 w-5 text-purple-600 dark:text-purple-400 mr-2"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+                      />
+                    </svg>
+                    <span
+                      class="text-purple-800 dark:text-purple-200 font-medium"
+                      >Example Prompt</span
+                    >
+                  </div>
+                  <pre
+                    class="code-block"
+                  ><code>// Review this function for security and performance issues
+function processUserInput(input) {
+  // ...
+}</code></pre>
+                </div>
+              </div>
+            </section>
+            <!-- Custom Prompt Templates Section -->
+            <section id="templates" class="guide-section">
+              <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+                Custom Prompt Templates
+              </h2>
+              <div class="prose prose-gray dark:prose-invert max-w-none">
+                <p class="mb-4">
+                  You can create and reuse custom prompt templates for common
+                  tasks. Store them in a markdown file or use Copilot's chat
+                  features to quickly access them.
+                </p>
+                <div class="relative mb-4">
+                  <pre class="code-block"><code># Code Review Assistant
+You are an expert code reviewer with deep knowledge of security, performance, and best practices.
+
+## Your Role
+- Review code for bugs, security vulnerabilities, and performance issues
+- Suggest improvements and alternatives
+- Check for code style and convention adherence
+
+## Review Checklist
+1. **Security**: SQL injection, XSS, authentication, authorization
+2. **Performance**: Algorithms, database queries, memory usage
+3. **Maintainability**: Code clarity, documentation, modularity
+</code></pre>
+                  <button
+                    class="copy-button bg-gray-700 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm"
+                    onclick="copyToClipboard(this.parentElement)"
+                  >
+                    Copy
+                  </button>
+                </div>
+                <p>
+                  To use a template, copy and paste it into Copilot Chat or your
+                  IDE, or reference it by name if supported.
+                </p>
+              </div>
+            </section>
+            <!-- Code Review Prompts Section -->
+            <section id="code-review" class="guide-section">
+              <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+                Code Review Prompts
+              </h2>
+              <div class="prose prose-gray dark:prose-invert max-w-none">
+                <p class="mb-4">
+                  Use Copilot to assist with code reviews by providing targeted
+                  prompts. Example:
+                </p>
+                <div class="relative mb-4">
+                  <pre
+                    class="code-block"
+                  ><code>// Review this pull request for security, performance, and maintainability
+// Suggest improvements and highlight any issues
+</code></pre>
+                  <button
+                    class="copy-button bg-gray-700 hover:bg-gray-600 text-white px-3 py-1 rounded text-sm"
+                    onclick="copyToClipboard(this.parentElement)"
+                  >
+                    Copy
+                  </button>
+                </div>
+                <ul class="list-disc pl-6 mb-4">
+                  <li>
+                    Ask Copilot to check for specific issues (e.g., "Are there
+                    any SQL injection risks?")
+                  </li>
+                  <li>Request a summary of changes or a PR review</li>
+                  <li>
+                    Use
+                    <a
+                      href="https://docs.github.com/en/copilot/reference/github-copilot-chat-cheat-sheet"
+                      target="_blank"
+                      rel="noopener"
+                      class="text-purple-600 dark:text-purple-400 hover:underline"
+                      >Copilot Chat cheat sheet</a
+                    >
+                    for more prompt ideas
+                  </li>
+                </ul>
+              </div>
+            </section>
+            <!-- Best Practices Section -->
+            <section id="best-practices" class="guide-section">
+              <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+                Best Practices
+              </h2>
+              <ul class="list-disc pl-6 mb-4">
+                <li>Write clear, specific prompts and questions</li>
+                <li>Review Copilot's output for accuracy and security</li>
+                <li>Iterate on prompts to improve results</li>
+                <li>
+                  Use custom instructions and repository settings for team-wide
+                  guidance
+                </li>
+                <li>
+                  See
+                  <a
+                    href="https://docs.github.com/en/copilot/get-started/best-practices-for-using-github-copilot"
+                    target="_blank"
+                    rel="noopener"
+                    class="text-purple-600 dark:text-purple-400 hover:underline"
+                    >Copilot best practices</a
+                  >
+                  for more tips
+                </li>
+              </ul>
+            </section>
+            <!-- MCP Integration Section -->
+            <section id="mcp" class="guide-section">
+              <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+                MCP Integration
+              </h2>
+              <div class="prose prose-gray dark:prose-invert max-w-none">
+                <p class="mb-4">
+                  Copilot supports Model Context Protocol (MCP) for extending
+                  its capabilities with external tools, data sources, and
+                  services. Learn more:
+                </p>
+                <ul class="list-disc pl-6 mb-4">
+                  <li>
+                    <a
+                      href="https://docs.github.com/en/copilot/how-tos/context/model-context-protocol/extending-copilot-chat-with-mcp"
+                      target="_blank"
+                      rel="noopener"
+                      class="text-purple-600 dark:text-purple-400 hover:underline"
+                      >Extending Copilot Chat with MCP</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      href="https://docs.github.com/en/copilot/how-tos/context/model-context-protocol/using-the-github-mcp-server"
+                      target="_blank"
+                      rel="noopener"
+                      class="text-purple-600 dark:text-purple-400 hover:underline"
+                      >Using the GitHub MCP Server</a
+                    >
+                  </li>
+                  <li>
+                    <a
+                      href="https://docs.github.com/en/copilot/tutorials/enhancing-copilot-agent-mode-with-mcp"
+                      target="_blank"
+                      rel="noopener"
+                      class="text-purple-600 dark:text-purple-400 hover:underline"
+                      >Enhancing Copilot Agent Mode with MCP</a
+                    >
+                  </li>
+                </ul>
+              </div>
+            </section>
+            <!-- Troubleshooting Section -->
+            <section id="troubleshooting" class="guide-section">
+              <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+                Troubleshooting
+              </h2>
+              <div class="space-y-6">
+                <div
+                  class="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4"
+                >
+                  <h3
+                    class="text-lg font-semibold text-yellow-800 dark:text-yellow-200 mb-2"
+                  >
+                    Common Issues
+                  </h3>
+                  <div class="space-y-4">
+                    <div>
+                      <h4
+                        class="font-medium text-yellow-800 dark:text-yellow-200"
+                      >
+                        Copilot Not Suggesting Code
+                      </h4>
+                      <p class="text-yellow-700 dark:text-yellow-300 text-sm">
+                        Ensure Copilot is enabled in your editor and you are
+                        signed in with a valid subscription.
+                      </p>
+                    </div>
+                    <div>
+                      <h4
+                        class="font-medium text-yellow-800 dark:text-yellow-200"
+                      >
+                        Prompt Not Working as Expected
+                      </h4>
+                      <p class="text-yellow-700 dark:text-yellow-300 text-sm">
+                        Refine your prompt for clarity and specificity. See the
+                        prompt engineering section for tips.
+                      </p>
+                    </div>
+                    <div>
+                      <h4
+                        class="font-medium text-yellow-800 dark:text-yellow-200"
+                      >
+                        MCP Server Not Found
+                      </h4>
+                      <p class="text-yellow-700 dark:text-yellow-300 text-sm">
+                        Check MCP server configuration and ensure it is running
+                        and accessible.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+            <!-- Pull Request Summary Section -->
+            <section id="pull-request-summary" class="guide-section">
+              <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+                Creating a Pull Request Summary with Copilot
+              </h2>
+
+              <h3>About Copilot Pull Request Summaries</h3>
+              <p>
+                GitHub Copilot can automatically generate a summary of a pull request (PR) on GitHub. This summary helps reviewers quickly understand the changes you’ve made, or helps you as a reviewer to get a concise overview of what’s changed in a PR.<br>
+                When you use Copilot to generate a summary, it scans through the pull request and provides:
+                <ul>
+                  <li>An overview of the changes in clear, readable prose.</li>
+                  <li>A bulleted list of the most important changes, including which files were affected.</li>
+                </ul>
+                You can generate a Copilot summary in the following places:
+                <ul>
+                  <li>In the description of a new pull request you’re creating.</li>
+                  <li>In the description of an existing pull request, by editing the opening comment.</li>
+                  <li>In a comment on the main timeline of a pull request.</li>
+                </ul>
+                <strong>Tip:</strong> Copilot summaries are especially useful for large PRs or when you want to save time on documentation, but always review the generated summary for accuracy.
+              </p>
+
+              <h3>Step-by-Step: Creating a Summary for a Pull Request</h3>
+              <ol>
+                <li>
+                  <strong>Open or Create a Pull Request</strong><br>
+                  On GitHub, either create a new pull request or navigate to an existing one.
+                </li>
+                <li>
+                  <strong>Navigate to the Description or Comment Field</strong><br>
+                  <ul>
+                    <li>If you’re creating a new PR, use the “Add a description” field.</li>
+                    <li>If you’re editing an existing PR, click “Edit” on the opening comment.</li>
+                    <li>If you want to add a summary as a comment, scroll to the bottom and use the “Add a comment” field.</li>
+                  </ul>
+                  <div class="note">Copilot does not take into account any existing content in the PR description. For best results, start with a blank description.</div>
+                </li>
+                <li>
+                  <strong>Generate the Summary</strong><br>
+                  In the header of the text field, click the Copilot icon (⚡). Select <strong>Summary</strong> from the dropdown menu.
+                </li>
+                <li>
+                  <strong>Review and Edit the Summary</strong><br>
+                  Wait for Copilot to generate the summary. It will appear in the text field. Carefully review the summary for accuracy and completeness. Add any additional context or clarification that will help reviewers.
+                </li>
+                <li>
+                  <strong>Submit the Summary</strong><br>
+                  When you’re satisfied, click <strong>Create pull request</strong> (for new PRs) or <strong>Update comment</strong> (for existing PRs). If you’re adding a summary as a comment, click <strong>Comment</strong>.
+                </li>
+              </ol>
+
+              <h3>Example</h3>
+              <div class="code-block">
+                <pre>
+Summary
+- Added new authentication middleware to improve security.
+- Updated user routes to support new login flow.
+- Refactored auth.js and userRoutes.js for better maintainability.
+
+Files changed:
+- auth.js
+- userRoutes.js
+                </pre>
+              </div>
+
+              <h3>Best Practices</h3>
+              <ul>
+                <li><strong>Always review the generated summary.</strong> Copilot’s summaries are helpful, but may miss important context or details.</li>
+                <li><strong>Edit for clarity.</strong> Add explanations for why changes were made, not just what changed.</li>
+                <li><strong>Use the summary as a starting point.</strong> Expand on Copilot’s output to provide reviewers with the information they need.</li>
+                <li><strong>Provide feedback.</strong> If your organization allows, rate the summary and provide feedback to help improve Copilot.</li>
+              </ul>
+
+              <h3>Troubleshooting & Limitations</h3>
+              <ul>
+                <li>Copilot does not read existing PR descriptions. If you want a summary, clear the field before generating.</li>
+                <li>Large PRs may take longer. For very large pull requests, Copilot may take up to a minute to generate a summary.</li>
+                <li>Manual review is required. Copilot may occasionally generate inaccurate or incomplete summaries. Always check before submitting.</li>
+              </ul>
+
+              <h3>Reference</h3>
+              <ul>
+                <li><a href="https://docs.github.com/en/copilot/how-tos/github-flow/creating-a-pull-request-summary-with-github-copilot" target="_blank">Creating a pull request summary with GitHub Copilot (GitHub Docs)</a></li>
+                <li><a href="https://docs.github.com/en/copilot/responsible-use-of-github-copilot-features/responsible-use-of-github-copilot-pull-request-summaries" target="_blank">Responsible use of GitHub Copilot pull request summaries</a></li>
+              </ul>
+            </section>
+            <!-- Writing Tests Section -->
+            <section id="writing-tests" class="guide-section">
+              <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+                Writing Tests with Copilot
+              </h2>
+              <div class="prose prose-gray dark:prose-invert max-w-none">
+                <p class="mb-4">
+                  Copilot can help you write tests for your code. Whether you're writing unit tests, integration tests, or end-to-end tests, Copilot can provide suggestions and even generate code.
+                </p>
+                <ul class="list-disc pl-6 mb-4">
+                  <li>
+                    <strong>Unit Tests:</strong> Copilot can help you write tests for individual functions or methods.
+                  </li>
+                  <li>
+                    <strong>Integration Tests:</strong> For testing interactions between different components or services.
+                  </li>
+                  <li>
+                    <strong>End-to-End Tests:</strong> For testing the complete user flow or a specific scenario.
+                  </li>
+                </ul>
+                <div
+                  class="bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded-lg p-4 mb-6"
+                >
+                  <div class="flex items-center">
+                    <svg
+                      class="h-5 w-5 text-purple-600 dark:text-purple-400 mr-2"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                    <span
+                      class="text-purple-800 dark:text-purple-200 font-medium"
+                      >Example Prompt</span
+                    >
+                  </div>
+                  <pre
+                    class="code-block"
+                  ><code>// Write a unit test for the login function
+function testLogin() {
+  // ...
+}</code></pre>
+                </div>
+                <p>
+                  To use Copilot for testing, you can:
+                  <ul>
+                    <li>Write a prompt asking for a test file or test function.</li>
+                    <li>Ask Copilot to generate a test file or function.</li>
+                    <li>Iterate on the prompt to refine the test.</li>
+                  </ul>
+                </p>
+                <p>
+                  <strong>Best Practices:</strong>
+                  <ul>
+                    <li>Start with a clear, specific prompt.</li>
+                    <li>Review the generated code for correctness and adherence to best practices.</li>
+                    <li>Iterate on the prompt to improve the test.</li>
+                    <li>
+                      Use
+                      <a
+                        href="https://docs.github.com/en/copilot/concepts/prompt-engineering-for-copilot-chat"
+                        target="_blank"
+                        rel="noopener"
+                        class="text-purple-600 dark:text-purple-400 hover:underline"
+                        >Copilot prompt engineering best practices</a
+                      >
+                      for more tips.
+                    </li>
+                  </ul>
+                </p>
+                <p>
+                  <strong>Troubleshooting:</strong>
+                  <ul>
+                    <li>Copilot may generate code that doesn't compile or pass tests.</li>
+                    <li>Always review the generated code for correctness.</li>
+                    <li>Iterate on the prompt to refine the test.</li>
+                  </ul>
+                </p>
+                <p>
+                  <strong>Reference:</strong>
+                  <ul>
+                    <li><a href="https://docs.github.com/en/copilot/how-tos/github-flow/writing-tests-with-github-copilot" target="_blank">Writing tests with GitHub Copilot (GitHub Docs)</a></li>
+                    <li><a href="https://docs.github.com/en/copilot/responsible-use-of-github-copilot-features/responsible-use-of-github-copilot-pull-request-summaries" target="_blank">Responsible use of GitHub Copilot pull request summaries</a></li>
+                  </ul>
+                </p>
+              </div>
+            </section>
+            <!-- Refactoring Code Section -->
+            <section id="refactoring-code" class="guide-section">
+              <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+                Refactoring Code with Copilot
+              </h2>
+              <div class="prose prose-gray dark:prose-invert max-w-none">
+                <p class="mb-4">
+                  Copilot can help you refactor existing code to improve its readability, maintainability, and performance.
+                </p>
+                <ul class="list-disc pl-6 mb-4">
+                  <li>
+                    <strong>Improving Readability:</strong> Copilot can help you rename variables, improve function names, and add comments.
+                  </li>
+                  <li>
+                    <strong>Performance Optimization:</strong> Copilot can suggest changes to algorithms, optimize loops, and improve data structures.
+                  </li>
+                  <li>
+                    <strong>Maintainability:</strong> Copilot can help you extract methods, improve error handling, and add tests.
+                  </li>
+                </ul>
+                <div
+                  class="bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded-lg p-4 mb-6"
+                >
+                  <div class="flex items-center">
+                    <svg
+                      class="h-5 w-5 text-purple-600 dark:text-purple-400 mr-2"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                    <span
+                      class="text-purple-800 dark:text-purple-200 font-medium"
+                      >Example Prompt</span
+                    >
+                  </div>
+                  <pre
+                    class="code-block"
+                  ><code>// Refactor this function to improve readability and performance
+function processUserInput(input) {
+  // ...
+}</code></pre>
+                </div>
+                <p>
+                  To use Copilot for refactoring, you can:
+                  <ul>
+                    <li>Write a prompt asking for a specific refactoring.</li>
+                    <li>Ask Copilot to generate a refactored version of a file or function.</li>
+                    <li>Iterate on the prompt to refine the refactoring.</li>
+                  </ul>
+                </p>
+                <p>
+                  <strong>Best Practices:</strong>
+                  <ul>
+                    <li>Start with a clear, specific prompt.</li>
+                    <li>Review the generated code for correctness and adherence to best practices.</li>
+                    <li>Iterate on the prompt to improve the refactoring.</li>
+                    <li>
+                      Use
+                      <a
+                        href="https://docs.github.com/en/copilot/concepts/prompt-engineering-for-copilot-chat"
+                        target="_blank"
+                        rel="noopener"
+                        class="text-purple-600 dark:text-purple-400 hover:underline"
+                        >Copilot prompt engineering best practices</a
+                      >
+                      for more tips.
+                    </li>
+                  </ul>
+                </p>
+                <p>
+                  <strong>Troubleshooting:</strong>
+                  <ul>
+                    <li>Copilot may generate code that doesn't compile or pass tests.</li>
+                    <li>Always review the generated code for correctness.</li>
+                    <li>Iterate on the prompt to refine the refactoring.</li>
+                  </ul>
+                </p>
+                <p>
+                  <strong>Reference:</strong>
+                  <ul>
+                    <li><a href="https://docs.github.com/en/copilot/how-tos/github-flow/refactoring-code-with-github-copilot" target="_blank">Refactoring code with GitHub Copilot (GitHub Docs)</a></li>
+                    <li><a href="https://docs.github.com/en/copilot/responsible-use-of-github-copilot-features/responsible-use-of-github-copilot-pull-request-summaries" target="_blank">Responsible use of GitHub Copilot pull request summaries</a></li>
+                  </ul>
+                </p>
+              </div>
+            </section>
+            <!-- Modernizing Legacy Code Section -->
+            <section id="modernizing-legacy" class="guide-section">
+              <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+                Modernizing Legacy Code with Copilot
+              </h2>
+              <div class="prose prose-gray dark:prose-invert max-w-none">
+                <p class="mb-4">
+                  Copilot can help you modernize legacy code by improving its structure, adding new features, and making it more maintainable.
+                </p>
+                <ul class="list-disc pl-6 mb-4">
+                  <li>
+                    <strong>Improving Structure:</strong> Copilot can help you refactor complex logic into smaller, more manageable functions.
+                  </li>
+                  <li>
+                    <strong>Adding New Features:</strong> Copilot can suggest changes to add new functionality, such as a new API endpoint or a new UI component.
+                  </li>
+                  <li>
+                    <strong>Making it More Maintainable:</strong> Copilot can help you improve error handling, add tests, and add documentation.
+                  </li>
+                </ul>
+                <div
+                  class="bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded-lg p-4 mb-6"
+                >
+                  <div class="flex items-center">
+                    <svg
+                      class="h-5 w-5 text-purple-600 dark:text-purple-400 mr-2"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                    <span
+                      class="text-purple-800 dark:text-purple-200 font-medium"
+                      >Example Prompt</span
+                    >
+                  </div>
+                  <pre
+                    class="code-block"
+                  ><code>// Modernize this legacy code to improve readability and performance
+function processUserInput(input) {
+  // ...
+}</code></pre>
+                </div>
+                <p>
+                  To use Copilot for modernizing legacy code, you can:
+                  <ul>
+                    <li>Write a prompt asking for a specific modernization.</li>
+                    <li>Ask Copilot to generate a modernized version of a file or function.</li>
+                    <li>Iterate on the prompt to refine the modernization.</li>
+                  </ul>
+                </p>
+                <p>
+                  <strong>Best Practices:</strong>
+                  <ul>
+                    <li>Start with a clear, specific prompt.</li>
+                    <li>Review the generated code for correctness and adherence to best practices.</li>
+                    <li>Iterate on the prompt to improve the modernization.</li>
+                    <li>
+                      Use
+                      <a
+                        href="https://docs.github.com/en/copilot/concepts/prompt-engineering-for-copilot-chat"
+                        target="_blank"
+                        rel="noopener"
+                        class="text-purple-600 dark:text-purple-400 hover:underline"
+                        >Copilot prompt engineering best practices</a
+                      >
+                      for more tips.
+                    </li>
+                  </ul>
+                </p>
+                <p>
+                  <strong>Troubleshooting:</strong>
+                  <ul>
+                    <li>Copilot may generate code that doesn't compile or pass tests.</li>
+                    <li>Always review the generated code for correctness.</li>
+                    <li>Iterate on the prompt to refine the modernization.</li>
+                  </ul>
+                </p>
+                <p>
+                  <strong>Reference:</strong>
+                  <ul>
+                    <li><a href="https://docs.github.com/en/copilot/how-tos/github-flow/modernizing-legacy-code-with-github-copilot" target="_blank">Modernizing legacy code with GitHub Copilot (GitHub Docs)</a></li>
+                    <li><a href="https://docs.github.com/en/copilot/responsible-use-of-github-copilot-features/responsible-use-of-github-copilot-pull-request-summaries" target="_blank">Responsible use of GitHub Copilot pull request summaries</a></li>
+                  </ul>
+                </p>
+              </div>
+            </section>
+            <!-- Learning a New Language Section -->
+            <section id="learning-new-language" class="guide-section">
+              <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+                Learning a New Language with Copilot
+              </h2>
+              <div class="prose prose-gray dark:prose-invert max-w-none">
+                <p class="mb-4">
+                  Copilot can help you learn new programming languages by providing context, explaining concepts, and generating code.
+                </p>
+                <ul class="list-disc pl-6 mb-4">
+                  <li>
+                    <strong>Contextual Understanding:</strong> Copilot can provide explanations for unfamiliar terms and concepts.
+                  </li>
+                  <li>
+                    <strong>Code Generation:</strong> Copilot can generate code snippets in the new language.
+                  </li>
+                  <li>
+                    <strong>Best Practices:</strong> Copilot can suggest patterns and approaches for the new language.
+                  </li>
+                </ul>
+                <div
+                  class="bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded-lg p-4 mb-6"
+                >
+                  <div class="flex items-center">
+                    <svg
+                      class="h-5 w-5 text-purple-600 dark:text-purple-400 mr-2"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                    <span
+                      class="text-purple-800 dark:text-purple-200 font-medium"
+                      >Example Prompt</span
+                    >
+                  </div>
+                  <pre
+                    class="code-block"
+                  ><code>// Explain how to use this new language feature
+function processUserInput(input) {
+  // ...
+}</code></pre>
+                </div>
+                <p>
+                  To use Copilot for learning a new language, you can:
+                  <ul>
+                    <li>Write a prompt asking for an explanation of a specific concept.</li>
+                    <li>Ask Copilot to generate a code example in the new language.</li>
+                    <li>Iterate on the prompt to refine the explanation or code.</li>
+                  </ul>
+                </p>
+                <p>
+                  <strong>Best Practices:</strong>
+                  <ul>
+                    <li>Start with a clear, specific prompt.</li>
+                    <li>Review the generated code for correctness and adherence to best practices.</li>
+                    <li>Iterate on the prompt to improve the explanation or code.</li>
+                    <li>
+                      Use
+                      <a
+                        href="https://docs.github.com/en/copilot/concepts/prompt-engineering-for-copilot-chat"
+                        target="_blank"
+                        rel="noopener"
+                        class="text-purple-600 dark:text-purple-400 hover:underline"
+                        >Copilot prompt engineering best practices</a
+                      >
+                      for more tips.
+                    </li>
+                  </ul>
+                </p>
+                <p>
+                  <strong>Troubleshooting:</strong>
+                  <ul>
+                    <li>Copilot may generate code that doesn't compile or pass tests.</li>
+                    <li>Always review the generated code for correctness.</li>
+                    <li>Iterate on the prompt to refine the explanation or code.</li>
+                  </ul>
+                </p>
+                <p>
+                  <strong>Reference:</strong>
+                  <ul>
+                    <li><a href="https://docs.github.com/en/copilot/how-tos/github-flow/learning-new-language-with-github-copilot" target="_blank">Learning a new language with GitHub Copilot (GitHub Docs)</a></li>
+                    <li><a href="https://docs.github.com/en/copilot/responsible-use-of-github-copilot-features/responsible-use-of-github-copilot-pull-request-summaries" target="_blank">Responsible use of GitHub Copilot pull request summaries</a></li>
+                  </ul>
+                </p>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      // Copy to clipboard functionality
+      function copyToClipboard(element) {
+        const code = element.querySelector("code").textContent;
+        navigator.clipboard
+          .writeText(code)
+          .then(() => {
+            showToast("Code copied to clipboard!");
+          })
+          .catch(() => {
+            showToast("Failed to copy code", "error");
+          });
+      }
+      // Toast notification
+      function showToast(message, type = "success") {
+        let toast = document.getElementById("toast");
+        if (!toast) {
+          toast = document.createElement("div");
+          toast.id = "toast";
+          toast.innerHTML = '<span id="toast-message"></span>';
+          document.body.appendChild(toast);
+        }
+        const toastMessage = document.getElementById("toast-message");
+        toastMessage.textContent = message;
+        toast.className = `fixed top-4 right-4 px-4 py-2 rounded-lg shadow-lg transform transition-transform duration-300 z-50 ${
+          type === "success"
+            ? "bg-green-500 text-white"
+            : "bg-red-500 text-white"
+        }`;
+        toast.style.transform = "translateX(0)";
+        setTimeout(() => {
+          toast.style.transform = "translateX(100%)";
+        }, 3000);
+      }
+    </script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        const sidebarMenu = document.getElementById('sidebar-menu');
+        if (sidebarMenu) {
+          sidebarMenu.addEventListener('click', function (e) {
+            const target = e.target.closest('a[href^="#"]');
+            if (target) {
+              const sectionId = target.getAttribute('href').slice(1);
+              const section = document.getElementById(sectionId);
+              if (section) {
+                e.preventDefault();
+                section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                // Optionally update the URL hash
+                history.replaceState(null, '', '#' + sectionId);
+              }
+            }
+          });
+        }
+      });
+    </script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        const themeToggle = document.getElementById("theme-toggle");
+        const html = document.documentElement;
+        const savedTheme = localStorage.getItem("theme") || "system";
+        if (
+          savedTheme === "dark" ||
+          (savedTheme === "system" &&
+            window.matchMedia("(prefers-color-scheme: dark)").matches)
+        ) {
+          html.classList.add("dark");
+        }
+        themeToggle?.addEventListener("click", () => {
+          html.classList.toggle("dark");
+          const isDark = html.classList.contains("dark");
+          localStorage.setItem("theme", isDark ? "dark" : "light");
+        });
+      });
+    </script>
+  </body>
+</html>

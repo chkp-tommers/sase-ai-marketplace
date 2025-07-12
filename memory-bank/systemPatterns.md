@@ -30,3 +30,10 @@ This project is a static AI marketplace. There is no backend, server-side logic,
 
 - The project now uses a static deployment pattern with GitHub Pages (`deploy-pages.yml`).
 - Dynamic CI/CD workflows (Node.js/MongoDB/Next.js/Vercel) are not in use.
+
+- All guides (Cursor, Windsurf, Claude) now follow a unified, example-driven documentation pattern for major features and workflows.
+
+## 2024-06-09: Copilot AI Usage Patterns
+
+- Adopted role-based chatmodes (e.g., architect, mentor, planner) for Copilot Chat, as provided by the `awesome-copilot` repo.
+- Integrated modular prompt templates and instructional best practices for consistent, effective AI-assisted development.
