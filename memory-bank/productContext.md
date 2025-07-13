@@ -21,10 +21,13 @@ This product is a static AI marketplace. All content is pre-generated or managed
 
 ## Key Features
 
-- Browse and search AI tools from static data
-- Filter and sort tools client-side
-- Mobile-friendly and accessible UI
-- No backend, authentication, or file uploads
+- **Real-Time Statistics**: Homepage displays accurate counts from actual directory contents
+- **Directory-Based Organization**: Content organized by type with automatic counting
+- **5 Main Categories**: MCP Tools, Prompts, Chat Modes, Rules, and Platform Support
+- **Client-Side Functionality**: Browse, search, and filter tools without backend dependencies
+- **Dynamic Content Loading**: Hybrid approach combining static metadata with live directory scanning
+- **Mobile-Friendly UI**: Fully responsive and accessible interface
+- **No Authentication Required**: Instant access without login or registration
 
 ## Target Users
 

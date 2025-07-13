@@ -4,15 +4,22 @@ _Describes technologies used, development setup, technical constraints, and depe
 
 ## Technology Stack
 
-- Static site generator or plain HTML/CSS/JS
-- (Optional) React/Next.js for component-based UI
-- Tailwind CSS or other CSS framework for styling
+- **Frontend**: Static HTML/CSS/JavaScript with client-side data management
+- **Styling**: Tailwind CSS for utility-first responsive design
+- **Data Sources**: 
+  - Static JSON files in `assets/data/` (categories.json, tools.json)
+  - Directory-based content files (*.chatmode.md, *.prompt.md, *.instructions.md)
+- **Content Management**: File-based organization with dynamic counting
+- **Deployment**: GitHub Pages static hosting
 
 ## Development Setup
 
-- No backend or database setup required
-- All data is managed as static files (e.g., JSON in assets/data/)
-- To develop locally, use a static file server or the dev server of your chosen framework
+- **Local Development**: Use any static file server (Live Server, Python http.server, etc.)
+- **Data Management**: 
+  - Categories: Edit `assets/data/categories.json` for metadata
+  - Content: Add files to respective directories (chatmodes-list/, prompts-list/, rules-list/)
+- **File Counting**: Automatic via client-side directory scanning
+- **No Backend**: No server setup, database, or authentication required
 
 ## Technical Constraints
 
@@ -23,8 +30,17 @@ _Describes technologies used, development setup, technical constraints, and depe
 
 ## Dependencies
 
-- (Optional) React, Next.js, Tailwind CSS, or other frontend libraries
-- Static data files (e.g., assets/data/tools.json)
+- **Core**: Vanilla JavaScript, HTML5, CSS3
+- **Styling**: Tailwind CSS framework
+- **Data Files**: 
+  - `assets/data/categories.json` - Category metadata and configuration
+  - `assets/data/tools.json` - MCP tools and featured content  
+  - `assets/data/instructions-index.json` - Generated index (not actively used)
+- **Content Directories**:
+  - `chatmodes/chatmodes-list/` - Chat mode definition files
+  - `prompts/prompts-list/` - Prompt template files
+  - `rules/rules-list/` - Development instruction files
+- **Build Tools**: None required (static files only)
 
 ## 2024-06-09: Copilot Resource Integration
 

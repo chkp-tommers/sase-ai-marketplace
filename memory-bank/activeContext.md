@@ -4,29 +4,34 @@ _Tracks current work focus, recent changes, next steps, and active decisions._
 
 ## Current Focus
 
-- Building and refining the static AI marketplace UI
-- Managing and updating static data (e.g., tools.json)
-- Improving client-side search and filtering
-- Maintaining and enhancing the prompts directory functionality
+- Implementing dynamic file counting for homepage stats from actual directories
+- Refactoring data loading to use directory-based structure instead of centralized JSON
+- Improving homepage statistics accuracy with real-time counts
+- Maintaining directory-based organization for chatmodes, prompts, rules, and MCPs
 
 ## Recent Changes
 
-- Updated documentation to reflect static-only architecture
-- Removed backend, database, and authentication references from all docs
-- Removed `.github/workflows/ci-cd.yml` as it was not relevant for the current static site deployment approach.
-- Retained `.github/workflows/deploy-pages.yml` for GitHub Pages deployment.
-- Added a comprehensive GitHub Copilot guide at guides/copilot.html, matching the structure and UX of the Windsurf guide.
-- Updated guides/index.html so the GitHub Copilot card now features a 'Read Guide' link, styled consistently with Windsurf, and links to the new guide.
-- The new guide covers Copilot setup, prompt engineering, custom templates, code review, best practices, and MCP integration.
-- Improves documentation, onboarding, and discoverability for Copilot users.
-- Updated guides/llms.html with a dedicated Cursor LLMs section, model selection/switching, and best practices.
-- Updated prompts/index.html with advanced prompt engineering for Cursor (rules, memories, @-symbols), examples, and best practices.
-- Updated mcps/index.html with Cursor MCP setup, configuration, agent usage, and best practices.
-- All updates include references and examples from official Cursor documentation.
-- Created a dedicated Cursor guide page (guides/cursor.html) with sections for overview, installation, LLMs, prompt engineering, MCP integration, agent features, and best practices.
-- Updated guides/index.html to add a 'Read Guide' link to the Cursor card, matching the style of Copilot and Windsurf.
-- Users can now access comprehensive Cursor onboarding and advanced usage guidance from the Guides page.
-- Cursor Guide now includes practical, copyable examples for every major feature (LLMs, prompt engineering, MCP, agent features, best practices), matching the Windsurf and Claude guides in structure and style.
+- **2024-07-13: Homepage Stats Dynamic Counting**
+  - Updated homepage to display accurate counts for Rules (added as 5th category)
+  - Changed from 4-column to 5-column layout in stats section
+  - Implemented real directory-based counting for all categories
+  - Modified `updateStats()` to use `categories.json` counts instead of `tools.json` filtering
+
+- **2024-07-13: Data Loading Architecture Refactor**
+  - Restructured `loadData()` method to count actual files in directories
+  - Added `countDirectoryFiles()` method to scan directory contents via HTML parsing
+  - Implemented directory-based counting for:
+    - `chatmodes/chatmodes-list/` (*.chatmode.md files) - 31 files
+    - `prompts/prompts-list/` (*.prompt.md files) - 42 files  
+    - `rules/rules-list/` (*.instructions.md files) - 36 files
+  - Added `updateCategoryCounts()` to sync real counts with category metadata
+
+- **2024-07-13: Directory Structure Analysis**
+  - Confirmed file organization across directories:
+    - Chatmodes: 31 `.chatmode.md` files in `chatmodes/chatmodes-list/`
+    - Prompts: 42 `.prompt.md` files in `prompts/prompts-list/`
+    - Rules: 36 `.instructions.md` files in `rules/rules-list/`
+  - Homepage stats now reflect actual file counts instead of static numbers
 
 ## 2024-07-12: Prompts Directory Maintenance
 
@@ -57,11 +62,16 @@ _Tracks current work focus, recent changes, next steps, and active decisions._
 
 ## Next Steps
 
-- Add more static data and improve UI components
-- Enhance accessibility and responsiveness
-- Document static site deployment process
+- Consider migrating MCP data to directory structure similar to other categories
+- Enhance error handling for directory scanning in production environments
+- Implement fallback mechanisms when directory counting fails
+- Add automated tests for dynamic counting functionality
+- Optimize performance of directory scanning for large file sets
 
 ## Active Decisions
 
 - No backend, authentication, or server-side features will be added
 - All features must be implemented client-side or as static assets
+- Directory-based organization is preferred over centralized JSON files
+- Real-time counting from directories is prioritized over static counts
+- Each category maintains its own directory structure for better organization

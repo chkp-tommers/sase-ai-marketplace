@@ -4,28 +4,42 @@ _Tracks what works, what's left to build, current status, and known issues._
 
 ## What Works
 
-- Static site structure and navigation
-- Static data loading (e.g., from JSON files)
-- Client-side filtering and search
+- **Dynamic Homepage Stats**: Real-time counting from actual directory contents
+- **Directory-Based Organization**: Structured content management for all categories
+- **Client-Side Data Loading**: Hybrid approach combining static JSON + directory scanning
+- **5-Category Display**: MCP Tools, Prompts, Chat Modes, Rules, and Platforms
+- **Accurate File Counting**: 
+  - 31 chatmodes in `chatmodes/chatmodes-list/`
+  - 42 prompts in `prompts/prompts-list/`
+  - 36 rules in `rules/rules-list/`
+- **Static site structure and navigation**: Fully functional without backend
+- **Client-side filtering and search**: Complete browser-based functionality
 
 ## What's Left to Build
 
-- Add more AI tools to static data
-- Improve UI/UX and accessibility
-- Enhance client-side filtering/sorting
-- Add documentation and usage guides
+- **MCP Directory Structure**: Consider migrating MCPs to directory-based organization like other categories
+- **Enhanced Error Handling**: Improve fallback mechanisms for directory scanning failures
+- **Performance Optimization**: Optimize directory scanning for larger file sets
+- **Advanced Filtering**: Category-specific filtering and search capabilities
+- **Content Management Tools**: Scripts for automated content updates and validation
+- **UI/UX Improvements**: Enhanced accessibility and responsive design refinements
 
 ## Current Status
 
-The project is a static AI marketplace. All features are implemented client-side, with no backend or server-side logic.
+The project is a static AI marketplace with dynamic content counting. Homepage displays accurate real-time statistics from directory file counts. The architecture successfully combines static metadata (categories.json) with dynamic directory enumeration for up-to-date content representation. All features are implemented client-side with no backend dependencies.
 
-- Dynamic CI/CD pipeline (ci-cd.yml) removed as it was not needed.
-- Static deployment via GitHub Pages (`deploy-pages.yml`) is active and current.
+**Recent Achievements**:
+- ✅ Homepage stats show real file counts (31 chatmodes, 42 prompts, 36 rules)
+- ✅ 5-column layout with Rules category added
+- ✅ Directory-based counting system implemented
+- ✅ Hybrid data loading architecture functional
 
 ## Known Issues
 
-- None related to backend or server-side features (not applicable)
-- [List any static site or frontend issues]
+- **Directory Scanning Dependency**: Relies on server providing directory listings as HTML
+- **No MCP Directory Counting**: MCPs still counted from tools.json rather than directory structure
+- **Performance Consideration**: Directory scanning adds initial load time
+- **Limited Error Handling**: Basic fallback when directory scanning fails
 
 - GitHub Copilot documentation is now available at guides/copilot.html and accessible from the Guides page.
 - Users can now access Copilot onboarding, prompt engineering, and MCP integration guidance directly from the UI.

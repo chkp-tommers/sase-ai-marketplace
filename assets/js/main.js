@@ -63,15 +63,23 @@ class AIToolsHub {
         ? new window.JSONBinService()
         : null;
 
-      const [toolsData, categoriesRes] = await Promise.all([
+      // Load static data and count real directory contents
+      const [toolsData, categoriesRes, chatmodeCounts, promptCounts, ruleCounts] = await Promise.all([
         jsonBinService
           ? jsonBinService.fetchTools()
           : fetch("assets/data/tools.json").then((r) => r.json()),
         fetch("assets/data/categories.json"),
+        this.countDirectoryFiles("chatmodes/chatmodes-list/", ".chatmode.md"),
+        this.countDirectoryFiles("prompts/prompts-list/", ".prompt.md"),
+        this.countDirectoryFiles("rules/rules-list/", ".instructions.md"),
       ]);
 
-      if (toolsData && Array.isArray(toolsData)) {
-        this.data.tools = toolsData;
+      if (toolsData) {
+        // Flatten tools data if nested by subject, otherwise use array directly
+        const allTools = Array.isArray(toolsData)
+          ? toolsData
+          : Object.values(toolsData).flat();
+        this.data.tools = allTools;
         this.data.featuredTools = this.data.tools.filter(
           (tool) => tool.featured
         );
@@ -79,6 +87,13 @@ class AIToolsHub {
 
       if (categoriesRes.ok) {
         this.data.categories = await categoriesRes.json();
+        // Update categories with real counts
+        this.updateCategoryCounts({
+          chatmode: chatmodeCounts,
+          prompt: promptCounts,
+          rule: ruleCounts,
+          mcp: this.data.tools.filter(tool => tool.type === 'mcp').length
+        });
       }
     } catch (error) {
       console.error("Error loading data:", error);
@@ -87,29 +102,64 @@ class AIToolsHub {
     }
   }
 
+  // Count files in a directory by extension
+  async countDirectoryFiles(directory, extension) {
+    try {
+      const response = await fetch(directory);
+      if (!response.ok) return 0;
+      
+      const html = await response.text();
+      // Parse HTML to count files with the extension
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(html, 'text/html');
+      const links = doc.querySelectorAll('a[href]');
+      
+      let count = 0;
+      links.forEach(link => {
+        const href = link.getAttribute('href');
+        if (href && href.endsWith(extension)) {
+          count++;
+        }
+      });
+      
+      return count;
+    } catch (error) {
+      console.warn(`Failed to count files in ${directory}:`, error);
+      return 0;
+    }
+  }
+
+  // Update category counts with real data
+  updateCategoryCounts(counts) {
+    this.data.categories = this.data.categories.map(category => ({
+      ...category,
+      count: counts[category.id] || category.count || 0
+    }));
+  }
+
   // Fallback data when JSON files aren't available
   loadFallbackData() {
     this.data.categories = [
-      { id: "mcp", name: "MCP Tools", icon: "cpu", count: 15, color: "blue" },
+      { id: "mcp", name: "MCP Tools", icon: "cpu", count: 0, color: "blue" },
       {
         id: "prompt",
         name: "Prompts",
         icon: "chat",
-        count: 25,
+        count: 0,
         color: "green",
       },
       {
         id: "chatmode",
         name: "Chat Modes",
         icon: "code",
-        count: 10,
+        count: 0,
         color: "purple",
       },
       {
         id: "rule",
         name: "Rules",
         icon: "document",
-        count: 8,
+        count: 0,
         color: "orange",
       },
     ];
@@ -299,19 +349,21 @@ class AIToolsHub {
 
   // Update stats
   updateStats() {
-    const mcpCount = this.data.tools.filter(
-      (tool) => tool.type === "mcp"
-    ).length;
-    const promptCount = this.data.tools.filter(
-      (tool) => tool.type === "prompt"
-    ).length;
-    const chatmodeCount = this.data.tools.filter(
-      (tool) => tool.type === "chatmode"
-    ).length;
+    // Use counts from categories.json for directory-based data
+    const getCategoryCount = (id) => {
+      const cat = this.data.categories.find((c) => c.id === id);
+      console.log(id, cat)
+      return cat && typeof cat.count === 'number' ? cat.count : 0;
+    };
+    const mcpCount = getCategoryCount('mcp');
+    const promptCount = getCategoryCount('prompt');
+    const chatmodeCount = getCategoryCount('chatmode');
+    const ruleCount = getCategoryCount('rule');
 
-    document.getElementById("mcp-count").textContent = mcpCount + "+";
-    document.getElementById("prompt-count").textContent = promptCount + "+";
-    document.getElementById("chatmode-count").textContent = chatmodeCount + "+";
+    document.getElementById('mcp-count').textContent = mcpCount;
+    document.getElementById('prompt-count').textContent = promptCount;
+    document.getElementById('chatmode-count').textContent = chatmodeCount;
+    document.getElementById('rule-count').textContent = ruleCount;
   }
 
   // Get SVG icon by name

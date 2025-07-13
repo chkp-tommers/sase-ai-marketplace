@@ -283,8 +283,7 @@
           <div class="md:col-span-2">
             <label
               class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"
-              >Search</label
-            >
+              >Search</label>
             <input
               type="text"
               id="search-filter"
@@ -414,16 +413,10 @@
             // Initialize tools array
             this.tools = [];
             
-            // Load static tools first
-            const response = await fetch("../assets/data/tools.json");
-            if (response.ok) {
-              const data = await response.json();
-              this.tools = data.tools || [];
-            }
-            
-            // Load rules from awesome-copilot instructions directory
+            // Load rules, prompts, and chat modes from local directories
             await this.loadRulesFromFiles();
-            
+            await this.loadPromptsFromFiles();
+            await this.loadChatModesFromFiles();
             this.filteredTools = [...this.tools];
           } catch (error) {
             console.error("Error loading tools:", error);
@@ -470,70 +463,16 @@
         }
 
         async discoverRuleFiles() {
-          console.log('🔍 Dynamically discovering instruction files...');
-          
-          // Comprehensive list of all known instruction files - updated to match actual repo
-          const knownFiles = [
-            'angular.instructions.md',
-            'aspnet-rest-apis.instructions.md',
-            'azure-functions-typescript.instructions.md',
-            'bicep-code-best-practices.instructions.md',
-            'blazor.instructions.md',
-            'cmake-vcpkg.instructions.md',
-            'containerization-docker-best-practices.instructions.md',
-            'copilot-thought-logging.instructions.md',
-            'csharp.instructions.md',
-            'devops-core-principles.instructions.md',
-            'dotnet-maui.instructions.md',
-            'genaiscript.instructions.md',
-            'generate-modern-terraform-code-for-azure.instructions.md',
-            'github-actions-ci-cd-best-practices.instructions.md',
-            'go.instructions.md',
-            'java.instructions.md',
-            'joyride-user-project.instructions.md',
-            'joyride-workspace-automation.instructions.md',
-            'kubernetes-deployment-best-practices.instructions.md',
-            'localization.instructions.md',
-            'markdown.instructions.md',
-            'memory-bank.instructions.md',
-            'nextjs-tailwind.instructions.md',
-            'performance-optimization.instructions.md',
-            'playwright-typescript.instructions.md',
-            'power-platform-connector-instructions.md',
-            'powershell.instructions.md',
-            'python.instructions.md',
-            'quarkus.instructions.md',
-            'ruby-on-rails.instructions.md',
-            'security-and-owasp.instructions.md',
-            'springboot.instructions.md',
-            'sql-sp-generation.instructions.md',
-            'taming-copilot.instructions.md',
-            'tanstack-start-shadcn-tailwind.md'
-          ];
-
-          // Test each file to see if it exists (parallel fetch with HEAD requests for speed)
-          const testPromises = knownFiles.map(async (filename) => {
-            try {
-              const response = await fetch(`../rules/rules-list/${filename}`, {
-                method: 'HEAD',
-                cache: 'no-cache' 
-              });
-              if (response.ok) {
-                return filename;
-              }
-            } catch (error) {
-              // File doesn't exist or network error, ignore
+          try {
+            const resp = await fetch('../assets/data/instructions-index.json');
+            if (resp.ok) {
+              const data = await resp.json();
+              return data.files || [];
             }
-            return null;
-          });
-
-          const results = await Promise.all(testPromises);
-          const discoveredFiles = results.filter(filename => filename !== null);
-          
-          console.log(`✅ Discovered ${discoveredFiles.length} instruction files out of ${knownFiles.length} tested`);
-          console.log('📋 Available files:', discoveredFiles);
-          
-          return discoveredFiles;
+          } catch (err) {
+            console.error('Failed to load instructions index:', err);
+          }
+          return [];
         }
 
         parseRuleFile(filename, content) {
@@ -671,6 +610,184 @@
           this.filteredTools = [...this.tools];
         }
 
+        // Load prompts from the prompts-list directory
+        async loadPromptsFromFiles() {
+          console.log('Loading prompts from local prompts directory...');
+          const promptFiles = [
+            'aspnet-minimal-api-openapi.prompt.md',
+            'az-cost-optimize.prompt.md',
+            'azure-resource-health-diagnose.prompt.md',
+            'comment-code-generate-a-tutorial.prompt.md',
+            'create-architectural-decision-record.prompt.md',
+            'create-github-issue-feature-from-specification.prompt.md',
+            'create-github-issues-feature-from-implementation-plan.prompt.md',
+            'create-github-issues-for-unmet-specification-requirements.prompt.md',
+            'create-implementation-plan.prompt.md',
+            'create-llms.prompt.md',
+            'create-oo-component-documentation.prompt.md',
+            'create-specification.prompt.md',
+            'create-spring-boot-java-project.prompt.md',
+            'create-spring-boot-kotlin-project.prompt.md',
+            'csharp-async.prompt.md',
+            'csharp-docs.prompt.md',
+            'csharp-mstest.prompt.md',
+            'csharp-nunit.prompt.md',
+            'csharp-xunit.prompt.md',
+            'dotnet-best-practices.prompt.md',
+            'dotnet-design-pattern-review.prompt.md',
+            'ef-core.prompt.md',
+            'gen-specs-as-issues.prompt.md',
+            'java-docs.prompt.md',
+            'java-junit.prompt.md',
+            'java-springboot.prompt.md',
+            'javascript-typescript-jest.prompt.md',
+            'kotlin-springboot.prompt.md',
+            'multi-stage-dockerfile.prompt.md',
+            'my-issues.prompt.md',
+            'my-pull-requests.prompt.md',
+            'next-intl-add-language.prompt.md',
+            'suggest-awesome-github-copilot-chatmodes.prompt.md',
+            'suggest-awesome-github-copilot-prompts.prompt.md',
+            'update-avm-modules-in-bicep.prompt.md',
+            'update-implementation-plan.prompt.md',
+            'update-llms.prompt.md',
+            'update-markdown-file-index.prompt.md',
+            'update-oo-component-documentation.prompt.md',
+            'update-specification.prompt.md'
+          ];
+          for (const filename of promptFiles) {
+            try {
+              const resp = await fetch(`../prompts/prompts-list/${filename}`);
+              if (resp.ok) {
+                const text = await resp.text();
+                const pr = this.parsePromptFile(filename, text);
+                if (pr) {
+                  this.tools.push({
+                    id: `prompt-${pr.id}`,
+                    name: pr.name,
+                    description: pr.description,
+                    type: 'prompt',
+                    platforms: pr.platforms,
+                    featured: pr.featured,
+                    content: text,
+                    installUrl: pr.installUrl,
+                    category: pr.category,
+                    tags: pr.tags
+                  });
+                }
+              }
+            } catch (err) {
+              console.warn(`Could not load prompt ${filename}`, err);
+            }
+          }
+          console.log(`Loaded ${promptFiles.length} prompts as tools`);
+        }
+
+        // Parse a prompt file's frontmatter and content
+        parsePromptFile(filename, content) {
+          const fm = content.match(/^---\n([\s\S]*?)\n---/);
+          let desc = '', mode = '', tools = [];
+          if (fm) {
+            const block = fm[1];
+            const m = block.match(/description:\s*['"]([^'"]*)['"]/);
+            const mm = block.match(/mode:\s*['"]([^'"]*)['"]/);
+            const tm = block.match(/tools:\s*\[([^\]]*)\]/);
+            if (m) desc = m[1];
+            if (mm) mode = mm[1];
+            if (tm) tools = tm[1].split(',').map(t => t.trim().replace(/['"]/g, ''));
+          }
+          const titleM = content.match(/^#\s+(.+)$/m);
+          const title = titleM ? titleM[1] : filename.replace('.prompt.md','').replace(/-/g,' ');
+          const name = title.split(' ').map(w=>w.charAt(0).toUpperCase()+w.slice(1)).join(' ');
+          const id = filename.replace('.prompt.md','');
+          let category = 'General';
+          if (/csharp|dotnet/.test(filename)) category = 'C#/.NET';
+          else if (/java|spring/.test(filename)) category = 'Java';
+          else if (/azure|az-/.test(filename)) category = 'Azure';
+          else if (/github/.test(filename)) category = 'GitHub';
+          else if (/javascript|typescript/.test(filename)) category = 'JavaScript/TypeScript';
+          else if (/create-|update-/.test(filename)) category = 'Documentation';
+          return {
+            id, name,
+            description: desc || `AI prompt for ${name.toLowerCase()}`,
+            platforms: ['copilot','claude','cursor','windsurf'],
+            featured: false,
+            installUrl: `https://raw.githubusercontent.com/github/awesome-copilot/main/prompts/${filename}`,
+            category, tags: [],
+          };
+        }
+
+        // Load chat modes from chatmodes-list directory
+        async loadChatModesFromFiles() {
+          console.log('Loading chat modes from local chatmodes directory...');
+          const cmFiles = [
+            '4.1-Beast.chatmode.md','accesibility.chatmode.md','api-architect.chatmode.md',
+            'azure-principal-architect.chatmode.md','azure-saas-architect.chatmode.md','azure-verified-modules-bicep.chatmode.md',
+            'azure-verified-modules-terraform.chatmode.md','critical-thinking.chatmode.md','csharp-dotnet-janitor.chatmode.md',
+            'debug.chatmode.md','demonstrate-understanding.chatmode.md','electron-angular-native.chatmode.md',
+            'expert-dotnet-software-engineer.chatmode.md','expert-react-frontend-engineer.chatmode.md','implementation-plan.chatmode.md',
+            'janitor.chatmode.md','mentor.chatmode.md','plan.chatmode.md','planner.chatmode.md','postgresql-dba.chatmode.md',
+            'prd.chatmode.md','principal-software-engineer.chatmode.md','prompt-engineer.chatmode.md','refine-issue.chatmode.md',
+            'semantic-kernel-dotnet.chatmode.md','semantic-kernel-python.chatmode.md','simple-app-idea-generator.chatmode.md',
+            'specification.chatmode.md','tech-debt-remediation-plan.chatmode.md','wg-code-alchemist.chatmode.md','wg-code-sentinel.chatmode.md'
+          ];
+          for (const filename of cmFiles) {
+            try {
+              const resp = await fetch(`../chatmodes/chatmodes-list/${filename}`);
+              if (resp.ok) {
+                const txt = await resp.text();
+                const cm = this.parseChatModeFile(filename, txt);
+                if (cm) {
+                  this.tools.push({
+                    id: `chatmode-${cm.id}`,
+                    name: cm.name,
+                    description: cm.description,
+                    type: 'chatmode',
+                    platforms: cm.platforms,
+                    featured: cm.featured,
+                    content: txt,
+                    installUrl: cm.installUrl,
+                    category: cm.category,
+                    tags: []
+                  });
+                }
+              }
+            } catch(err) {
+              console.warn(`Could not load chatmode ${filename}`, err);
+            }
+          }
+          console.log(`Loaded ${cmFiles.length} chat modes as tools`);
+        }
+
+        // Parse a chat mode file frontmatter and title
+        parseChatModeFile(filename, content) {
+          const fm = content.match(/^---\n([\s\S]*?)\n---/);
+          let desc = '', tools = [];
+          if (fm) {
+            const block = fm[1];
+            const dm = block.match(/description:\s*['"]([^'"]*)['"]/);
+            const tm = block.match(/tools:\s*\[([^\]]*)\]/);
+            if (dm) desc = dm[1];
+            if (tm) tools = tm[1].split(',').map(t=>t.trim().replace(/['"]/g,''));
+          }
+          const titleM = content.match(/^#\s+(.+)$/m);
+          const title = titleM ? titleM[1] : filename.replace('.chatmode.md','').replace(/-/g,' ');
+          const name = title.split(' ').map(w=>w.charAt(0).toUpperCase()+w.slice(1)).join(' ');
+          const id = filename.replace('.chatmode.md','');
+          let category = 'General';
+          if (/azure/.test(filename)) category = 'Azure';
+          else if (/csharp|dotnet/.test(filename)) category = 'Development';
+          else if (/debug|janitor/.test(filename)) category = 'Debugging';
+          else if (/plan|architect/.test(filename)) category = 'Planning';
+          else if (/expert|engineer/.test(filename)) category = 'Expert';
+          return { id, name, description: desc || `Chat mode for ${name.toLowerCase()}`, platforms: ['copilot','claude','cursor','windsurf'], featured: false, installUrl: `https://raw.githubusercontent.com/github/awesome-copilot/main/chatmodes/${filename}`, category };
+        }
+
+        async loadFallbackTools() {
+          this.tools = [];
+          this.filteredTools = [...this.tools];
+        }
+
         initFilters() {
           const searchInput = document.getElementById("search-filter");
           const typeSelect = document.getElementById("type-filter");
@@ -760,18 +877,30 @@
           }
 
           noResults.classList.add("hidden");
-          
-          // Separate rules from other tools
+
+          // Separate tools by type
           const rules = this.filteredTools.filter(tool => tool.type === 'rule');
-          const otherTools = this.filteredTools.filter(tool => tool.type !== 'rule');
-          
-          // Render rules using the exact same card format as rules directory
+          const prompts = this.filteredTools.filter(tool => tool.type === 'prompt');
+          const chatmodes = this.filteredTools.filter(tool => tool.type === 'chatmode');
+          const mcps = this.filteredTools.filter(tool => tool.type === 'mcp');
+
+          // Render each category
           const rulesHTML = rules.map(tool => this.createRuleCard(tool)).join("");
-          
-          // Render other tools using regular tool card format
-          const otherToolsHTML = otherTools.map(tool => this.createToolCard(tool)).join("");
-          
-          grid.innerHTML = rulesHTML + otherToolsHTML;
+          const promptsHTML = prompts.map(tool => this.createPromptCard(tool)).join("");
+          const chatmodesHTML = chatmodes.map(tool => this.createChatmodeCard(tool)).join("");
+          const mcpsHTML = mcps.map(tool => this.createToolCard(tool)).join("");
+
+          grid.innerHTML = rulesHTML + promptsHTML + chatmodesHTML + mcpsHTML;
+        }
+
+        // Wrapper for creating prompt cards (uses generic tool card styling)
+        createPromptCard(tool) {
+          return this.createToolCard(tool);
+        }
+
+        // Wrapper for creating chat mode cards
+        createChatmodeCard(tool) {
+          return this.createToolCard(tool);
         }
 
         createRuleCard(tool) {
