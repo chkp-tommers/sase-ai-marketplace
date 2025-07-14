@@ -38,5 +38,15 @@
     "color": "orange",
     "platforms": ["cursor", "windsurf"],
     "featured": false
+  },
+  {
+    "id": "team",
+    "name": "Teams",
+    "description": "Specialized AI teams with unique tools and platforms",
+    "icon": "users",
+    "count": 1,
+    "color": "indigo",
+    "platforms": ["all"],
+    "featured": true
   }
 ]

@@ -4,10 +4,22 @@ _Tracks current work focus, recent changes, next steps, and active decisions._
 
 ## Current Focus
 
-- Implementing dynamic file counting for homepage stats from actual directories
-- Refactoring data loading to use directory-based structure instead of centralized JSON
-- Improving homepage statistics accuracy with real-time counts
-- Maintaining directory-based organization for chatmodes, prompts, rules, and MCPs
+- Implementing Teams functionality as a new category in the marketplace
+- Creating smaller team cards focused on external navigation
+- Adding Teams tab to main navigation across all pages
+- Expanding homepage layout to accommodate new Teams category
+
+## Recent Changes
+
+- **2024-07-14: Teams Category Implementation**
+  - Created new `/teams/` directory with dedicated index.html page
+  - Added `teams.json` data file with example Firefly team entry
+  - Implemented smaller card design (240px height) without preview or installation options
+  - Added Teams navigation link to main homepage and prompts page
+  - Updated homepage stats section from 5 to 6 columns for Teams count
+  - Added Teams category card to "Browse by Category" section (4-column grid)
+  - Updated `categories.json` to include Teams category with indigo color scheme
+  - Created Teams page with search, filtering, and external link functionality
 
 ## Recent Changes
 

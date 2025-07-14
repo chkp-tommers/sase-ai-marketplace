@@ -128,6 +128,11 @@
               class="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
               >Prompt Engineering</a
             >
+            <a
+              href="teams/"
+              class="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
+              >Teams</a
+            >
             <button
               id="theme-toggle"
               class="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
@@ -230,7 +235,7 @@
     <!-- Stats Section -->
     <div class="py-16 bg-white dark:bg-gray-800">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-1 md:grid-cols-5 gap-8 text-center">
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 text-center">
           <div>
             <div
               class="text-3xl font-bold text-purple-600 dark:text-purple-400"
@@ -268,6 +273,16 @@
             </div>
             <div class="text-gray-600 dark:text-gray-300">Rules</div>
           </div>
+          <!-- Teams Count -->
+          <div>
+            <div
+              class="text-3xl font-bold text-purple-600 dark:text-purple-400"
+              id="team-count"
+            >
+              1+
+            </div>
+            <div class="text-gray-600 dark:text-gray-300">Teams</div>
+          </div>
           <div>
             <div
               class="text-3xl font-bold text-purple-600 dark:text-purple-400"
@@ -289,7 +304,7 @@
           Browse by Category
         </h2>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
           <!-- MCPs Category -->
           <a
             href="mcps/"
@@ -403,6 +418,45 @@
                 class="text-orange-600 dark:text-orange-400 text-sm font-medium mt-auto"
               >
                 Browse Chat Modes →
+              </div>
+            </div>
+          </a>
+
+          <!-- Teams Category -->
+          <a
+            href="teams/"
+            class="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-sm hover:shadow-md transition-shadow group flex flex-col h-full"
+          >
+            <div class="text-center flex-1 flex flex-col">
+              <div
+                class="w-16 h-16 bg-indigo-100 dark:bg-indigo-900 rounded-lg flex items-center justify-center mx-auto mb-4 group-hover:bg-indigo-200 dark:group-hover:bg-indigo-800 transition-colors"
+              >
+                <svg
+                  class="h-8 w-8 text-indigo-600 dark:text-indigo-400"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+                  />
+                </svg>
+              </div>
+              <h3
+                class="text-lg font-semibold text-gray-900 dark:text-white mb-2"
+              >
+                Teams
+              </h3>
+              <p class="text-gray-600 dark:text-gray-300 text-sm mb-4 flex-1">
+                Specialized AI teams with unique tools and platforms
+              </p>
+              <div
+                class="text-indigo-600 dark:text-indigo-400 text-sm font-medium mt-auto"
+              >
+                Browse Teams →
               </div>
             </div>
           </a>
