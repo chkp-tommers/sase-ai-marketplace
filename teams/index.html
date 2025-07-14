@@ -10,6 +10,8 @@
     />
 
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Theme Manager -->
+    <script src="../assets/js/theme-manager.js"></script>
     <script>
       tailwind.config = {
         darkMode: "class",
@@ -270,7 +272,6 @@
 
         async init() {
           try {
-            this.#initDarkMode();
             await this.#loadTeams();
             this.#initFilters();
             this.#renderTeams();
@@ -279,37 +280,6 @@
             console.error('Failed to initialize TeamsPage:', error);
             this.showToast('Failed to load teams page', 'error');
           }
-        }
-
-        #initDarkMode() {
-          const themeToggle = document.getElementById("theme-toggle");
-          const html = document.documentElement;
-          const savedTheme = localStorage.getItem("theme") || "system";
-
-          // Apply initial theme
-          if (
-            savedTheme === "dark" ||
-            (savedTheme === "system" &&
-              window.matchMedia("(prefers-color-scheme: dark)").matches)
-          ) {
-            html.classList.add("dark");
-          }
-
-          // Listen for theme toggle clicks
-          themeToggle?.addEventListener("click", () => {
-            html.classList.toggle("dark");
-            localStorage.setItem(
-              "theme",
-              html.classList.contains("dark") ? "dark" : "light"
-            );
-          });
-
-          // Listen for system theme changes
-          window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (e) => {
-            if (localStorage.getItem("theme") === "system") {
-              html.classList.toggle("dark", e.matches);
-            }
-          });
         }
 
         async #loadTeams() {

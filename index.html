@@ -11,6 +11,8 @@
 
     <!-- Tailwind CSS -->
     <script src="assets/js/jsonbin-service.js"></script>
+    <!-- Theme Manager -->
+    <script src="assets/js/theme-manager.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
@@ -122,11 +124,6 @@
               href="guides/"
               class="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
               >Guides</a
-            >
-            <a
-              href="prompt-engineering/"
-              class="text-gray-700 dark:text-gray-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors"
-              >Prompt Engineering</a
             >
             <a
               href="teams/"
@@ -846,5 +843,11 @@
 
     <!-- JavaScript -->
     <script src="/assets/js/main.js"></script>
+    <script>
+      // Initialize theme manager
+      document.addEventListener('DOMContentLoaded', function() {
+        new ThemeManager();
+      });
+    </script>
   </body>
 </html>

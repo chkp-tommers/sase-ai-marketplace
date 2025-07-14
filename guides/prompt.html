@@ -10,6 +10,8 @@
     />
 
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Theme Manager -->
+    <script src="../assets/js/theme-manager.js"></script>
     <script>
       tailwind.config = {
         darkMode: "class",
@@ -791,28 +793,7 @@ Now write commit messages for these changes: [list changes]</code></pre>
         async init() {
           this.loadTechniques();
           this.initFilters();
-          this.initDarkMode();
           this.renderTechniques();
-        }
-
-        initDarkMode() {
-          const themeToggle = document.getElementById("theme-toggle");
-          const html = document.documentElement;
-          const savedTheme = localStorage.getItem("theme") || "system";
-          
-          if (
-            savedTheme === "dark" ||
-            (savedTheme === "system" &&
-              window.matchMedia("(prefers-color-scheme: dark)").matches)
-          ) {
-            html.classList.add("dark");
-          }
-          
-          themeToggle?.addEventListener("click", () => {
-            html.classList.toggle("dark");
-            const isDark = html.classList.contains("dark");
-            localStorage.setItem("theme", isDark ? "dark" : "light");
-          });
         }
 
         loadTechniques() {

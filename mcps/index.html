@@ -10,6 +10,8 @@
     />
 
     <script src="../assets/js/jsonbin-service.js"></script>
+    <!-- Theme Manager -->
+    <script src="../assets/js/theme-manager.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
@@ -596,34 +598,11 @@
         }
 
         async init() {
-          this.initDarkMode();
           await this.loadTools();
           this.initFilters();
           this.renderTools();
           this.updateToolsCount();
           this.initModal();
-        }
-
-        initDarkMode() {
-          const themeToggle = document.getElementById("theme-toggle");
-          const html = document.documentElement;
-          const savedTheme = localStorage.getItem("theme") || "system";
-
-          if (
-            savedTheme === "dark" ||
-            (savedTheme === "system" &&
-              window.matchMedia("(prefers-color-scheme: dark)").matches)
-          ) {
-            html.classList.add("dark");
-          }
-
-          themeToggle?.addEventListener("click", () => {
-            html.classList.toggle("dark");
-            localStorage.setItem(
-              "theme",
-              html.classList.contains("dark") ? "dark" : "light"
-            );
-          });
         }
 
         async loadTools() {
