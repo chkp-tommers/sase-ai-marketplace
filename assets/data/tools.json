@@ -283,7 +283,6 @@
     "tags": ["golang", "go", "concurrency", "backend", "performance"],
     "author": "Go Community",
     "detailedDescription": "Comprehensive Go development guidelines covering language idioms, project structure, error handling, concurrency patterns, HTTP servers, database integration, testing strategies, and performance optimization."
-  }
   },
 {
   "id": "testing-best-practices",

@@ -232,13 +232,12 @@
     <!-- Stats Section -->
     <div class="py-16 bg-white dark:bg-gray-800">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 text-center">
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 text-center">
           <div>
             <div
               class="text-3xl font-bold text-purple-600 dark:text-purple-400"
               id="mcp-count"
-            >
-              15+
+            >0
             </div>
             <div class="text-gray-600 dark:text-gray-300">MCP Tools</div>
           </div>
@@ -247,7 +246,7 @@
               class="text-3xl font-bold text-purple-600 dark:text-purple-400"
               id="prompt-count"
             >
-              25+
+              0
             </div>
             <div class="text-gray-600 dark:text-gray-300">Prompts</div>
           </div>
@@ -256,7 +255,7 @@
               class="text-3xl font-bold text-purple-600 dark:text-purple-400"
               id="chatmode-count"
             >
-              10+
+              0
             </div>
             <div class="text-gray-600 dark:text-gray-300">Chat Modes</div>
           </div>
@@ -266,7 +265,7 @@
               class="text-3xl font-bold text-purple-600 dark:text-purple-400"
               id="rule-count"
             >
-              0+
+              0
             </div>
             <div class="text-gray-600 dark:text-gray-300">Rules</div>
           </div>
@@ -274,19 +273,11 @@
           <div>
             <div
               class="text-3xl font-bold text-purple-600 dark:text-purple-400"
-              id="team-count"
+              id="teams-count"
             >
-              1+
+              0
             </div>
             <div class="text-gray-600 dark:text-gray-300">Teams</div>
-          </div>
-          <div>
-            <div
-              class="text-3xl font-bold text-purple-600 dark:text-purple-400"
-            >
-              4
-            </div>
-            <div class="text-gray-600 dark:text-gray-300">Platforms</div>
           </div>
         </div>
       </div>
@@ -301,7 +292,7 @@
           Browse by Category
         </h2>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
           <!-- MCPs Category -->
           <a
             href="mcps/"
@@ -418,7 +409,45 @@
               </div>
             </div>
           </a>
+          <!-- Rules Category -->
+          <a
+            href="rules/"
+            class="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-sm hover:shadow-md transition-shadow group flex flex-col h-full"
+          >
+            <div class="text-center flex-1 flex flex-col">
+              <div
+                class="w-16 h-16 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center mx-auto mb-4 group-hover:bg-blue-200 dark:group-hover:bg-blue-800 transition-colors"
 
+              >
+                <svg
+                  class="h-8 w-8 text-blue-600 dark:text-blue-400"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+              />
+            </svg>
+              </div>
+              <h3
+                class="text-lg font-semibold text-gray-900 dark:text-white mb-2"
+              >
+                Rules
+              </h3>
+              <p class="text-gray-600 dark:text-gray-300 text-sm mb-4 flex-1">
+                Ready-to-use rules for development tasks
+              </p>
+              <div
+                class="text-blue-600 dark:text-blue-400 text-sm font-medium mt-auto"
+              >
+                Browse Rules →
+              </div>
+            </div>
+          </a>
           <!-- Teams Category -->
           <a
             href="teams/"
@@ -547,25 +576,7 @@
         </div>
       </div>
     </div>
-
-    <!-- Featured Tools -->
-    <div class="py-16 bg-white dark:bg-gray-800">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2
-          class="text-3xl font-bold text-center text-gray-900 dark:text-white mb-12"
-        >
-          Featured Tools
-        </h2>
-
-        <div
-          class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-          id="featured-tools"
-        >
-          <!-- Featured tools will be populated by JavaScript -->
-        </div>
-      </div>
-    </div>
-
+    
     <!-- Platforms Section -->
     <div class="py-16 bg-gray-50 dark:bg-gray-900">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -585,28 +596,14 @@
               <div
                 class="w-16 h-16 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center mx-auto mb-4 group-hover:bg-green-200 dark:group-hover:bg-green-800 transition-colors"
               >
-                <svg
-                  class="h-8 w-8 text-green-600 dark:text-green-400"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
-                  />
-                </svg>
+                                <img src="../assets/images/cursor.png" alt="Cursor Logo" class="h-8 w-8">
+
               </div>
               <h3
                 class="text-lg font-semibold text-gray-900 dark:text-white mb-2"
               >
                 Cursor
               </h3>
-              <p class="text-gray-600 dark:text-gray-300 text-sm">
-                AI-first code editor
-              </p>
             </div>
           </a>
 
@@ -619,28 +616,13 @@
               <div
                 class="w-16 h-16 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center mx-auto mb-4 group-hover:bg-purple-200 dark:group-hover:bg-purple-800 transition-colors"
               >
-                <svg
-                  class="h-8 w-8 text-purple-600 dark:text-purple-400"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
+                <img src="../assets/images/brand-github-copilot.svg" alt="GitHub Copilot Logo" class="h-8 w-8">
               </div>
               <h3
                 class="text-lg font-semibold text-gray-900 dark:text-white mb-2"
               >
                 GitHub Copilot
               </h3>
-              <p class="text-gray-600 dark:text-gray-300 text-sm">
-                AI pair programmer
-              </p>
             </div>
           </a>
 
@@ -653,28 +635,15 @@
               <div
                 class="w-16 h-16 bg-orange-100 dark:bg-orange-900 rounded-lg flex items-center justify-center mx-auto mb-4 group-hover:bg-orange-200 dark:group-hover:bg-orange-800 transition-colors"
               >
-                <svg
-                  class="h-8 w-8 text-orange-600 dark:text-orange-400"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
-                  />
-                </svg>
+                  <img src="../assets/images/claude-ai-icon.webp" alt="Claude Logo" class="h-8 w-8">
+
               </div>
               <h3
                 class="text-lg font-semibold text-gray-900 dark:text-white mb-2"
               >
                 Claude
               </h3>
-              <p class="text-gray-600 dark:text-gray-300 text-sm">
-                Anthropic's AI assistant
-              </p>
+
             </div>
           </a>
 
@@ -687,43 +656,13 @@
               <div
                 class="w-16 h-16 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center mx-auto mb-4 group-hover:bg-blue-200 dark:group-hover:bg-blue-800 transition-colors"
               >
-                <svg
-                  class="h-8 w-8 text-blue-600 dark:text-blue-400"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"
-                  />
-                </svg>
+                <img src="../assets/images/windsurf-black-symbol.svg" alt="Windsurf Logo" class="h-8 w-8">
               </div>
               <h3
                 class="text-lg font-semibold text-gray-900 dark:text-white mb-2"
               >
                 Windsurf
               </h3>
-              <p class="text-gray-600 dark:text-gray-300 text-sm mb-2">
-                Next-generation AI IDE with Cascade, Tab, Command, and MCP
-                support. Fast, extensible, and VS Code compatible.
-              </p>
-              <div class="flex flex-col gap-2 items-center mt-4">
-                <a
-                  href="guides/windsurf.html"
-                  class="text-blue-600 dark:text-blue-400 text-sm font-medium hover:underline"
-                  >Read Guide →</a
-                >
-                <a
-                  href="https://docs.windsurf.com/windsurf/getting-started"
-                  target="_blank"
-                  rel="noopener"
-                  class="text-blue-500 dark:text-blue-300 text-xs hover:underline"
-                  >Official Docs ↗</a
-                >
-              </div>
             </div>
           </a>
         </div>
@@ -823,7 +762,7 @@
     >
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div class="text-center text-gray-600 dark:text-gray-400">
-          <p>&copy; 2024 AI Tools Hub. Open source tools for AI development.</p>
+          <p>&copy; 2025 AI Tools Hub. Open source tools for AI development.</p>
           <p class="mt-2">
             <a
               href="https://github.com/your-repo"
@@ -844,6 +783,11 @@
     <!-- JavaScript -->
     <script src="/assets/js/main.js"></script>
     <script>
+      // Initialize theme manager
+      document.addEventListener('DOMContentLoaded', function() {
+        new ThemeManager();
+      });
+
       // Initialize theme manager
       document.addEventListener('DOMContentLoaded', function() {
         new ThemeManager();

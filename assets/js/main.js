@@ -64,7 +64,7 @@ class AIToolsHub {
         : null;
 
       // Load static data and count real directory contents
-      const [toolsData, categoriesRes, chatmodeCounts, promptCounts, ruleCounts] = await Promise.all([
+      const [toolsData, categoriesRes, chatmodeCounts, promptCounts, ruleCounts, teamsCounts] = await Promise.all([
         jsonBinService
           ? jsonBinService.fetchTools()
           : fetch("assets/data/tools.json").then((r) => r.json()),
@@ -72,6 +72,8 @@ class AIToolsHub {
         this.countDirectoryFiles("chatmodes/chatmodes-list/", ".chatmode.md"),
         this.countDirectoryFiles("prompts/prompts-list/", ".prompt.md"),
         this.countDirectoryFiles("rules/rules-list/", ".instructions.md"),
+        await fetch("teams/teams.json").then((r) => r.json()),
+
       ]);
 
       if (toolsData) {
@@ -92,7 +94,8 @@ class AIToolsHub {
           chatmode: chatmodeCounts,
           prompt: promptCounts,
           rule: ruleCounts,
-          mcp: this.data.tools.filter(tool => tool.type === 'mcp').length
+          mcp: this.data.tools.filter(tool => tool.type === 'mcp').length,
+          teams: teamsCounts.length
         });
       }
     } catch (error) {
@@ -351,6 +354,7 @@ class AIToolsHub {
   updateStats() {
     // Use counts from categories.json for directory-based data
     const getCategoryCount = (id) => {
+      console.log(this.data.categories)
       const cat = this.data.categories.find((c) => c.id === id);
       console.log(id, cat)
       return cat && typeof cat.count === 'number' ? cat.count : 0;
@@ -359,11 +363,14 @@ class AIToolsHub {
     const promptCount = getCategoryCount('prompt');
     const chatmodeCount = getCategoryCount('chatmode');
     const ruleCount = getCategoryCount('rule');
+    const teamsCount = getCategoryCount('team');
 
+    console.log({teamsCount})
     document.getElementById('mcp-count').textContent = mcpCount;
     document.getElementById('prompt-count').textContent = promptCount;
     document.getElementById('chatmode-count').textContent = chatmodeCount;
     document.getElementById('rule-count').textContent = ruleCount;
+    document.getElementById('teams-count').textContent = teamsCount;
   }
 
   // Get SVG icon by name
