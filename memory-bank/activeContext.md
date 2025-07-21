@@ -4,12 +4,7 @@ _Tracks current work focus, recent changes, next steps, and active decisions._
 
 ## Current Focus
 
-- Implementing Teams functionality as a new category in the marketplace
-- Creating smaller team cards focused on external navigation
-- Adding Teams tab to main navigation across all pages
-- Expanding homepage layout to accommodate new Teams category
 
-## Recent Changes
 
 - **2024-07-14: Teams Category Implementation**
   - Created new `/teams/` directory with dedicated index.html page
@@ -19,13 +14,21 @@ _Tracks current work focus, recent changes, next steps, and active decisions._
   - Updated homepage stats section from 5 to 6 columns for Teams count
   - Added Teams category card to "Browse by Category" section (4-column grid)
   - Updated `categories.json` to include Teams category with indigo color scheme
-  - Created Teams page with search, filtering, and external link functionality
 
 ## Recent Changes
 
 - **2024-07-13: Homepage Stats Dynamic Counting**
   - Updated homepage to display accurate counts for Rules (added as 5th category)
+## Current State of Main Resource Pages (July 2025)
+
+- **Chat Modes Page**: Lets users discover, search, preview, and install specialized AI assistant configurations for different roles and platforms. Features search/filter, stats, install/copy actions, and community contributions.
+- **Teams Page**: Allows users to browse, search, and connect with specialized AI teams, each representing a group of tools or resources. Includes search/filter, stats, and visit actions.
+- **Rules Page**: Central hub for discovering, searching, and installing coding rules and best-practice instructions. Features search/filter, stats, preview, and install/copy actions.
+- **Prompts Page**: Enables users to find, search, and copy ready-to-use AI prompts for various development tasks. Includes search/filter, stats, preview, and copy/install actions.
+- **MCP Tools Page**: Hub for discovering, searching, and adding Model Context Protocol (MCP) servers to extend AI assistant capabilities. Features search/filter, stats, add new MCP, and install/copy actions.
+- **Guides Section**: Provides onboarding and best-practice guides for each supported platform (Windsurf, Cursor, Copilot, Claude, LLMs, Prompt Engineering), with step-by-step instructions and real-world examples.
   - Changed from 4-column to 5-column layout in stats section
+All major resource pages are now documented with clear, user-focused explanations to improve onboarding and discoverability.
   - Implemented real directory-based counting for all categories
   - Modified `updateStats()` to use `categories.json` counts instead of `tools.json` filtering
 

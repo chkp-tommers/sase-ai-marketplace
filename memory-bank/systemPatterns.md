@@ -31,29 +31,22 @@ This project is a static AI marketplace organized around directory-based content
 
 ## Design Patterns
 
-- **Directory Scanning Pattern**: Client-side HTML parsing to count files by extension
-- **Hybrid Data Pattern**: Static metadata + dynamic directory enumeration
-- **Component-based UI**: Modular interface components consuming static and dynamic data
-- **Category-Count Synchronization**: Real directory counts override static category counts
-- **Graceful Degradation**: Fallback to static counts when directory scanning fails
-- **Client-side filtering, sorting, and search**: All data manipulation in browser
-- **Responsive design**: Mobile-first approach for all devices
-- **Accessibility best practices**: WCAG compliance throughout
 
+## System Patterns Update (July 2025)
+
+The application uses a consistent pattern of resource-specific index pages. Each main section (Chat Modes, Teams, Rules, Prompts, MCPs) features:
+- Search and filter functionality
+- Stats banners for quick overview
+- Responsive grids of resource cards
+- Install/copy actions for easy adoption
+- Community contribution options (where applicable)
+
+The Guides section provides onboarding and best-practice documentation for each supported platform, ensuring users can quickly get started and maximize value from the marketplace.
 ## Component Relationships
 
 - **Homepage Stats**: Dynamically calculated from directory file counts + static metadata
-- **Category Navigation**: Driven by `categories.json` with real-time count updates
-- **Content Loading**: Directory-specific file enumeration for accurate representations
-- **UI Components**: Consume both static data and dynamic counts for marketplace listings
-- **Navigation and filtering**: Handled client-side with no server dependencies
-- **Data Flow**: Categories.json → Directory Scanning → Count Synchronization → UI Updates
-
 - The project now uses a static deployment pattern with GitHub Pages (`deploy-pages.yml`).
-- Dynamic CI/CD workflows (Node.js/MongoDB/Next.js/Vercel) are not in use.
-
 - All guides (Cursor, Windsurf, Claude) now follow a unified, example-driven documentation pattern for major features and workflows.
-
 ## 2024-06-09: Copilot AI Usage Patterns
 
 - Adopted role-based chatmodes (e.g., architect, mentor, planner) for Copilot Chat, as provided by the `awesome-copilot` repo.

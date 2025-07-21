@@ -1,8 +1,5 @@
 # Product Context
 
-_Why this project exists, the problems it solves, and user experience goals._
-
-## Problem Statement
 
 There is a need for a simple, accessible AI tools marketplace that can be hosted and maintained as a static website, without the complexity of backend infrastructure.
 
